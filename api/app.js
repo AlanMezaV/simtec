@@ -29,6 +29,17 @@ conexion.connect(function (error) {
     }
 });
 
+//Mostrar todos los alumnos
+app.get("/api/alumnos", (req, res) => {
+    conexion.query("SELECT * FROM alumnos", (error, filas) => {
+        if (error) {
+            throw error;
+        } else {
+            res.send(filas);
+        }
+    });
+});
+
 // Encender el servidor
 app.listen("3000", function () {
     console.log("Servidor puerto 3000");
