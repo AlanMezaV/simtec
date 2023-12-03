@@ -1,5 +1,5 @@
-CREATE DATABASE SIMTEC;
-USE SIMTEC;
+CREATE DATABASE simtec;
+USE simtec;
 
 CREATE TABLE ALUMNOS(
 	ncontrol INT NOT NULL PRIMARY KEY,
@@ -49,3 +49,35 @@ CREATE TABLE CARGA(
 ALTER TABLE CARGA
 ADD CONSTRAINT FK_CARGA_GRUPO FOREIGN KEY (clavemateria, clavegrupo) REFERENCES GRUPOS (clavemateria, clavegrupo),
 ADD CONSTRAINT FK_CARGA_ALUMNOS FOREIGN KEY (ncontrol) REFERENCES ALUMNOS(ncontrol);
+
+--Inserts de alumnos
+INSERT INTO `alumnos` (`ncontrol`, `nombre`, `carrera`, `estatus`) 
+    VALUES ('20170592', 'Monica Angulo Sanchez', 'Sistemas', 'V');
+INSERT INTO `alumnos` (`ncontrol`, `nombre`, `carrera`, `estatus`) 
+    VALUES ('20170749', 'Alan Meza Valenzuela', 'Sistemas', 'V');
+INSERT INTO `alumnos` (`ncontrol`, `nombre`, `carrera`, `estatus`) 
+    VALUES ('20170757', 'Rogelio Samuel Moreno Corrales', 'Sistemas', 'V');
+
+--Inserts de maestros
+INSERT INTO `maestros` (`clavemaestro`, `nombre`, `departamento`, `estatus`) 
+    VALUES ('1', 'Dr. Clemente Garcia Gerardo', '1', 'V');
+INSERT INTO `maestros` (`clavemaestro`, `nombre`, `departamento`, `estatus`) 
+    VALUES ('2', 'M.C Daniel Esparza Soto', '1', 'V');
+INSERT INTO `maestros` (`clavemaestro`, `nombre`, `departamento`, `estatus`) 
+    VALUES ('3', 'I.S.C Martin Leonardo Nevarez Rivas', '1', 'V');
+
+--Inserts de materias
+INSERT INTO `materias` (`clavemateria`, `nombre`, `creditos`) 
+    VALUES ('1', 'Programacion Web', '5');
+INSERT INTO `materias` (`clavemateria`, `nombre`, `creditos`) 
+    VALUES ('2', 'Topicos avanzados de programacion', '5');
+INSERT INTO `materias` (`clavemateria`, `nombre`, `creditos`) 
+    VALUES ('3', 'Taller de base de datos', '4');
+
+--Inserts de grupos
+INSERT INTO `grupos` (`clavemateria`, `clavegrupo`, `clavemaestro`, `limitealumnos`, `inscritos`, `horariolunes`, `horariomartes`, `horariomiercoles`, `horariojueves`, `horarioviernes`) 
+    VALUES ('1', '1213', '3', '2', '0', '12:00-13:00', '12:00-13:00', '12:00-13:00', 
+    '12:00-13:00', '12:00-13:00');
+INSERT INTO `grupos` (`clavemateria`, `clavegrupo`, `clavemaestro`, `limitealumnos`, `inscritos`, `horariolunes`, `horariomartes`, `horariomiercoles`, `horariojueves`, `horarioviernes`) 
+    VALUES ('2', '1214', '1', '2', '0', '10:00-11:00', '10:00-11:00', '10:00-11:00', 
+    '10:00-11:00', '10:00-11:00');

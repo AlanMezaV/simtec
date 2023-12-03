@@ -29,9 +29,44 @@ conexion.connect(function (error) {
     }
 });
 
+//Gets de todas las tablas
+
 //Mostrar todos los alumnos
 app.get("/api/alumnos", (req, res) => {
     conexion.query("SELECT * FROM alumnos", (error, filas) => {
+        if (error) {
+            throw error;
+        } else {
+            res.send(filas);
+        }
+    });
+});
+
+//Mostrar todos los maestros
+app.get("/api/maestros", (req, res) => {
+    conexion.query("SELECT * FROM maestros", (error, filas) => {
+        if (error) {
+            throw error;
+        } else {
+            res.send(filas);
+        }
+    });
+});
+
+//Mostrar todas las materias
+app.get("/api/materias", (req, res) => {
+    conexion.query("SELECT * FROM materias", (error, filas) => {
+        if (error) {
+            throw error;
+        } else {
+            res.send(filas);
+        }
+    });
+});
+
+//Mostrar todaos los grupos
+app.get("/api/grupos", (req, res) => {
+    conexion.query("SELECT * FROM grupos", (error, filas) => {
         if (error) {
             throw error;
         } else {
