@@ -54,6 +54,9 @@ export default {
 </script>
 
 <style>
+.MaestrosLista{
+	width: 79%;
+}
 .espacio {
 	padding-right: 25px;
 	padding-left: 20px;

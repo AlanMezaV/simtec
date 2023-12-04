@@ -64,8 +64,10 @@ export default {
 	},
 };
 </script>
-
 <style>
+.GruposLista{
+	width: 79%;
+}
 .espacio {
 	padding-right: 25px;
 	padding-left: 20px;

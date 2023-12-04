@@ -1,10 +1,12 @@
 <template>
-	<div class="AlumnosLista">
-		<span>Alumnos</span>
-		<button @click.prevent="nuevoAlumno">Agregar</button>
-		<table>
-			<thead>
-				<tr>
+	<div class="contenedor">
+
+		<div class="AlumnosLista">
+			<span>Alumnos</span>
+			<button @click.prevent="nuevoAlumno">Agregar</button>
+			<table>
+				<thead>
+					<tr>
 					<th>Numero de control</th>
 					<th>Nombre</th>
 					<th>Carrera</th>
@@ -29,6 +31,7 @@
 			</tbody>
 		</table>
 	</div>
+</div>
 </template>
 
 <script>
@@ -90,6 +93,14 @@ export default {
 </script>
 
 <style>
+:root{
+	--white-smoke: #f1f2f4;
+}
+.AlumnosLista{
+	width: 79%;
+	background-color: var(--white-smoke);
+	border-radius: 30px;
+}
 .espacio {
 	padding-right: 25px;
 	padding-left: 20px;
