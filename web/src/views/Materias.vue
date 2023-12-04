@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import MateriasLista from "@/components/MateriasLista.vue";
+import MateriasLista from "@/components/materias/MateriasLista.vue";
 export default {
 	name: "Materias",
 	components: {

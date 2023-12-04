@@ -1,37 +1,34 @@
 <!-- AddForm.vue -->
 <template>
 	<div>
-		<MateriasLista></MateriasLista>
+		<AlumnosLista></AlumnosLista>
 		<div class="overlay"></div>
-		<div class="FormAggMateria">
-			Agregar Materia
+		<div class="FormAggAlumno">
+			Agregar Alumno
 			<button @click="cerrarFormulario">✖</button>
 			<form>
-				<label for="clavemateria">Clave de materia:</label>
+				<label for="ncontrol">Numero de control:</label>
 				<input
-					v-model="materias.clavemateria"
-					name="clavemateria"
+					v-model="alumnos.ncontrol"
+					name="ncontrol"
 					type="text"
 					maxlength="8"
-					id="clavemateria"
+					id="ncontrol"
 					@input="validarSoloNumerosClave"
 					@click.prevent="eliminaError()"
 					required
 				/>
 				<br />
 				<label for="nombre">Nombre:</label>
-				<input maxlength="150" v-model="materias.nombre" type="text" id="nombre" required />
+				<input maxlength="150" v-model="alumnos.nombre" type="text" id="nombre" required />
 				<br />
-				<label for="creditos">Creditos:</label>
-				<input
-					v-model="materias.creditos"
-					type="text"
-					id="creditos"
-					@input="validarSoloNumerosCreditos"
-					required
-				/>
+				<label for="carrera">Carrera:</label>
+				<input v-model="alumnos.carrera" type="text" id="carrera" maxlength="150" required />
 				<br />
-				<button type="submit" @click.prevent="agregarMateria()">Agregar</button>
+				<label for="estatus">Estatus:</label>
+				<input v-model="alumnos.estatus" type="text" id="estatus" maxlength="1" required />
+				<br />
+				<button type="submit" @click.prevent="agregarAlumno()">Agregar</button>
 			</form>
 			<div v-if="mostrarError" class="error-message">
 				{{ errorMensaje }}
@@ -41,18 +38,18 @@
 </template>
 
 <script>
-import {URL_DATOS} from "../utils/constants.js";
+import {URL_DATOS} from "@/utils/constants.js";
 import axios from "axios";
-import MateriasLista from "./MateriasLista.vue";
+import AlumnosLista from "./AlumnosLista.vue";
 
 export default {
-	name: "FormAggMateria",
+	name: "FormAggAlumno",
 	components: {
-		MateriasLista,
+		AlumnosLista,
 	},
 	data: function () {
 		return {
-			materias: [],
+			alumnos: [],
 			mostrarError: false,
 			errorMensaje: "",
 		};
@@ -60,20 +57,19 @@ export default {
 	methods: {
 		validarSoloNumerosClave() {
 			// Elimina caracteres no numéricos del valor de clavemateria
-			this.materias.clavemateria = this.materias.clavemateria.replace(/\D/g, "");
+			this.alumnos.ncontrol = this.alumnos.ncontrol.replace(/\D/g, "");
 		},
-		validarSoloNumerosCreditos() {
-			this.materias.creditos = this.materias.creditos.replace(/\D/g, "");
-		},
-		agregarMateria: async function () {
+		agregarAlumno: async function () {
 			const validaDatos = () => {
 				if (
-					this.materias.clavemateria == undefined ||
-					this.materias.creditos == undefined ||
-					this.materias.clavemateria == "" ||
-					this.materias.creditos == "" ||
-					this.materias.nombre == undefined ||
-					this.materias.nombre == ""
+					this.alumnos.ncontrol == undefined ||
+					this.alumnos.nombre == undefined ||
+					this.alumnos.ncontrol == "" ||
+					this.alumnos.nombre == "" ||
+					this.alumnos.carrera == undefined ||
+					this.alumnos.carrera == "" ||
+					this.alumnos.estatus == undefined ||
+					this.alumnos.estatus == ""
 				) {
 					return false;
 				}
@@ -83,17 +79,18 @@ export default {
 			try {
 				// Realiza una solicitud GET para verificar si la materia ya existe
 				if (validaDatos()) {
-					const response = await axios.get(`${URL_DATOS}/materias/${this.materias.clavemateria}`);
+					const response = await axios.get(`${URL_DATOS}/alumnos/${this.alumnos.ncontrol}`);
 					if (response.data.length > 0) {
 						this.mostrarError = true;
-						this.errorMensaje = "La materia ya existe. No se puede agregar una duplicada.";
+						this.errorMensaje = "El alumno ya existe, no se puede agregar.";
 					} else {
-						const res = await axios.post(URL_DATOS + "/materias", {
-							cla: this.materias.clavemateria,
-							nom: this.materias.nombre,
-							cre: this.materias.creditos,
+						const res = await axios.post(URL_DATOS + "/alumnos", {
+							ncontrol: this.alumnos.ncontrol,
+							nombre: this.alumnos.nombre,
+							carrera: this.alumnos.carrera,
+							estatus: this.alumnos.estatus,
 						});
-						this.$router.push("/materias");
+						this.$router.push("/alumnos");
 					}
 				} else {
 					this.mostrarError = true;
@@ -107,7 +104,7 @@ export default {
 			this.mostrarError = false;
 		},
 		cerrarFormulario() {
-			this.$router.push("/materias");
+			this.$router.push("/alumnos");
 		},
 	},
 };
@@ -123,7 +120,7 @@ export default {
 	background: rgba(0, 0, 0, 0.5); /* Fondo oscuro semitransparente */
 }
 
-.FormAggMateria {
+.FormAggAlumno {
 	position: absolute;
 	top: 50%;
 	left: 50%;

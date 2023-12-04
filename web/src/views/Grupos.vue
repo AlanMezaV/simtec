@@ -3,7 +3,7 @@
 </template>
 
 <script>
-import GruposLista from "@/components/GruposLista.vue";
+import GruposLista from "@/components/grupos/GruposLista.vue";
 
 export default {
 	name: "Grupos",

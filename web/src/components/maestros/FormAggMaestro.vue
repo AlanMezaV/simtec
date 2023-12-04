@@ -1,34 +1,34 @@
 <!-- AddForm.vue -->
 <template>
 	<div>
-		<AlumnosLista></AlumnosLista>
+		<MaestrosLista></MaestrosLista>
 		<div class="overlay"></div>
-		<div class="FormAggAlumno">
-			Agregar Alumno
+		<div class="FormAggMaestro">
+			Agregar Maestro
 			<button @click="cerrarFormulario">✖</button>
 			<form>
-				<label for="ncontrol">Numero de control:</label>
+				<label for="clavemaestro">Clave del maestro:</label>
 				<input
-					v-model="alumnos.ncontrol"
-					name="ncontrol"
+					v-model="maestros.clavemaestro"
+					name="clavemaestro"
 					type="text"
 					maxlength="8"
-					id="ncontrol"
+					id="clavemaestro"
 					@input="validarSoloNumerosClave"
 					@click.prevent="eliminaError()"
 					required
 				/>
 				<br />
 				<label for="nombre">Nombre:</label>
-				<input maxlength="150" v-model="alumnos.nombre" type="text" id="nombre" required />
+				<input maxlength="150" v-model="maestros.nombre" type="text" id="nombre" required />
 				<br />
-				<label for="carrera">Carrera:</label>
-				<input v-model="alumnos.carrera" type="text" id="carrera" maxlength="150" required />
+				<label for="departamento">Departamento:</label>
+				<input v-model="maestros.departamento" type="text" id="departamento" maxlength="150" required />
 				<br />
 				<label for="estatus">Estatus:</label>
-				<input v-model="alumnos.estatus" type="text" id="estatus" maxlength="1" required />
+				<input v-model="maestros.estatus" type="text" id="estatus" maxlength="1" required />
 				<br />
-				<button type="submit" @click.prevent="agregarAlumno()">Agregar</button>
+				<button type="submit" @click.prevent="agregarMaestro()">Agregar</button>
 			</form>
 			<div v-if="mostrarError" class="error-message">
 				{{ errorMensaje }}
@@ -38,18 +38,18 @@
 </template>
 
 <script>
-import {URL_DATOS} from "../utils/constants.js";
+import {URL_DATOS} from "@/utils/constants.js";
 import axios from "axios";
-import AlumnosLista from "./AlumnosLista.vue";
+import MaestrosLista from "./MaestrosLista.vue";
 
 export default {
-	name: "FormAggAlumno",
+	name: "FormAggMaestro",
 	components: {
-		AlumnosLista,
+		MaestrosLista,
 	},
 	data: function () {
 		return {
-			alumnos: [],
+			maestros: [],
 			mostrarError: false,
 			errorMensaje: "",
 		};
@@ -57,19 +57,19 @@ export default {
 	methods: {
 		validarSoloNumerosClave() {
 			// Elimina caracteres no numéricos del valor de clavemateria
-			this.alumnos.ncontrol = this.alumnos.ncontrol.replace(/\D/g, "");
+			this.maestros.clavemaestro = this.maestros.clavemaestro.replace(/\D/g, "");
 		},
-		agregarAlumno: async function () {
+		agregarMaestro: async function () {
 			const validaDatos = () => {
 				if (
-					this.alumnos.ncontrol == undefined ||
-					this.alumnos.nombre == undefined ||
-					this.alumnos.ncontrol == "" ||
-					this.alumnos.nombre == "" ||
-					this.alumnos.carrera == undefined ||
-					this.alumnos.carrera == "" ||
-					this.alumnos.estatus == undefined ||
-					this.alumnos.estatus == ""
+					this.maestros.clavemaestro == undefined ||
+					this.maestros.nombre == undefined ||
+					this.maestros.clavemaestro == "" ||
+					this.maestros.nombre == "" ||
+					this.maestros.departamento == undefined ||
+					this.maestros.departamento == "" ||
+					this.maestros.estatus == undefined ||
+					this.maestros.estatus == ""
 				) {
 					return false;
 				}
@@ -79,18 +79,18 @@ export default {
 			try {
 				// Realiza una solicitud GET para verificar si la materia ya existe
 				if (validaDatos()) {
-					const response = await axios.get(`${URL_DATOS}/alumnos/${this.alumnos.ncontrol}`);
+					const response = await axios.get(`${URL_DATOS}/maestros/${this.maestros.clavemaestro}`);
 					if (response.data.length > 0) {
 						this.mostrarError = true;
-						this.errorMensaje = "El alumno ya existe, no se puede agregar.";
+						this.errorMensaje = "El maestro ya existe, no se puede agregar.";
 					} else {
-						const res = await axios.post(URL_DATOS + "/alumnos", {
-							ncontrol: this.alumnos.ncontrol,
-							nombre: this.alumnos.nombre,
-							carrera: this.alumnos.carrera,
-							estatus: this.alumnos.estatus,
+						const res = await axios.post(URL_DATOS + "/maestros", {
+							clavemaestro: this.maestros.clavemaestro,
+							nombre: this.maestros.nombre,
+							departamento: this.maestros.departamento,
+							estatus: this.maestros.estatus,
 						});
-						this.$router.push("/alumnos");
+						this.$router.push("/maestros");
 					}
 				} else {
 					this.mostrarError = true;
@@ -104,7 +104,7 @@ export default {
 			this.mostrarError = false;
 		},
 		cerrarFormulario() {
-			this.$router.push("/alumnos");
+			this.$router.push("/maestros");
 		},
 	},
 };
@@ -120,7 +120,7 @@ export default {
 	background: rgba(0, 0, 0, 0.5); /* Fondo oscuro semitransparente */
 }
 
-.FormAggAlumno {
+.FormAggMaestro {
 	position: absolute;
 	top: 50%;
 	left: 50%;

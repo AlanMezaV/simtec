@@ -1,11 +1,24 @@
+<!-- AddForm.vue -->
 <template>
 	<div>
 		<MateriasLista></MateriasLista>
 		<div class="overlay"></div>
-		<div class="FormEditarMateria">
-			Editar Materia
+		<div class="FormAggMateria">
+			Agregar Materia
 			<button @click="cerrarFormulario">✖</button>
 			<form>
+				<label for="clavemateria">Clave de materia:</label>
+				<input
+					v-model="materias.clavemateria"
+					name="clavemateria"
+					type="text"
+					maxlength="8"
+					id="clavemateria"
+					@input="validarSoloNumerosClave"
+					@click.prevent="eliminaError()"
+					required
+				/>
+				<br />
 				<label for="nombre">Nombre:</label>
 				<input maxlength="150" v-model="materias.nombre" type="text" id="nombre" required />
 				<br />
@@ -18,7 +31,7 @@
 					required
 				/>
 				<br />
-				<button type="submit" @click.prevent="editarMateria()">Actualizar materia</button>
+				<button type="submit" @click.prevent="agregarMateria()">Agregar</button>
 			</form>
 			<div v-if="mostrarError" class="error-message">
 				{{ errorMensaje }}
@@ -28,30 +41,21 @@
 </template>
 
 <script>
-import {URL_DATOS} from "../utils/constants.js";
+import {URL_DATOS} from "@/utils/constants.js";
 import axios from "axios";
 import MateriasLista from "./MateriasLista.vue";
 
 export default {
-	name: "FormEditarMateria",
+	name: "FormAggMateria",
 	components: {
 		MateriasLista,
-	},
-	props: {
-		clavemateria: {
-			type: String,
-		},
 	},
 	data: function () {
 		return {
 			materias: [],
-			visible: false,
 			mostrarError: false,
 			errorMensaje: "",
 		};
-	},
-	created() {
-		this.traeDatos();
 	},
 	methods: {
 		validarSoloNumerosClave() {
@@ -61,19 +65,7 @@ export default {
 		validarSoloNumerosCreditos() {
 			this.materias.creditos = this.materias.creditos.replace(/\D/g, "");
 		},
-		traeDatos: async function () {
-			let a = [];
-			await axios
-				.get(URL_DATOS + "/materias/" + this.clavemateria)
-				.then(function (response) {
-					a = response.data[0];
-				})
-				.catch(function (error) {
-					console.log(error);
-				});
-			this.materias = a;
-		},
-		editarMateria: async function () {
+		agregarMateria: async function () {
 			const validaDatos = () => {
 				if (
 					this.materias.clavemateria == undefined ||
@@ -91,13 +83,18 @@ export default {
 			try {
 				// Realiza una solicitud GET para verificar si la materia ya existe
 				if (validaDatos()) {
-					const res = await axios.put(URL_DATOS + "/materias/" + this.clavemateria, {
-						id: this.materias.clavemateria,
-						nom: this.materias.nombre,
-						cre: this.materias.creditos,
-					});
-					console.log(res);
-					this.$router.push("/materias");
+					const response = await axios.get(`${URL_DATOS}/materias/${this.materias.clavemateria}`);
+					if (response.data.length > 0) {
+						this.mostrarError = true;
+						this.errorMensaje = "La materia ya existe. No se puede agregar una duplicada.";
+					} else {
+						const res = await axios.post(URL_DATOS + "/materias", {
+							cla: this.materias.clavemateria,
+							nom: this.materias.nombre,
+							cre: this.materias.creditos,
+						});
+						this.$router.push("/materias");
+					}
 				} else {
 					this.mostrarError = true;
 					this.errorMensaje = "No debe de haber datos vacios.";
@@ -126,7 +123,7 @@ export default {
 	background: rgba(0, 0, 0, 0.5); /* Fondo oscuro semitransparente */
 }
 
-.FormEditarMateria {
+.FormAggMateria {
 	position: absolute;
 	top: 50%;
 	left: 50%;
