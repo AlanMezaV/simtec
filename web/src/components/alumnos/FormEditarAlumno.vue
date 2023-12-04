@@ -25,7 +25,7 @@
 </template>
 
 <script>
-import {URL_DATOS} from "../utils/constants.js";
+import {URL_DATOS} from "@/utils/constants.js";
 import axios from "axios";
 import AlumnosLista from "./AlumnosLista.vue";
 

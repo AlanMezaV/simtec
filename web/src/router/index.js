@@ -6,10 +6,16 @@ import Maestros from "../views/Maestros.vue";
 import Materias from "../views/Materias.vue";
 import Grupos from "../views/Grupos.vue";
 import TomaCarga from "../views/TomaCarga.vue";
-import FormEditarMateria from "../components/FormEditarMateria.vue";
-import FormAggMateria from "../components/FormAggMateria.vue";
-import FormAggAlumno from "../components/FormAggAlumno.vue";
-import FormEditarAlumno from "../components/FormEditarAlumno.vue";
+import FormEditarMateria from "../components/materias/FormEditarMateria.vue";
+import FormAggMateria from "../components/materias/FormAggMateria.vue";
+import FormAggAlumno from "../components/alumnos/FormAggAlumno.vue";
+import FormEditarAlumno from "../components/alumnos/FormEditarAlumno.vue";
+import FormAggMaestro from "../components/maestros/FormAggMaestro.vue";
+import FormEditarMaestro from "../components/maestros/FormEditarMaestro.vue";
+import FormAggGrupo from "../components/grupos/FormAggGrupo.vue";
+import FormEditarGrupo from "../components/grupos/FormEditarGrupo.vue";
+import FormAggCarga from "../components/cargas/FormAggCarga.vue";
+import FormEditarCarga from "../components/cargas/FormEditarCarga.vue";
 
 Vue.use(VueRouter);
 
@@ -40,8 +46,8 @@ const routes = [
 		component: Grupos,
 	},
 	{
-		path: "/carga",
-		name: "carga",
+		path: "/cargas",
+		name: "cargas",
 		component: TomaCarga,
 	},
 	{
@@ -64,6 +70,39 @@ const routes = [
 		path: "/alumnos/editar",
 		name: "editar-alumno",
 		component: FormEditarAlumno,
+		props: true,
+	},
+	{
+		path: "/maestros/agregar",
+		name: "agregar-maestro",
+		component: FormAggMaestro,
+	},
+	{
+		path: "/maestros/editar",
+		name: "editar-maestro",
+		component: FormEditarMaestro,
+		props: true,
+	},
+	{
+		path: "/grupos/agregar",
+		name: "agregar-grupo",
+		component: FormAggGrupo,
+	},
+	{
+		path: "/grupos/editar",
+		name: "editar-grupo",
+		component: FormEditarGrupo,
+		props: true,
+	},
+	{
+		path: "/cargas/agregar",
+		name: "agregar-carga",
+		component: FormAggCarga,
+	},
+	{
+		path: "/cargas/editar",
+		name: "editar-carga",
+		component: FormEditarCarga,
 		props: true,
 	},
 ];
