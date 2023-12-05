@@ -14,14 +14,22 @@
 				</select>
 				<br />
 
-				<label for="ncontrol">Numero de control</label>
+				<label for="clavegrupo">Grupos</label>
+				<select v-model="cargas.clavegrupo" id="clavegrupo">
+					<option v-for="grupo in clavegrupos" :key="grupo.clavegrupo" :value="grupo.clavegrupo">
+						{{ grupo.clavegrupo }}
+					</option>
+				</select>
+				<br />
+
+				<label for="ncontrol">Numero de control:</label>
 				<select v-model="cargas.ncontrol" id="ncontrol">
-					<option value=""></option>
-					<option v-for="alumno in clavealumnos" :key="alumno.clavealumnos" :value="alumno.clavealumnos">
+					<option v-for="alumno in clavealumnos" :key="alumno.ncontrol" :value="alumno.ncontrol">
 						{{ alumno.nombre }}
 					</option>
 				</select>
 				<br />
+
 				<button type="submit" @click.prevent="agregarCarga()">Agregar</button>
 			</form>
 			<div v-if="mostrarError" class="error-message">
@@ -35,6 +43,7 @@
 import {URL_DATOS} from "@/utils/constants.js";
 import axios from "axios";
 import TomaCargaLista from "./TomaCargaLista.vue";
+import {obtenerDatos} from "@/utils/peticiones";
 
 export default {
 	name: "FormAggCarga",
@@ -46,29 +55,26 @@ export default {
 			cargas: [],
 			clavematerias: [],
 			clavealumnos: [],
+			clavegrupos: [],
 			mostrarError: false,
 			errorMensaje: "",
 		};
 	},
-	created() {
-		this.obtenerMaterias();
-		this.obtenerAlumnos();
+	async created() {
+		this.clavematerias = await obtenerDatos("materias");
+		this.clavealumnos = await obtenerDatos("alumnos");
+	},
+	watch: {
+		"cargas.clavemateria": "peticionGrupos", // Observa cambios en cargas.clavemateria y llama a peticionGrupos
 	},
 	methods: {
-		async obtenerMaterias() {
+		peticionGrupos: async function () {
 			try {
-				const response = await axios.get(`${URL_DATOS}/materias`);
-				this.clavematerias = response.data;
+				const response = await axios.get(`${URL_DATOS}/grupos/materia/${this.cargas.clavemateria}`);
+				console.log(response.data);
+				this.clavegrupos = response.data;
 			} catch (error) {
-				console.error("Error al obtener materias:", error);
-			}
-		},
-		async obtenerAlumnos() {
-			try {
-				const response = await axios.get(`${URL_DATOS}/alumnos`);
-				this.clavealumnos = response.data;
-			} catch (error) {
-				console.error("Error al obtener alumnos:", error);
+				console.error("Error al obtener los grupos:", error);
 			}
 		},
 		agregarCarga: async function () {
@@ -98,7 +104,7 @@ export default {
 							clavegrupo: this.cargas.clavegrupo,
 							ncontrol: this.cargas.ncontrol,
 						});
-						this.$router.push("/cargas");
+						this.$router.push("/carga");
 					}
 				} else {
 					this.mostrarError = true;
@@ -112,7 +118,7 @@ export default {
 			this.mostrarError = false;
 		},
 		cerrarFormulario() {
-			this.$router.push("/cargas");
+			this.$router.push("/carga");
 		},
 	},
 };
