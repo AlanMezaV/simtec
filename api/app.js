@@ -119,6 +119,17 @@ app.get("/api/grupos", (req, res) => {
 	});
 });
 
+//Mostrar todos los grupos en una materia
+app.get("/api/grupos/materia/:id", (req, res) => {
+	conexion.query("SELECT * FROM grupos WHERE clavemateria = ?", [req.params.id], (error, filas) => {
+		if (error) {
+			throw error;
+		} else {
+			res.send(filas);
+		}
+	});
+});
+
 //Mostrar una carga
 app.get("/api/cargas/:id", (req, res) => {
 	conexion.query("SELECT * FROM carga WHERE clavegrupo = ? LIMIT 1", [req.params.id], (error, fila) => {
