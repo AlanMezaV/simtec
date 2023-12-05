@@ -1,0 +1,14 @@
+:root {
+	--midnight-blue: #28246f;
+    --midnight-blue-boton: #110D59;
+	--royal-blue: #5459ea;
+    --royal-blue-ligth: #cccdf9;
+	--white: #ffffff;
+    --black: #000000;
+	--white-smoke: #f1f2f4;
+}
+* {
+	box-sizing: border-box;
+	padding: 0px;
+	margin: 0px;
+}
