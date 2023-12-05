@@ -12,16 +12,16 @@
 				</tr>
 			</thead>
 			<tbody>
-				<tr v-for="materia in materias" :key="materia.clavemateria">
-					<td class="espacio">{{ materia.clavemateria }}</td>
-					<td class="espacio">{{ materia.nombre }}</td>
-					<td class="espacio">{{ materia.creditos }}</td>
+				<tr v-for="materias in lista_materias" :key="materias.clavemateria">
+					<td class="espacio">{{ materias.clavemateria }}</td>
+					<td class="espacio">{{ materias.nombre }}</td>
+					<td class="espacio">{{ materias.creditos }}</td>
 					<td class="espacio">
-						<button @click="mostrarOpciones(materia)">...</button>
-						<div v-if="materia.mostrarOpciones" class="menu-desplegable">
-							<button @click.prevent="editarMateria(materia)">Editar</button>
+						<button @click="mostrarOpciones(materias)">...</button>
+						<div v-if="materias.mostrarOpciones" class="menu-desplegable">
+							<button @click.prevent="editarMateria(materias)">Editar</button>
 							<br />
-							<button @click="eliminarMateria(materia)">Eliminar</button>
+							<button @click="eliminarMateria(materias)">Eliminar</button>
 						</div>
 					</td>
 				</tr>
@@ -33,55 +33,43 @@
 <script>
 import {URL_DATOS} from "@/utils/constants.js";
 import axios from "axios";
+import {obtenerDatos} from "@/utils/peticiones";
 
 export default {
 	name: "MateriasLista",
 	components: {},
 	data: function () {
 		return {
-			materias: [],
+			lista_materias: [],
 		};
 	},
-	created() {
-		this.traeMaterias();
+	async created() {
+		this.lista_materias = await obtenerDatos("materias");
 	},
 	methods: {
-		traeMaterias: async function () {
-			let a = [];
-			await axios
-				.get(URL_DATOS + "/materias")
-				.then(function (response) {
-					a = response.data;
-					a = response.data.map((materia) => ({...materia, mostrarOpciones: false}));
-				})
-				.catch(function (error) {
-					console.log(error);
-				});
-			this.materias = a;
-		},
 		nuevaMateria: function () {
-			this.materias.forEach((m) => {
+			this.lista_materias.forEach((m) => {
 				m.mostrarOpciones = false;
 			});
 			this.$router.push({name: "agregar-materia", params: {}});
 		},
-		mostrarOpciones(materia) {
-			this.materias.forEach((m) => {
-				if (m !== materia) {
+		mostrarOpciones(materias) {
+			this.lista_materias.forEach((m) => {
+				if (m !== materias) {
 					m.mostrarOpciones = false;
 				}
 			});
-			materia.mostrarOpciones = !materia.mostrarOpciones;
+			materias.mostrarOpciones = !materias.mostrarOpciones;
 		},
-		editarMateria: function (materia) {
-			materia.mostrarOpciones = !materia.mostrarOpciones;
-			this.$router.push({name: "editar-materia", params: {clavemateria: materia.clavemateria}});
+		editarMateria: function (materias) {
+			materias.mostrarOpciones = !materias.mostrarOpciones;
+			this.$router.push({name: "editar-materia", params: {clavemateria: materias.clavemateria}});
 		},
-		eliminarMateria: async function (materia) {
-			materia.mostrarOpciones = !materia.mostrarOpciones;
-			const res = await axios.delete(URL_DATOS + "/materias/" + materia.clavemateria);
+		eliminarMateria: async function (materias) {
+			materias.mostrarOpciones = !materias.mostrarOpciones;
+			const res = await axios.delete(URL_DATOS + "/materias/" + materias.clavemateria);
 			console.log(res);
-			this.traeMaterias();
+			this.lista_materias = await obtenerDatos("materias");
 		},
 	},
 };

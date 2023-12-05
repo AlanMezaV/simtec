@@ -31,6 +31,7 @@
 import {URL_DATOS} from "@/utils/constants.js";
 import axios from "axios";
 import MateriasLista from "./MateriasLista.vue";
+import {traeDatos} from "@/utils/peticiones";
 
 export default {
 	name: "FormEditarMateria",
@@ -50,28 +51,15 @@ export default {
 			errorMensaje: "",
 		};
 	},
-	created() {
-		this.traeDatos();
+	async created() {
+		this.materias = await traeDatos("materias", this.clavemateria);
 	},
 	methods: {
 		validarSoloNumerosClave() {
-			// Elimina caracteres no numéricos del valor de clavemateria
 			this.materias.clavemateria = this.materias.clavemateria.replace(/\D/g, "");
 		},
 		validarSoloNumerosCreditos() {
 			this.materias.creditos = this.materias.creditos.replace(/\D/g, "");
-		},
-		traeDatos: async function () {
-			let a = [];
-			await axios
-				.get(URL_DATOS + "/materias/" + this.clavemateria)
-				.then(function (response) {
-					a = response.data[0];
-				})
-				.catch(function (error) {
-					console.log(error);
-				});
-			this.materias = a;
 		},
 		editarMateria: async function () {
 			const validaDatos = () => {
@@ -89,7 +77,6 @@ export default {
 			};
 
 			try {
-				// Realiza una solicitud GET para verificar si la materia ya existe
 				if (validaDatos()) {
 					const res = await axios.put(URL_DATOS + "/materias/" + this.clavemateria, {
 						id: this.materias.clavemateria,

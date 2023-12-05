@@ -1,4 +1,3 @@
-<!-- AddForm.vue -->
 <template>
 	<div>
 		<AlumnosLista></AlumnosLista>
@@ -56,7 +55,6 @@ export default {
 	},
 	methods: {
 		validarSoloNumerosClave() {
-			// Elimina caracteres no numéricos del valor de clavemateria
 			this.alumnos.ncontrol = this.alumnos.ncontrol.replace(/\D/g, "");
 		},
 		agregarAlumno: async function () {

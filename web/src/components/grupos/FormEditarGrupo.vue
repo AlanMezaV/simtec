@@ -55,6 +55,8 @@
 import {URL_DATOS} from "@/utils/constants.js";
 import axios from "axios";
 import GruposLista from "./GruposLista.vue";
+import {traeDatos} from "@/utils/peticiones";
+import {obtenerDatos} from "@/utils/peticiones";
 
 export default {
 	name: "FormEditarGrupo",
@@ -75,40 +77,12 @@ export default {
 			errorMensaje: "",
 		};
 	},
-	created() {
-		this.traeDatos();
-		this.obtenerMaterias();
-		this.obtenerMaestros();
+	async created() {
+		this.grupos = await traeDatos("grupos", this.clavegrupo);
+		this.clavematerias = await obtenerDatos("materias");
+		this.clavemaestros = await obtenerDatos("maestros");
 	},
 	methods: {
-		async obtenerMaterias() {
-			try {
-				const response = await axios.get(`${URL_DATOS}/materias`);
-				this.clavematerias = response.data;
-			} catch (error) {
-				console.error("Error al obtener materias:", error);
-			}
-		},
-		async obtenerMaestros() {
-			try {
-				const response = await axios.get(`${URL_DATOS}/maestros`);
-				this.clavemaestros = response.data;
-			} catch (error) {
-				console.error("Error al obtener maestros:", error);
-			}
-		},
-		traeDatos: async function () {
-			let a = [];
-			await axios
-				.get(URL_DATOS + "/grupos/" + this.clavegrupo)
-				.then(function (response) {
-					a = response.data[0];
-				})
-				.catch(function (error) {
-					console.log(error);
-				});
-			this.grupos = a;
-		},
 		editarGrupo: async function () {
 			const validaDatos = () => {
 				if (

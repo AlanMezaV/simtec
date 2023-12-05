@@ -299,7 +299,7 @@ app.put("/api/grupos/:id", (req, res) => {
 	let horariojueves = req.body.horariojueves;
 	let horarioviernes = req.body.horarioviernes;
 	let sql =
-		"UPDATE grupos SET clavemateria = ?, clavemaestro = ?, limitealumnos = ?, inscritos = ?, horariolunes = ?, horariomartes = ?, horariomiercoles, horariojueves = ?, horarioviernes = ?, WHERE clavegrupo = ?";
+		"UPDATE grupos SET clavemateria = ?, clavemaestro = ?, limitealumnos = ?, inscritos = ?, horariolunes = ?, horariomartes = ?, horariomiercoles = ?, horariojueves = ?, horarioviernes = ? WHERE clavegrupo = ?";
 	conexion.query(
 		sql,
 		[

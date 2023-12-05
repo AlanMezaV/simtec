@@ -28,6 +28,7 @@
 import {URL_DATOS} from "@/utils/constants.js";
 import axios from "axios";
 import MaestrosLista from "./MaestrosLista.vue";
+import {traeDatos} from "@/utils/peticiones";
 
 export default {
 	name: "FormEditarMaestro",
@@ -46,22 +47,10 @@ export default {
 			errorMensaje: "",
 		};
 	},
-	created() {
-		this.traeDatos();
+	async created() {
+		this.maestros = await traeDatos("maestros", this.clavemaestro);
 	},
 	methods: {
-		traeDatos: async function () {
-			let a = [];
-			await axios
-				.get(URL_DATOS + "/maestros/" + this.clavemaestro)
-				.then(function (response) {
-					a = response.data[0];
-				})
-				.catch(function (error) {
-					console.log(error);
-				});
-			this.maestros = a;
-		},
 		editarMaestro: async function () {
 			const validaDatos = () => {
 				if (
@@ -80,7 +69,6 @@ export default {
 			};
 
 			try {
-				// Realiza una solicitud GET para verificar si la materia ya existe
 				if (validaDatos()) {
 					const res = await axios.put(URL_DATOS + "/maestros/" + this.clavemaestro, {
 						clavemaestro: this.maestros.clavemaestro,

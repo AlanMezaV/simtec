@@ -1,102 +1,88 @@
 <template>
 	<div class="contenedor">
-
 		<div class="AlumnosLista">
 			<span>Alumnos</span>
 			<button @click.prevent="nuevoAlumno">Agregar</button>
 			<table>
 				<thead>
 					<tr>
-					<th>Numero de control</th>
-					<th>Nombre</th>
-					<th>Carrera</th>
-					<th>Estatus</th>
-				</tr>
-			</thead>
-			<tbody>
-				<tr v-for="alumno in alumnos" :key="alumno.ncontrol">
-					<td class="espacio">{{ alumno.ncontrol }}</td>
-					<td class="espacio">{{ alumno.nombre }}</td>
-					<td class="espacio">{{ alumno.carrera }}</td>
-					<td class="espacio">{{ alumno.estatus }}</td>
-					<td class="espacio">
-						<button @click="mostrarOpciones(alumno)">...</button>
-						<div v-if="alumno.mostrarOpciones" class="menu-desplegable">
-							<button @click.prevent="editarAlumno(alumno)">Editar</button>
-							<br />
-							<button @click="eliminarAlumno(alumno)">Eliminar</button>
-						</div>
-					</td>
-				</tr>
-			</tbody>
-		</table>
+						<th>Numero de control</th>
+						<th>Nombre</th>
+						<th>Carrera</th>
+						<th>Estatus</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr v-for="alumnos in lista_alumnos" :key="alumnos.ncontrol">
+						<td class="espacio">{{ alumnos.ncontrol }}</td>
+						<td class="espacio">{{ alumnos.nombre }}</td>
+						<td class="espacio">{{ alumnos.carrera }}</td>
+						<td class="espacio">{{ alumnos.estatus }}</td>
+						<td class="espacio">
+							<button @click="mostrarOpciones(alumnos)">...</button>
+							<div v-if="alumnos.mostrarOpciones" class="menu-desplegable">
+								<button @click.prevent="editarAlumno(alumnos)">Editar</button>
+								<br />
+								<button @click="eliminarAlumno(alumnos)">Eliminar</button>
+							</div>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
 	</div>
-</div>
 </template>
 
 <script>
-import {URL_DATOS} from "@/utils/constants.js";
 import axios from "axios";
+import {URL_DATOS} from "@/utils/constants.js";
+import {obtenerDatos} from "@/utils/peticiones";
 
 export default {
 	name: "AlumnosLista",
 	components: {},
 	data: function () {
 		return {
-			alumnos: [],
+			lista_alumnos: [],
 		};
 	},
-	created() {
-		this.traeAlumnos();
+	async created() {
+		this.lista_alumnos = await obtenerDatos("alumnos");
 	},
 	methods: {
-		traeAlumnos: async function () {
-			let a = [];
-			await axios
-				.get(URL_DATOS + "/alumnos")
-				.then(function (response) {
-					console.log(response);
-					a = response.data;
-					a = response.data.map((alumno) => ({...alumno, mostrarOpciones: false}));
-				})
-				.catch(function (error) {
-					console.log(error);
-				});
-			this.alumnos = a;
-		},
 		nuevoAlumno: function () {
-			this.alumnos.forEach((m) => {
+			this.lista_alumnos.forEach((m) => {
 				m.mostrarOpciones = false;
 			});
 			this.$router.push({name: "agregar-alumno", params: {}});
 		},
-		mostrarOpciones(alumno) {
-			this.alumnos.forEach((m) => {
-				if (m !== alumno) {
+		mostrarOpciones(alumnos) {
+			this.lista_alumnos.forEach((m) => {
+				if (m !== alumnos) {
 					m.mostrarOpciones = false;
 				}
 			});
-			alumno.mostrarOpciones = !alumno.mostrarOpciones;
+			alumnos.mostrarOpciones = !alumnos.mostrarOpciones;
 		},
-		editarAlumno: function (alumno) {
-			alumno.mostrarOpciones = !alumno.mostrarOpciones;
-			this.$router.push({name: "editar-alumno", params: {ncontrol: alumno.ncontrol}});
+		editarAlumno: function (alumnos) {
+			alumnos.mostrarOpciones = !alumnos.mostrarOpciones;
+			this.$router.push({name: "editar-alumno", params: {ncontrol: alumnos.ncontrol}});
 		},
-		eliminarAlumno: async function (alumno) {
-			alumno.mostrarOpciones = !alumno.mostrarOpciones;
-			const res = await axios.delete(URL_DATOS + "/alumnos/" + alumno.ncontrol);
+		eliminarAlumno: async function (alumnos) {
+			alumnos.mostrarOpciones = !alumnos.mostrarOpciones;
+			const res = await axios.delete(URL_DATOS + "/alumnos/" + alumnos.ncontrol);
 			console.log(res);
-			this.traeAlumnos();
+			this.lista_alumnos = await obtenerDatos("alumnos");
 		},
 	},
 };
 </script>
 
 <style>
-:root{
+:root {
 	--white-smoke: #f1f2f4;
 }
-.AlumnosLista{
+.AlumnosLista {
 	width: 79%;
 	background-color: var(--white-smoke);
 	border-radius: 30px;

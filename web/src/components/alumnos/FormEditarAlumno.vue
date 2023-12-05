@@ -28,6 +28,7 @@
 import {URL_DATOS} from "@/utils/constants.js";
 import axios from "axios";
 import AlumnosLista from "./AlumnosLista.vue";
+import {traeDatos} from "@/utils/peticiones";
 
 export default {
 	name: "FormEditarAlumno",
@@ -47,22 +48,10 @@ export default {
 			errorMensaje: "",
 		};
 	},
-	created() {
-		this.traeDatos();
+	async created() {
+		this.alumnos = await traeDatos("alumnos", this.ncontrol);
 	},
 	methods: {
-		traeDatos: async function () {
-			let a = [];
-			await axios
-				.get(URL_DATOS + "/alumnos/" + this.ncontrol)
-				.then(function (response) {
-					a = response.data[0];
-				})
-				.catch(function (error) {
-					console.log(error);
-				});
-			this.alumnos = a;
-		},
 		editarAlumno: async function () {
 			const validaDatos = () => {
 				if (

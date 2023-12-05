@@ -12,17 +12,17 @@
 				</tr>
 			</thead>
 			<tbody>
-				<tr v-for="maestro in maestros" :key="maestro.clavemaestro">
-					<td class="espacio">{{ maestro.clavemaestro }}</td>
-					<td class="espacio">{{ maestro.nombre }}</td>
-					<td class="espacio">{{ maestro.departamento }}</td>
-					<td class="espacio">{{ maestro.estatus }}</td>
+				<tr v-for="maestros in lista_maestros" :key="maestros.clavemaestro">
+					<td class="espacio">{{ maestros.clavemaestro }}</td>
+					<td class="espacio">{{ maestros.nombre }}</td>
+					<td class="espacio">{{ maestros.departamento }}</td>
+					<td class="espacio">{{ maestros.estatus }}</td>
 					<td class="espacio">
-						<button @click="mostrarOpciones(maestro)">...</button>
-						<div v-if="maestro.mostrarOpciones" class="menu-desplegable">
-							<button @click.prevent="editarMaestro(maestro)">Editar</button>
+						<button @click="mostrarOpciones(maestros)">...</button>
+						<div v-if="maestros.mostrarOpciones" class="menu-desplegable">
+							<button @click.prevent="editarMaestro(maestros)">Editar</button>
 							<br />
-							<button @click="eliminarMaestro(maestro)">Eliminar</button>
+							<button @click="eliminarMaestro(maestros)">Eliminar</button>
 						</div>
 					</td>
 				</tr>
@@ -34,55 +34,43 @@
 <script>
 import {URL_DATOS} from "@/utils/constants.js";
 import axios from "axios";
+import {obtenerDatos} from "@/utils/peticiones";
 
 export default {
 	name: "MaestrosLista",
 	components: {},
 	data: function () {
 		return {
-			maestros: [],
+			lista_maestros: [],
 		};
 	},
-	created() {
-		this.traeMaestros();
+	async created() {
+		this.lista_maestros = await obtenerDatos("maestros");
 	},
 	methods: {
-		traeMaestros: async function () {
-			let a = [];
-			await axios
-				.get(URL_DATOS + "/maestros")
-				.then(function (response) {
-					a = response.data;
-					a = response.data.map((maestro) => ({...maestro, mostrarOpciones: false}));
-				})
-				.catch(function (error) {
-					console.log(error);
-				});
-			this.maestros = a;
-		},
 		nuevoMaestro: function () {
-			this.maestros.forEach((m) => {
+			this.lista_maestros.forEach((m) => {
 				m.mostrarOpciones = false;
 			});
 			this.$router.push({name: "agregar-maestro", params: {}});
 		},
-		mostrarOpciones(maestro) {
-			this.maestros.forEach((m) => {
-				if (m !== maestro) {
+		mostrarOpciones(maestros) {
+			this.lista_maestros.forEach((m) => {
+				if (m !== maestros) {
 					m.mostrarOpciones = false;
 				}
 			});
-			maestro.mostrarOpciones = !maestro.mostrarOpciones;
+			maestros.mostrarOpciones = !maestros.mostrarOpciones;
 		},
-		editarMaestro: function (maestro) {
-			maestro.mostrarOpciones = !maestro.mostrarOpciones;
-			this.$router.push({name: "editar-maestro", params: {clavemaestro: maestro.clavemaestro}});
+		editarMaestro: function (maestros) {
+			maestros.mostrarOpciones = !maestros.mostrarOpciones;
+			this.$router.push({name: "editar-maestro", params: {clavemaestro: maestros.clavemaestro}});
 		},
-		eliminarMaestro: async function (maestro) {
-			maestro.mostrarOpciones = !maestro.mostrarOpciones;
-			const res = await axios.delete(URL_DATOS + "/maestros/" + maestro.clavemaestro);
+		eliminarMaestro: async function (maestros) {
+			maestros.mostrarOpciones = !maestros.mostrarOpciones;
+			const res = await axios.delete(URL_DATOS + "/maestros/" + maestros.clavemaestro);
 			console.log(res);
-			this.traeMaestros();
+			this.lista_maestros = await obtenerDatos("maestros");
 		},
 	},
 };

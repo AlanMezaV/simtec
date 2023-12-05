@@ -46,8 +46,8 @@ const routes = [
 		component: Grupos,
 	},
 	{
-		path: "/cargas",
-		name: "cargas",
+		path: "/carga",
+		name: "carga",
 		component: TomaCarga,
 	},
 	{
@@ -95,12 +95,12 @@ const routes = [
 		props: true,
 	},
 	{
-		path: "/cargas/agregar",
+		path: "/carga/agregar",
 		name: "agregar-carga",
 		component: FormAggCarga,
 	},
 	{
-		path: "/cargas/editar",
+		path: "/carga/editar",
 		name: "editar-carga",
 		component: FormEditarCarga,
 		props: true,
