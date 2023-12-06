@@ -1,32 +1,40 @@
 <template>
-	<div class="MateriasLista">
-		<span>Materias</span>
-		<button @click.prevent="nuevaMateria">Agregar</button>
-		<table>
-			<thead>
-				<tr>
-					<th>Clave materia</th>
-					<th>Nombre</th>
-					<th>Creditos</th>
-					<th></th>
-				</tr>
-			</thead>
-			<tbody>
-				<tr v-for="materias in lista_materias" :key="materias.clavemateria">
-					<td class="espacio">{{ materias.clavemateria }}</td>
-					<td class="espacio">{{ materias.nombre }}</td>
-					<td class="espacio">{{ materias.creditos }}</td>
-					<td class="espacio">
-						<button @click="mostrarOpciones(materias)">...</button>
-						<div v-if="materias.mostrarOpciones" class="menu-desplegable">
-							<button @click.prevent="editarMateria(materias)">Editar</button>
-							<br />
-							<button @click="eliminarMateria(materias)">Eliminar</button>
-						</div>
-					</td>
-				</tr>
-			</tbody>
-		</table>
+	<div class="contenedor-principal">
+
+		<div class="MateriasLista contenedor-lista">
+			<div class="contenedor-encabezado">
+				<h2>Materias</h2>
+				<button @click.prevent="nuevaMateria" class="boton-agregar">
+					<img src="../../../public/images/boton-mas.svg" alt="">
+					Agregar Materia
+				</button>
+			</div>
+			<div class="contenedor-tabla">
+				<div class="tabla">
+					<div class="tabla-encabezado-materias">
+						<div>Clave materia</div>
+						<div>Nombre</div>
+						<div>Creditos</div>
+						<div></div>
+					</div>
+					<div v-for="materias in lista_materias" :key="materias.clavemateria" class="datos-materias">
+						<span class="espacio">{{ materias.clavemateria }}</span>
+						<span class="espacio">{{ materias.nombre }}</span>
+						<span class="espacio">{{ materias.creditos }}</span>
+						<span class="espacio">
+							<button @click="mostrarOpciones(materias)" class="boton-acciones">···</button>
+							<div v-if="materias.mostrarOpciones" class="menu-desplegable">
+								<button @click.prevent="editarMateria(materias)">Editar</button>
+								<br />
+								<button @click="eliminarMateria(materias)">Eliminar</button>
+							</div>
+						</span>
+					</div>
+				</div>
+			</div>
+		
+		</div>
+		
 	</div>
 </template>
 
@@ -75,19 +83,5 @@ export default {
 };
 </script>
 
-<style>
-.espacio {
-	padding-right: 25px;
-	padding-left: 20px;
-}
-
-.menu-desplegable {
-	position: absolute;
-	background-color: #fff;
-	box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-	border: 1px solid #ccc;
-	border-radius: 5px;
-	padding: 5px;
-	margin-top: 2px;
-}
-</style>
+<style scoped src="../../styles/vistas.css"></style>
+<style scoped src="../../styles/vista-materia.css"></style>

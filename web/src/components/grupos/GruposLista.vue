@@ -1,45 +1,57 @@
 <template>
-	<div class="GruposLista">
-		<span>Grupos</span>
-		<button @click.prevent="nuevoGrupo">Agregar</button>
-		<table>
-			<thead>
-				<tr>
-					<th>Clave del grupo</th>
-					<th>Materia</th>
-					<th>Maestro</th>
-					<th>Limite de alumnos</th>
-					<th>Alumnos inscritos</th>
-					<th>Horario lunes</th>
-					<th>Horario martes</th>
-					<th>Horario miercoles</th>
-					<th>Horario jueves</th>
-					<th>Horario viernes</th>
-				</tr>
-			</thead>
-			<tbody>
-				<tr v-for="grupos in lista_grupos" :key="grupos.clavegrupo">
-					<td class="espacio">{{ grupos.clavegrupo }}</td>
-					<td class="espacio">{{ getNombreMateria(grupos.clavemateria) }}</td>
-					<td class="espacio">{{ getNombreMaestro(grupos.clavemaestro) }}</td>
-					<td class="espacio">{{ grupos.limitealumnos }}</td>
-					<td class="espacio">{{ grupos.inscritos }}</td>
-					<td class="espacio">{{ grupos.horariolunes }}</td>
-					<td class="espacio">{{ grupos.horariomartes }}</td>
-					<td class="espacio">{{ grupos.horariomiercoles }}</td>
-					<td class="espacio">{{ grupos.horariojueves }}</td>
-					<td class="espacio">{{ grupos.horarioviernes }}</td>
-					<td class="espacio">
-						<button @click="mostrarOpciones(grupos)">...</button>
-						<div v-if="grupos.mostrarOpciones" class="menu-desplegable">
-							<button @click.prevent="editarGrupo(grupos)">Editar</button>
-							<br />
-							<button @click="eliminarGrupo(grupos)">Eliminar</button>
-						</div>
-					</td>
-				</tr>
-			</tbody>
-		</table>
+	<div class="contenedor-principal">
+
+		<div class="GruposLista contenedor-lista">
+			<div class="contenedor-encabezado">
+				<h2>Grupos</h2>
+				<button @click.prevent="nuevoGrupo" class="boton-agregar">
+					<img src="../../../public/images/boton-mas.svg" alt="">
+					Agregar Grupo
+				</button>
+			</div>
+			<div class="contenedor-tabla">
+				<div class="tabla">
+					<div class="tabla-encabezado-grupos">
+						<div>Clave del grupo</div>
+						<div>Materia</div>
+						<div>Maestro</div>
+						<div>Limite de alumnos</div>
+						<div>Alumnos inscritos</div>
+						<div>Horario lunes</div>
+						<div>Horario martes</div>
+						<div>Horario miercoles</div>
+						<div>Horario jueves</div>
+						<div>Horario viernes</div>
+					</div>
+					<div v-for="grupos in lista_grupos" :key="grupos.clavegrupo" class="datos-grupos">
+						<span class="espacio">{{ grupos.clavegrupo }}</span >
+						<span class="espacio">{{ getNombreMateria(grupos.clavemateria) }}</span >
+						<span class="espacio">{{ getNombreMaestro(grupos.clavemaestro) }}</span >
+						<span class="espacio">{{ grupos.limitealumnos }}</span >
+						<span class="espacio">{{ grupos.inscritos }}</span >
+						<span class="espacio">{{ grupos.horariolunes }}</span >
+						<span class="espacio">{{ grupos.horariomartes }}</span >
+						<span class="espacio">{{ grupos.horariomiercoles }}</span >
+						<span class="espacio">{{ grupos.horariojueves }}</span >
+						<span class="espacio">{{ grupos.horarioviernes }}</span >
+						<span class="espacio">
+							<button @click="mostrarOpciones(grupos)" class="boton-acciones">···</button>
+							<div v-if="grupos.mostrarOpciones" class="menu-desplegable">
+								<div>
+									<img src="../../../public/images/lapiz.svg" alt="">
+									<button @click.prevent="editarGrupo(grupos)">Editar</button>
+								</div>
+								<div>
+									<img src="../../../public/images/basura.svg" alt="">
+									<button @click="eliminarGrupo(grupos)">Eliminar</button>
+								</div>
+							</div>
+						</span>
+					</div>
+				</div>
+			</div>
+		</div>
+			
 	</div>
 </template>
 
@@ -100,9 +112,6 @@ export default {
 };
 </script>
 
-<style>
-.espacio {
-	padding-right: 25px;
-	padding-left: 20px;
-}
-</style>
+<style scoped src="../../styles/vistas.css"></style>
+<style scoped src="../../styles/vista-grupos.css"></style>
+

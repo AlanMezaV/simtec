@@ -1,8 +1,10 @@
 <template>
-	<div class="TomaCargaLista">
-		<span>Toma de carga</span>
-		<button @click.prevent="nuevaCarga">Agregar</button>
-		<table>
+	<div class="contenedor-principal-cargas">
+
+		<div class="TomaCargaLista">
+			<span>Toma de carga</span>
+			<button @click.prevent="nuevaCarga">Agregar</button>
+			<table>
 			<thead>
 				<tr>
 					<th>Clave materia</th>
@@ -28,6 +30,7 @@
 			</tbody>
 		</table>
 	</div>
+</div>
 </template>
 
 <script>
@@ -103,6 +106,7 @@ export default {
 	border: 1px solid #ccc;
 	border-radius: 5px;
 	padding: 5px;
-	margin-top: 2px;
+	
+margin-top: 2px;
 }
 </style>

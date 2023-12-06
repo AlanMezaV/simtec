@@ -1,33 +1,42 @@
 <template>
-	<div class="MaestrosLista">
-		<span>Maestros</span>
-		<button @click.prevent="nuevoMaestro">Agregar</button>
-		<table>
-			<thead>
-				<tr>
-					<th>Clave maestro</th>
-					<th>Nombre</th>
-					<th>Departamento</th>
-					<th>Estatus</th>
-				</tr>
-			</thead>
-			<tbody>
-				<tr v-for="maestros in lista_maestros" :key="maestros.clavemaestro">
-					<td class="espacio">{{ maestros.clavemaestro }}</td>
-					<td class="espacio">{{ maestros.nombre }}</td>
-					<td class="espacio">{{ maestros.departamento }}</td>
-					<td class="espacio">{{ maestros.estatus }}</td>
-					<td class="espacio">
-						<button @click="mostrarOpciones(maestros)">...</button>
-						<div v-if="maestros.mostrarOpciones" class="menu-desplegable">
-							<button @click.prevent="editarMaestro(maestros)">Editar</button>
-							<br />
-							<button @click="eliminarMaestro(maestros)">Eliminar</button>
-						</div>
-					</td>
-				</tr>
-			</tbody>
-		</table>
+	<div class="contenedor-principal">
+		<div class="MaestrosLista contenedor-lista">
+			<div class="contenedor-encabezado">
+				<h2>Maestros</h2>
+				<button @click.prevent="nuevoMaestro" class="boton-agregar">
+					<img src="../../../public/images/boton-mas.svg" alt="">
+					Agregar Maestro
+				</button>
+			</div>
+			<div class="contenedor-tabla">
+				<div class="tabla">
+					<div class="tabla-encabezado">
+						<div>Clave maestro</div>
+						<div>Nombre</div>
+						<div>Departamento</div>
+						<div>Estatus</div>
+						<div></div>
+					</div>
+					<div v-for="maestros in lista_maestros" :key="maestros.clavemaestro" class="datos">
+						<span class="espacio">{{ maestros.clavemaestro }}</span>
+						<span class="espacio">{{ maestros.nombre }}</span>
+						<span class="espacio">{{ maestros.departamento }}</span>
+						<span class="espacio estatus">{{ maestros.estatus }}</span>
+						<span class="espacio">
+							<button @click="mostrarOpciones(maestros)" class="boton-acciones">···</button>
+							<div v-if="maestros.mostrarOpciones" class="menu-desplegable">
+								<div>
+									<button @click.prevent="editarMaestro(maestros)">Editar</button>
+								</div>
+								<div>
+									<button @click="eliminarMaestro(maestros)">Eliminar</button>
+								</div>
+							</div>
+						</span>
+					</div>
+				</div>
+			</div>
+		</div>
 	</div>
 </template>
 
@@ -76,9 +85,4 @@ export default {
 };
 </script>
 
-<style>
-.espacio {
-	padding-right: 25px;
-	padding-left: 20px;
-}
-</style>
+<style scoped src="../../styles/vistas.css"></style>
