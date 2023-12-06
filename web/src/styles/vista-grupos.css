@@ -1,0 +1,17 @@
+.tabla-encabezado-grupos{
+    color: var(--black);
+    opacity: 50%;
+    margin: 25px;
+    width: 99%;
+    display: grid;
+    grid-template-columns: 0.9fr 1.6fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+    grid-gap: 5px;
+    overflow: hidden;
+}
+.datos-grupos{
+    font-size: 12px;
+    display: grid;  
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+    border: 1px solid var(--white-smoke);
+
+}
