@@ -119,9 +119,24 @@ app.get("/api/grupos", (req, res) => {
 	});
 });
 
-//Mostrar todos los grupos en una materia
+//Mostrar los grupos a los que una materia esta registrada mandandole su clavemateria
 app.get("/api/grupos/materia/:id", (req, res) => {
-	conexion.query("SELECT * FROM grupos WHERE clavemateria = ?", [req.params.id], (error, filas) => {
+	conexion.query(
+		"SELECT clavegrupo, horariolunes FROM grupos WHERE clavemateria = ?",
+		[req.params.id],
+		(error, filas) => {
+			if (error) {
+				throw error;
+			} else {
+				res.send(filas);
+			}
+		}
+	);
+});
+
+//Mostrar las clavemateria a los que esta registrado un alumno mandandole su numero de control
+app.get("/api/grupos/alumno/:id", (req, res) => {
+	conexion.query("SELECT clavemateria FROM carga WHERE ncontrol = ?", [req.params.id], (error, filas) => {
 		if (error) {
 			throw error;
 		} else {
@@ -130,15 +145,45 @@ app.get("/api/grupos/materia/:id", (req, res) => {
 	});
 });
 
-//Mostrar una carga
-app.get("/api/cargas/:id", (req, res) => {
-	conexion.query("SELECT * FROM carga WHERE clavegrupo = ? LIMIT 1", [req.params.id], (error, fila) => {
+//Mostrar clavegrupo y clavemateria a los que esta registrado un alumno en la tabla carga
+app.get("/api/grupos/alumnito/:id", (req, res) => {
+	conexion.query("SELECT clavegrupo FROM carga WHERE ncontrol = ?", [req.params.id], (error, filas) => {
 		if (error) {
 			throw error;
 		} else {
-			res.send(fila);
+			res.send(filas);
 		}
 	});
+});
+
+//Mostrar el horario de un grupo mandandole su clavegrupo y clavemateria
+app.get("/api/grupos/horario/:id", (req, res) => {
+	let clavegrupo = req.params.id; // Utiliza req.params para obtener el parámetro de la URL
+	conexion.query("SELECT horariolunes FROM grupos WHERE clavegrupo = ?", [clavegrupo], (error, filas) => {
+		if (error) {
+			throw error;
+		} else {
+			res.send(filas);
+		}
+	});
+});
+
+// Mostrar una carga
+app.get("/api/cargas/:id", (req, res) => {
+	let clavegrupo = req.params.id; // Utiliza req.params para obtener el parámetro de la URL
+	let ncontrol = req.query.ncontrol; // Utiliza req.query para obtener el parámetro de la URL
+
+	conexion.query(
+		"SELECT * FROM carga WHERE clavegrupo = ? and ncontrol = ? LIMIT 1",
+		[clavegrupo, ncontrol],
+		(error, fila) => {
+			if (error) {
+				throw error;
+			} else {
+				res.send(fila);
+			}
+		}
+	);
 });
 
 //Mostrar todas las cargas
@@ -335,13 +380,13 @@ app.put("/api/grupos/:id", (req, res) => {
 	);
 });
 
-//Actualizar un alumno
+//Actualizar una carga
 app.put("/api/cargas/:id", (req, res) => {
 	let clavemateria = req.body.clavemateria;
 	let clavegrupo = req.body.clavegrupo;
 	let ncontrol = req.body.ncontrol;
-	let sql = "UPDATE carga SET clavemateria = ?, ncontrol = ? WHERE clavegrupo = ?";
-	conexion.query(sql, [clavemateria, ncontrol, clavegrupo], (error, results) => {
+	let sql = "UPDATE carga SET clavemateria = ?, clavegrupo = ?, ncontrol = ? WHERE clavegrupo = ? AND ncontrol = ?";
+	conexion.query(sql, [clavemateria, clavegrupo, ncontrol, clavegrupo, ncontrol], (error, results) => {
 		if (error) {
 			throw error;
 		} else {

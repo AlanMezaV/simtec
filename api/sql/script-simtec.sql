@@ -42,15 +42,14 @@ ADD CONSTRAINT FK_GRUPOS_MAESTROS FOREIGN KEY (clavemaestro) REFERENCES MAESTROS
 CREATE TABLE CARGA(
 	clavemateria VARCHAR(8) NOT NULL,
     clavegrupo VARCHAR(4) NOT NULL,
-    ncontrol INT NOT NULL,
-    PRIMARY KEY (clavegrupo, ncontrol)
+    ncontrol INT NOT NULL
 );
 
 ALTER TABLE CARGA
 ADD CONSTRAINT FK_CARGA_GRUPO FOREIGN KEY (clavemateria, clavegrupo) REFERENCES GRUPOS (clavemateria, clavegrupo),
 ADD CONSTRAINT FK_CARGA_ALUMNOS FOREIGN KEY (ncontrol) REFERENCES ALUMNOS(ncontrol);
 
---Inserts de alumnos
+
 INSERT INTO `alumnos` (`ncontrol`, `nombre`, `carrera`, `estatus`) 
     VALUES ('20170592', 'Monica Angulo Sanchez', 'Sistemas', 'V');
 INSERT INTO `alumnos` (`ncontrol`, `nombre`, `carrera`, `estatus`) 
@@ -58,7 +57,7 @@ INSERT INTO `alumnos` (`ncontrol`, `nombre`, `carrera`, `estatus`)
 INSERT INTO `alumnos` (`ncontrol`, `nombre`, `carrera`, `estatus`) 
     VALUES ('20170757', 'Rogelio Samuel Moreno Corrales', 'Sistemas', 'V');
 
---Inserts de maestros
+
 INSERT INTO `maestros` (`clavemaestro`, `nombre`, `departamento`, `estatus`) 
     VALUES ('1', 'Dr. Clemente Garcia Gerardo', '1', 'V');
 INSERT INTO `maestros` (`clavemaestro`, `nombre`, `departamento`, `estatus`) 
@@ -66,7 +65,7 @@ INSERT INTO `maestros` (`clavemaestro`, `nombre`, `departamento`, `estatus`)
 INSERT INTO `maestros` (`clavemaestro`, `nombre`, `departamento`, `estatus`) 
     VALUES ('3', 'I.S.C Martin Leonardo Nevarez Rivas', '1', 'V');
 
---Inserts de materias
+
 INSERT INTO `materias` (`clavemateria`, `nombre`, `creditos`) 
     VALUES ('1', 'Programacion Web', '5');
 INSERT INTO `materias` (`clavemateria`, `nombre`, `creditos`) 
@@ -74,7 +73,7 @@ INSERT INTO `materias` (`clavemateria`, `nombre`, `creditos`)
 INSERT INTO `materias` (`clavemateria`, `nombre`, `creditos`) 
     VALUES ('3', 'Taller de base de datos', '4');
 
---Inserts de grupos
+
 INSERT INTO `grupos` (`clavemateria`, `clavegrupo`, `clavemaestro`, `limitealumnos`, `inscritos`, `horariolunes`, `horariomartes`, `horariomiercoles`, `horariojueves`, `horarioviernes`) 
     VALUES ('1', '1213', '3', '2', '0', '12:00-13:00', '12:00-13:00', '12:00-13:00', 
     '12:00-13:00', '12:00-13:00');

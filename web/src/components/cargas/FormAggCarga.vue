@@ -15,7 +15,7 @@
 				<br />
 
 				<label for="clavegrupo">Grupos</label>
-				<select v-model="cargas.clavegrupo" id="clavegrupo">
+				<select v-model="cargas.clavegrupo" id="clavegrupo" class="clavegrupo">
 					<option v-for="grupo in clavegrupos" :key="grupo.clavegrupo" :value="grupo.clavegrupo">
 						{{ grupo.clavegrupo }}
 					</option>
@@ -44,6 +44,7 @@ import {URL_DATOS} from "@/utils/constants.js";
 import axios from "axios";
 import TomaCargaLista from "./TomaCargaLista.vue";
 import {obtenerDatos} from "@/utils/peticiones";
+import {traeDatosGrupos} from "@/utils/peticiones";
 
 export default {
 	name: "FormAggCarga",
@@ -56,6 +57,9 @@ export default {
 			clavematerias: [],
 			clavealumnos: [],
 			clavegrupos: [],
+			pedir: [],
+			materiasDeAlumno: [],
+			horarios: [],
 			mostrarError: false,
 			errorMensaje: "",
 		};
@@ -63,19 +67,30 @@ export default {
 	async created() {
 		this.clavematerias = await obtenerDatos("materias");
 		this.clavealumnos = await obtenerDatos("alumnos");
+		this.clavegrupos = await traeDatosGrupos("materia", this.cargas.clavemateria);
 	},
 	watch: {
-		"cargas.clavemateria": "peticionGrupos", // Observa cambios en cargas.clavemateria y llama a peticionGrupos
+		"cargas.clavemateria": "peticionGruposClaveMateria",
+		"cargas.ncontrol": ["peticionGruposNcontrol", "peticionAlumnosClvGyClvM"],
 	},
 	methods: {
-		peticionGrupos: async function () {
-			try {
-				const response = await axios.get(`${URL_DATOS}/grupos/materia/${this.cargas.clavemateria}`);
-				console.log(response.data);
-				this.clavegrupos = response.data;
-			} catch (error) {
-				console.error("Error al obtener los grupos:", error);
-			}
+		peticionGruposClaveMateria: async function () {
+			this.clavegrupos = await traeDatosGrupos("materia", this.cargas.clavemateria);
+		},
+		peticionGruposNcontrol: async function () {
+			this.materiasDeAlumno = await traeDatosGrupos("alumno", this.cargas.ncontrol);
+		},
+		peticionAlumnosClvGyClvM: async function () {
+			this.pedir = await traeDatosGrupos("alumnito", this.cargas.ncontrol);
+
+			const petitions = [];
+
+			this.pedir.forEach((obj) => {
+				petitions.push(traeDatosGrupos("horario", obj.clavegrupo));
+			});
+
+			const horarios = await Promise.all(petitions);
+			this.horarios = horarios.map((i) => i[0].horariolunes);
 		},
 		agregarCarga: async function () {
 			const validaDatos = () => {
@@ -87,28 +102,51 @@ export default {
 					this.cargas.ncontrol == undefined ||
 					this.cargas.ncontrol == ""
 				) {
+					this.mostrarError = true;
+					this.errorMensaje = "No debe de haber datos vacios.";
 					return false;
 				}
 				return true;
 			};
 
-			try {
-				if (validaDatos()) {
-					const response = await axios.get(`${URL_DATOS}/cargas/${this.cargas.clavegrupo}`);
-					if (response.data.length > 0) {
+			const validaAlumnoMateria = () => {
+				for (const materia of this.materiasDeAlumno) {
+					if (materia.clavemateria === this.cargas.clavemateria) {
 						this.mostrarError = true;
-						this.errorMensaje = "La carga ya existe. No se puede agregar una duplicada.";
-					} else {
-						const res = await axios.post(URL_DATOS + "/cargas", {
-							clavemateria: this.cargas.clavemateria,
-							clavegrupo: this.cargas.clavegrupo,
-							ncontrol: this.cargas.ncontrol,
-						});
-						this.$router.push("/carga");
+						this.errorMensaje = "El alumno ya tiene esa materia.";
+						return false;
 					}
-				} else {
-					this.mostrarError = true;
-					this.errorMensaje = "No debe de haber datos vacios.";
+				}
+				return true;
+			};
+
+			const validaAlumnoHorario = () => {
+				let band = true;
+				const horario = this.clavegrupos[0].horariolunes;
+				console.log(horario);
+				this.horarios.forEach((hora) => {
+					console.log({
+						hora,
+						horario,
+					});
+					console.log("VALIDACION", hora === horario);
+					if (hora === horario) {
+						console.log("entro");
+						this.mostrarError = true;
+						this.errorMensaje = "El alumno ya tiene una materia en ese horario.";
+						band = false;
+					}
+				});
+				return band;
+			};
+			try {
+				if (validaDatos() && validaAlumnoMateria() && validaAlumnoHorario()) {
+					const res = await axios.post(URL_DATOS + "/cargas", {
+						clavemateria: this.cargas.clavemateria,
+						clavegrupo: this.cargas.clavegrupo,
+						ncontrol: this.cargas.ncontrol,
+					});
+					this.$router.push("/carga");
 				}
 			} catch (error) {
 				console.error("Error al verificar la existencia de la carga:", error);
@@ -149,5 +187,9 @@ export default {
 .error-message {
 	color: red;
 	margin-top: 10px;
+}
+
+.clavegrupo {
+	width: 100%;
 }
 </style>
