@@ -79,6 +79,7 @@ export default {
 	},
 	async created() {
 		this.grupos = await traeDatos("grupos", this.clavegrupo);
+		console.log(this.grupos);
 		this.clavematerias = await obtenerDatos("materias");
 		this.clavemaestros = await obtenerDatos("maestros");
 	},

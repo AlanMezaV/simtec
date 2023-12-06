@@ -1,36 +1,36 @@
 <template>
 	<div class="contenedor-principal-cargas">
-
 		<div class="TomaCargaLista">
 			<span>Toma de carga</span>
 			<button @click.prevent="nuevaCarga">Agregar</button>
 			<table>
-			<thead>
-				<tr>
-					<th>Clave materia</th>
-					<th>Clave grupo</th>
-					<th>Numero de control</th>
-					<th></th>
-				</tr>
-			</thead>
-			<tbody>
-				<tr v-for="cargas in lista_cargas" :key="cargas.clavegrupo + cargas.ncontrol">
-					<td class="espacio">{{ cargas.clavemateria }}</td>
-					<td class="espacio">{{ cargas.clavegrupo }}</td>
-					<td class="espacio">{{ cargas.ncontrol }}</td>
-					<td class="espacio">
-						<button @click="mostrarOpciones(cargas)">...</button>
-						<div v-if="cargas.mostrarOpciones" class="menu-desplegable">
-							<button @click.prevent="editarCarga(cargas)">Editar</button>
-							<br />
-							<button @click="eliminarCarga(cargas)">Eliminar</button>
-						</div>
-					</td>
-				</tr>
-			</tbody>
-		</table>
+				<thead>
+					<tr>
+						<th>Clave grupo</th>
+						<th>Materia</th>
+						<th>Numero de control</th>
+						<th>Alumno</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr v-for="cargas in lista_cargas" :key="cargas.clavegrupo + cargas.ncontrol">
+						<td class="espacio">{{ cargas.clavegrupo }}</td>
+						<span class="espacio">{{ getNombreMateria(cargas.clavemateria) }}</span>
+						<td class="espacio">{{ cargas.ncontrol }}</td>
+						<span class="espacio">{{ getNombreAlumno(cargas.ncontrol) }}</span>
+						<td class="espacio">
+							<button @click="mostrarOpciones(cargas)">...</button>
+							<div v-if="cargas.mostrarOpciones" class="menu-desplegable">
+								<button @click.prevent="editarCarga(cargas)">Editar</button>
+								<br />
+								<button @click="eliminarCarga(cargas)">Eliminar</button>
+							</div>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
 	</div>
-</div>
 </template>
 
 <script>
@@ -44,12 +44,24 @@ export default {
 	data: function () {
 		return {
 			lista_cargas: [],
+			clavematerias: [],
+			clavealumnos: [],
 		};
 	},
 	async created() {
 		this.lista_cargas = await obtenerDatos("cargas");
+		this.clavematerias = await obtenerDatos("materias");
+		this.clavealumnos = await obtenerDatos("alumnos");
 	},
 	methods: {
+		getNombreMateria(claveMateria) {
+			const materia = this.clavematerias.find((materia) => materia.clavemateria === claveMateria);
+			return materia ? materia.nombre : "Materia no encontrada";
+		},
+		getNombreAlumno(Ncontrol) {
+			const alumno = this.clavealumnos.find((alumno) => alumno.ncontrol === Ncontrol);
+			return alumno ? alumno.nombre : "Alumno no encontrado";
+		},
 		traeCargas: async function () {
 			let a = [];
 			await axios
@@ -95,7 +107,7 @@ export default {
 
 <style>
 .espacio {
-	padding-right: 25px;
+	padding-right: 35px;
 	padding-left: 20px;
 }
 
@@ -106,7 +118,7 @@ export default {
 	border: 1px solid #ccc;
 	border-radius: 5px;
 	padding: 5px;
-	
-margin-top: 2px;
+
+	margin-top: 2px;
 }
 </style>

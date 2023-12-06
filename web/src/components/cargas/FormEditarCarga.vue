@@ -88,35 +88,25 @@ export default {
 	},
 	methods: {
 		traeCarga: async function () {
-			let a = [];
-			await axios
-				.get(URL_DATOS + /cargas/ + this.clavegrupo, {
+			try {
+				const response = await axios.get(URL_DATOS + "/cargas/" + this.clavegrupo, {
 					params: {
 						ncontrol: this.ncontrol,
 					},
-				})
-				.then(function (response) {
-					a = response.data;
-				})
-				.catch(function (error) {
-					console.log(error);
 				});
-			return a;
-		},
-		// traeCarga: async function () {
-		// 	try {
-		// 		const res = await axios.get(URL_DATOS + "/cargas/" + this.clavegrupo, {
-		// 			params: {
-		// 				ncontrol: this.ncontrol,
-		// 			},
 
-		// 		});
-		// 		// Asignar los datos obtenidos de la respuesta a this.cargas
-		// 		this.cargas = res.data;
-		// 	} catch (error) {
-		// 		console.error("Error al obtener los datos:", error);
-		// 	}
-		// },
+				const cargaObjeto = response.data[0]; // Obtener el objeto del índice 0
+				const propiedadesFormateadas = Object.entries(cargaObjeto).reduce((acc, [clave, valor]) => {
+					acc[clave] = valor;
+					return acc;
+				}, {});
+
+				return propiedadesFormateadas;
+			} catch (error) {
+				console.log(error);
+				return {};
+			}
+		},
 		peticionGruposClaveMateria: async function () {
 			this.clavegrupos = await traeDatosGrupos("materia", this.cargas.clavemateria);
 			console.log(this.clavegrupos);
@@ -152,30 +142,12 @@ export default {
 				}
 				return true;
 			};
-
-			const validaAlumnoMateria = () => {
-				for (const materia of this.materiasDeAlumno) {
-					if (materia.clavemateria === this.cargas.clavemateria) {
-						this.mostrarError = true;
-						this.errorMensaje = "El alumno ya tiene esa materia.";
-						return false;
-					}
-				}
-				return true;
-			};
-
 			const validaAlumnoHorario = () => {
 				let band = true;
 				const horario = this.clavegrupos[0].horariolunes;
-				console.log(horario);
+				const horaAnterior = traeDatosGrupos("materia", this.clavemateria);
 				this.horarios.forEach((hora) => {
-					console.log({
-						hora,
-						horario,
-					});
-					console.log("VALIDACION", hora === horario);
-					if (hora === horario) {
-						console.log("entro");
+					if (hora === horario && hora === horaAnterior) {
 						this.mostrarError = true;
 						this.errorMensaje = "El alumno ya tiene una materia en ese horario.";
 						band = false;
@@ -183,12 +155,27 @@ export default {
 				});
 				return band;
 			};
+			const validaAlumnoMateria = () => {
+				for (const materia of this.materiasDeAlumno) {
+					if (
+						materia.clavemateria === this.cargas.clavemateria &&
+						this.cargas.clavemateria !== this.clavemateria
+					) {
+						this.mostrarError = true;
+						this.errorMensaje = "El alumno ya tiene esa materia.";
+						return false;
+					}
+				}
+				return true;
+			};
 			try {
 				if (validaDatos() && validaAlumnoMateria() && validaAlumnoHorario()) {
-					const res = await axios.post(URL_DATOS + "/cargas", {
+					const res = await axios.put(URL_DATOS + "/cargas", {
 						clavemateria: this.cargas.clavemateria,
 						clavegrupo: this.cargas.clavegrupo,
 						ncontrol: this.cargas.ncontrol,
+						clavegrupoVieja: this.clavegrupo,
+						ncontrolVieja: this.ncontrol,
 					});
 					this.$router.push("/carga");
 				}

@@ -381,12 +381,14 @@ app.put("/api/grupos/:id", (req, res) => {
 });
 
 //Actualizar una carga
-app.put("/api/cargas/:id", (req, res) => {
+app.put("/api/cargas", (req, res) => {
 	let clavemateria = req.body.clavemateria;
 	let clavegrupo = req.body.clavegrupo;
 	let ncontrol = req.body.ncontrol;
+	let clavegrupoVieja = req.body.clavegrupoVieja;
+	let ncontrolVieja = req.body.ncontrolVieja;
 	let sql = "UPDATE carga SET clavemateria = ?, clavegrupo = ?, ncontrol = ? WHERE clavegrupo = ? AND ncontrol = ?";
-	conexion.query(sql, [clavemateria, clavegrupo, ncontrol, clavegrupo, ncontrol], (error, results) => {
+	conexion.query(sql, [clavemateria, clavegrupo, ncontrol, clavegrupoVieja, ncontrolVieja], (error, results) => {
 		if (error) {
 			throw error;
 		} else {

@@ -4,11 +4,11 @@
 			<div class="contenedor-encabezado">
 				<h2>Alumnos</h2>
 				<button @click.prevent="nuevoAlumno" class="boton-agregar">
-					<img src="../../../public/images/boton-mas.svg" alt="">
+					<img src="../../../public/images/boton-mas.svg" alt="" />
 					Agregar Alumno
 				</button>
 			</div>
-			<div class="contenedor-tabla">	
+			<div class="contenedor-tabla">
 				<div class="tabla">
 					<div class="tabla-encabezado">
 						<div>Numero de control</div>
@@ -18,23 +18,23 @@
 						<div></div>
 					</div>
 					<div v-for="alumnos in lista_alumnos" :key="alumnos.ncontrol" class="datos">
-							<span class="espacio">{{ alumnos.ncontrol }}</span>
-							<span class="espacio">{{ alumnos.nombre }}</span>
-							<span class="espacio">{{ alumnos.carrera }}</span>
-							<span class="espacio estatus">{{ alumnos.estatus }}</span>
-							<span class="espacio">
-								<button @click="mostrarOpciones(alumnos)" class="boton-acciones">···</button>
-								<div v-if="alumnos.mostrarOpciones" class="menu-desplegable">
-									<div>
-										<img src="../../../public/images/lapiz.svg" alt="">
-										<button @click.prevent="editarAlumno(alumnos)">Editar</button>
-									</div>
-									<div>
-										<img src="../../../public/images/basura.svg" alt="">
-										<button @click="eliminarAlumno(alumnos)">Eliminar</button>
-									</div>
+						<span class="espacio">{{ alumnos.ncontrol }}</span>
+						<span class="espacio">{{ alumnos.nombre }}</span>
+						<span class="espacio">{{ alumnos.carrera }}</span>
+						<span class="espacio estatus">{{ getEstatus(alumnos.estatus) }}</span>
+						<span class="espacio">
+							<button @click="mostrarOpciones(alumnos)" class="boton-acciones">···</button>
+							<div v-if="alumnos.mostrarOpciones" class="menu-desplegable">
+								<div>
+									<img src="../../../public/images/lapiz.svg" alt="" />
+									<button @click.prevent="editarAlumno(alumnos)">Editar</button>
 								</div>
-							</span>
+								<div>
+									<img src="../../../public/images/basura.svg" alt="" />
+									<button @click="eliminarAlumno(alumnos)">Eliminar</button>
+								</div>
+							</div>
+						</span>
 					</div>
 				</div>
 			</div>
@@ -59,6 +59,16 @@ export default {
 		this.lista_alumnos = await obtenerDatos("alumnos");
 	},
 	methods: {
+		getEstatus(estatus) {
+			if (estatus === "V") {
+				estatus = "Vigente";
+			} else if (estatus === "B") {
+				estatus = "Baja";
+			} else {
+				estatus = "Desconocido";
+			}
+			return estatus;
+		},
 		nuevoAlumno: function () {
 			this.lista_alumnos.forEach((m) => {
 				m.mostrarOpciones = false;

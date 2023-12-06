@@ -4,7 +4,7 @@
 			<div class="contenedor-encabezado">
 				<h2>Maestros</h2>
 				<button @click.prevent="nuevoMaestro" class="boton-agregar">
-					<img src="../../../public/images/boton-mas.svg" alt="">
+					<img src="../../../public/images/boton-mas.svg" alt="" />
 					Agregar Maestro
 				</button>
 			</div>
@@ -21,7 +21,7 @@
 						<span class="espacio">{{ maestros.clavemaestro }}</span>
 						<span class="espacio">{{ maestros.nombre }}</span>
 						<span class="espacio">{{ maestros.departamento }}</span>
-						<span class="espacio estatus">{{ maestros.estatus }}</span>
+						<span class="espacio estatus">{{ getEstatus(maestros.estatus) }}</span>
 						<span class="espacio">
 							<button @click="mostrarOpciones(maestros)" class="boton-acciones">···</button>
 							<div v-if="maestros.mostrarOpciones" class="menu-desplegable">
@@ -57,6 +57,16 @@ export default {
 		this.lista_maestros = await obtenerDatos("maestros");
 	},
 	methods: {
+		getEstatus(estatus) {
+			if (estatus === "V") {
+				estatus = "Vigente";
+			} else if (estatus === "B") {
+				estatus = "Baja";
+			} else {
+				estatus = "Desconocido";
+			}
+			return estatus;
+		},
 		nuevoMaestro: function () {
 			this.lista_maestros.forEach((m) => {
 				m.mostrarOpciones = false;

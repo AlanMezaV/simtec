@@ -1,11 +1,10 @@
 <template>
 	<div class="contenedor-principal">
-
 		<div class="GruposLista contenedor-lista">
 			<div class="contenedor-encabezado">
 				<h2>Grupos</h2>
 				<button @click.prevent="nuevoGrupo" class="boton-agregar">
-					<img src="../../../public/images/boton-mas.svg" alt="">
+					<img src="../../../public/images/boton-mas.svg" alt="" />
 					Agregar Grupo
 				</button>
 			</div>
@@ -25,25 +24,25 @@
 						<div></div>
 					</div>
 					<div v-for="grupos in lista_grupos" :key="grupos.clavegrupo" class="datos-grupos">
-						<span class="espacio">{{ grupos.clavegrupo }}</span >
-						<span class="espacio">{{ getNombreMateria(grupos.clavemateria) }}</span >
-						<span class="espacio">{{ getNombreMaestro(grupos.clavemaestro) }}</span >
-						<span class="espacio">{{ grupos.limitealumnos }}</span >
-						<span class="espacio">{{ grupos.inscritos }}</span >
-						<span class="espacio">{{ grupos.horariolunes }}</span >
-						<span class="espacio">{{ grupos.horariomartes }}</span >
-						<span class="espacio">{{ grupos.horariomiercoles }}</span >
-						<span class="espacio">{{ grupos.horariojueves }}</span >
-						<span class="espacio">{{ grupos.horarioviernes }}</span >
+						<span class="espacio">{{ grupos.clavegrupo }}</span>
+						<span class="espacio">{{ getNombreMateria(grupos.clavemateria) }}</span>
+						<span class="espacio">{{ getNombreMaestro(grupos.clavemaestro) }}</span>
+						<span class="espacio">{{ grupos.limitealumnos }}</span>
+						<span class="espacio">{{ grupos.inscritos }}</span>
+						<span class="espacio">{{ grupos.horariolunes }}</span>
+						<span class="espacio">{{ grupos.horariomartes }}</span>
+						<span class="espacio">{{ grupos.horariomiercoles }}</span>
+						<span class="espacio">{{ grupos.horariojueves }}</span>
+						<span class="espacio">{{ grupos.horarioviernes }}</span>
 						<span class="espacio">
 							<button @click="mostrarOpciones(grupos)" class="boton-acciones">···</button>
 							<div v-if="grupos.mostrarOpciones" class="menu-desplegable">
 								<div>
-									<img src="../../../public/images/lapiz.svg" alt="">
+									<img src="../../../public/images/lapiz.svg" alt="" />
 									<button @click.prevent="editarGrupo(grupos)">Editar</button>
 								</div>
 								<div>
-									<img src="../../../public/images/basura.svg" alt="">
+									<img src="../../../public/images/basura.svg" alt="" />
 									<button @click="eliminarGrupo(grupos)">Eliminar</button>
 								</div>
 							</div>
@@ -52,7 +51,6 @@
 				</div>
 			</div>
 		</div>
-			
 	</div>
 </template>
 
@@ -115,4 +113,3 @@ export default {
 
 <style scoped src="../../styles/vistas.css"></style>
 <style scoped src="../../styles/vista-grupos.css"></style>
-
