@@ -21,5 +21,16 @@ async function traeDatos(entidad, primaryKey) {
 	}
 }
 
+async function traeDatosGrupos(entidad, primaryKey) {
+	try {
+		const response = await axios.get(URL_DATOS + `/grupos/${entidad}/${primaryKey}`);
+		return response.data;
+	} catch (error) {
+		console.error(`Error al obtener ${entidad}:`, error);
+		throw error;
+	}
+}
+
 export {obtenerDatos};
 export {traeDatos};
+export {traeDatosGrupos};

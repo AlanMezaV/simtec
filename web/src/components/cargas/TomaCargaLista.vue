@@ -12,16 +12,16 @@
 				</tr>
 			</thead>
 			<tbody>
-				<tr v-for="carga in cargas" :key="carga.clavegrupo">
-					<td class="espacio">{{ carga.clavemateria }}</td>
-					<td class="espacio">{{ carga.clavegrupo }}</td>
-					<td class="espacio">{{ carga.ncontrol }}</td>
+				<tr v-for="cargas in lista_cargas" :key="cargas.clavegrupo + cargas.ncontrol">
+					<td class="espacio">{{ cargas.clavemateria }}</td>
+					<td class="espacio">{{ cargas.clavegrupo }}</td>
+					<td class="espacio">{{ cargas.ncontrol }}</td>
 					<td class="espacio">
-						<button @click="mostrarOpciones(carga)">...</button>
-						<div v-if="carga.mostrarOpciones" class="menu-desplegable">
-							<button @click.prevent="editarCarga(carga)">Editar</button>
+						<button @click="mostrarOpciones(cargas)">...</button>
+						<div v-if="cargas.mostrarOpciones" class="menu-desplegable">
+							<button @click.prevent="editarCarga(cargas)">Editar</button>
 							<br />
-							<button @click="eliminarCarga(carga)">Eliminar</button>
+							<button @click="eliminarCarga(cargas)">Eliminar</button>
 						</div>
 					</td>
 				</tr>
@@ -33,17 +33,18 @@
 <script>
 import {URL_DATOS} from "@/utils/constants.js";
 import axios from "axios";
+import {obtenerDatos} from "@/utils/peticiones";
 
 export default {
 	name: "TomaCargaLista",
 	components: {},
 	data: function () {
 		return {
-			cargas: [],
+			lista_cargas: [],
 		};
 	},
-	created() {
-		this.traeCargas();
+	async created() {
+		this.lista_cargas = await obtenerDatos("cargas");
 	},
 	methods: {
 		traeCargas: async function () {
@@ -60,28 +61,30 @@ export default {
 			this.cargas = a;
 		},
 		nuevaCarga: function () {
-			this.cargas.forEach((m) => {
+			this.lista_cargas.forEach((m) => {
 				m.mostrarOpciones = false;
 			});
 			this.$router.push({name: "agregar-carga", params: {}});
 		},
-		mostrarOpciones(carga) {
-			this.cargas.forEach((m) => {
-				if (m !== carga) {
+		mostrarOpciones(cargas) {
+			this.lista_cargas.forEach((m) => {
+				if (m !== cargas) {
 					m.mostrarOpciones = false;
 				}
 			});
-			materia.mostrarOpciones = !materia.mostrarOpciones;
+			cargas.mostrarOpciones = !cargas.mostrarOpciones;
 		},
-		editarCarga: function (carga) {
-			carga.mostrarOpciones = !carga.mostrarOpciones;
-			this.$router.push({name: "editar-carga", params: {clavegrupo: carga.clavegrupo}});
+		editarCarga: function (cargas) {
+			cargas.mostrarOpciones = !cargas.mostrarOpciones;
+			this.$router.push({
+				name: "editar-carga",
+				params: {clavegrupo: cargas.clavegrupo, ncontrol: cargas.ncontrol, clavemateria: cargas.clavemateria},
+			});
 		},
-		eliminarCarga: async function (carga) {
-			carga.mostrarOpciones = !carga.mostrarOpciones;
-			const res = await axios.delete(URL_DATOS + "/cargas/" + carga.clavegrupo);
-			console.log(res);
-			this.traeCargas();
+		eliminarCarga: async function (cargas) {
+			cargas.mostrarOpciones = !cargas.mostrarOpciones;
+			const res = await axios.delete(URL_DATOS + "/cargas/" + cargas.clavegrupo);
+			this.lista_cargas = await obtenerDatos("cargas");
 		},
 	},
 };
