@@ -8,6 +8,8 @@
     --black: #000000;
 	--white-smoke: #f1f2f4;
 	--dim-gray: #71717A;
+	--light-gray: #E4E6EE;
+	--light-steel-blue: #AEB4CF;
 }
 * {
 	box-sizing: border-box;

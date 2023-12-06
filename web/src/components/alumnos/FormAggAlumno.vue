@@ -3,8 +3,10 @@
 		<AlumnosLista></AlumnosLista>
 		<div class="overlay"></div>
 		<div class="FormAggAlumno">
-			Agregar Alumno
-			<button @click="cerrarFormulario">✖</button>
+			<div class="encabezado">
+				Agregar Alumno
+				<button @click="cerrarFormulario">✖</button>
+			</div>
 			<form>
 				<label for="ncontrol">Numero de control:</label>
 				<input
@@ -16,18 +18,22 @@
 					@input="validarSoloNumerosClave"
 					@click.prevent="eliminaError()"
 					required
+					placeholder="Introduce el numero de control..."
+					class="form-input"
 				/>
-				<br />
 				<label for="nombre">Nombre:</label>
-				<input maxlength="150" v-model="alumnos.nombre" type="text" id="nombre" required />
-				<br />
+				<input maxlength="150" v-model="alumnos.nombre" type="text" value="Introduce el nombre" id="nombre" required placeholder="Introduce el nombre..." class="form-input"/>
+
 				<label for="carrera">Carrera:</label>
-				<input v-model="alumnos.carrera" type="text" id="carrera" maxlength="150" required />
-				<br />
+				<input v-model="alumnos.carrera" type="text" id="carrera" maxlength="150" required placeholder="Introduce la carrera..." class="form-input"/>
+				
 				<label for="estatus">Estatus:</label>
-				<input v-model="alumnos.estatus" type="text" id="estatus" maxlength="1" required />
-				<br />
-				<button type="submit" @click.prevent="agregarAlumno()">Agregar</button>
+				<input v-model="alumnos.estatus" type="text" id="estatus" maxlength="1" required placeholder="Introduce el estatus..." class="form-input"/>
+				<div class="contenedor-form-boton">
+					<button type="submit" @click.prevent="agregarAlumno()" class="form-boton-agregar">
+						Agregar Alumno
+					</button>
+				</div>
 			</form>
 			<div v-if="mostrarError" class="error-message">
 				{{ errorMensaje }}
@@ -108,27 +114,10 @@ export default {
 };
 </script>
 
+<style scoped src="../../styles/formAggAlumno.css"></style>
 <style scoped>
-.overlay {
-	position: fixed;
-	top: 0;
-	left: 0;
-	width: 100%;
-	height: 100%;
-	background: rgba(0, 0, 0, 0.5); /* Fondo oscuro semitransparente */
-}
 
-.FormAggAlumno {
-	position: absolute;
-	top: 50%;
-	left: 50%;
-	transform: translate(-50%, -50%);
-	background-color: white;
-	padding: 20px;
-	border: 1px solid #ccc;
-	border-radius: 5px;
-	box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-}
+
 
 .error-message {
 	color: red;

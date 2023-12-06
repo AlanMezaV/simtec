@@ -22,6 +22,7 @@
 						<div>Horario miercoles</div>
 						<div>Horario jueves</div>
 						<div>Horario viernes</div>
+						<div></div>
 					</div>
 					<div v-for="grupos in lista_grupos" :key="grupos.clavegrupo" class="datos-grupos">
 						<span class="espacio">{{ grupos.clavegrupo }}</span >
