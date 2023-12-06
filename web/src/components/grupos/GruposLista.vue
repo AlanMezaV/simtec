@@ -1,8 +1,10 @@
 <template>
-	<div class="GruposLista">
-		<span>Grupos</span>
-		<button @click.prevent="nuevoGrupo">Agregar</button>
-		<table>
+	<div class="contenedor-principal">
+
+		<div class="GruposLista">
+			<span>Grupos</span>
+			<button @click.prevent="nuevoGrupo">Agregar</button>
+			<table>
 			<thead>
 				<tr>
 					<th>Clave del grupo</th>
@@ -41,6 +43,7 @@
 			</tbody>
 		</table>
 	</div>
+</div>
 </template>
 
 <script>
@@ -100,9 +103,4 @@ export default {
 };
 </script>
 
-<style>
-.espacio {
-	padding-right: 25px;
-	padding-left: 20px;
-}
-</style>
+<style></style>
