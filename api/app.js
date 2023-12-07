@@ -122,7 +122,7 @@ app.get("/api/grupos", (req, res) => {
 //Mostrar los grupos a los que una materia esta registrada mandandole su clavemateria
 app.get("/api/grupos/materia/:id", (req, res) => {
 	conexion.query(
-		"SELECT clavegrupo, horariolunes FROM grupos WHERE clavemateria = ?",
+		"SELECT clavegrupo, horariolunes, limitealumnos, inscritos FROM grupos WHERE clavemateria = ?",
 		[req.params.id],
 		(error, filas) => {
 			if (error) {
@@ -184,6 +184,50 @@ app.get("/api/cargas/:id", (req, res) => {
 			}
 		}
 	);
+});
+
+//Mostrar si hay un grupo con este maestro
+app.get("/api/grupoMaestro/:id", (req, res) => {
+	conexion.query("SELECT * FROM grupos WHERE clavemaestro = ? LIMIT 1", [req.params.id], (error, fila) => {
+		if (error) {
+			throw error;
+		} else {
+			res.send(fila);
+		}
+	});
+});
+
+//Mostrar si hay una carga con este grupo
+app.get("/api/cargaGrupo/:id", (req, res) => {
+	conexion.query("SELECT * FROM carga WHERE clavegrupo = ? LIMIT 1", [req.params.id], (error, fila) => {
+		if (error) {
+			throw error;
+		} else {
+			res.send(fila);
+		}
+	});
+});
+
+//Mostrar si hay un grupo con este maestro
+app.get("/api/grupoMateria/:id", (req, res) => {
+	conexion.query("SELECT * FROM grupos WHERE clavemateria = ? LIMIT 1", [req.params.id], (error, fila) => {
+		if (error) {
+			throw error;
+		} else {
+			res.send(fila);
+		}
+	});
+});
+
+//Mostrar si hay una carga con este alumno
+app.get("/api/cargaAlumno/:id", (req, res) => {
+	conexion.query("SELECT * FROM carga WHERE ncontrol = ? LIMIT 1", [req.params.id], (error, fila) => {
+		if (error) {
+			throw error;
+		} else {
+			res.send(fila);
+		}
+	});
 });
 
 //Mostrar todas las cargas
@@ -445,13 +489,19 @@ app.delete("/api/grupos/:id", (req, res) => {
 
 //Eliminar una carga
 app.delete("/api/cargas/:id", (req, res) => {
-	conexion.query("DELETE FROM carga WHERE clavegrupo = ?", [req.params.id], (error, filas) => {
-		if (error) {
-			throw error;
-		} else {
-			res.send(filas);
+	let clavegrupo = req.params.id;
+	let ncontrol = req.body.ncontrol;
+	conexion.query(
+		"DELETE FROM carga WHERE clavegrupo = ? AND ncontrol = ?",
+		[clavegrupo, ncontrol],
+		(error, filas) => {
+			if (error) {
+				throw error;
+			} else {
+				res.send(filas);
+			}
 		}
-	});
+	);
 });
 
 // Encender el servidor

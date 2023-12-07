@@ -23,9 +23,27 @@
 							<div v-if="cargas.mostrarOpciones" class="menu-desplegable">
 								<button @click.prevent="editarCarga(cargas)">Editar</button>
 								<br />
-								<button @click="eliminarCarga(cargas)">Eliminar</button>
+								<button @click="eliminar(cargas)">Eliminar</button>
 							</div>
 						</td>
+						<div v-if="mostrarConfirma && cargas.clavegrupo && cargas.ncontrol === cargaSeleccionada">
+							<ConfirmaEliminar
+								:mensaje="
+									'Estas seguro que quieres eliminar la carga con el grupo : ' +
+									cargas.clavegrupo +
+									' y el alumno: ' +
+									cargas.ncontrol
+								"
+								@si="eliminarCarga(cargas)"
+								@cerrar="cerrarConfirma"
+							></ConfirmaEliminar>
+						</div>
+						<div v-if="mostrarError">
+							<Error
+								error="No se puede eliminar esta materia ya tiene asignada grupos."
+								@cerrar="cerrarError"
+							></Error>
+						</div>
 					</tr>
 				</tbody>
 			</table>
@@ -37,15 +55,23 @@
 import {URL_DATOS} from "@/utils/constants.js";
 import axios from "axios";
 import {obtenerDatos} from "@/utils/peticiones";
+import Error from "../mensajes/Error.vue";
+import ConfirmaEliminar from "../mensajes/ConfirmaEliminar.vue";
 
 export default {
 	name: "TomaCargaLista",
-	components: {},
+	components: {
+		Error,
+		ConfirmaEliminar,
+	},
 	data: function () {
 		return {
 			lista_cargas: [],
 			clavematerias: [],
 			clavealumnos: [],
+			mostrarError: false,
+			mostrarConfirma: false,
+			cargaSeleccionada: [],
 		};
 	},
 	async created() {
@@ -96,10 +122,28 @@ export default {
 				params: {clavegrupo: cargas.clavegrupo, ncontrol: cargas.ncontrol, clavemateria: cargas.clavemateria},
 			});
 		},
-		eliminarCarga: async function (cargas) {
+		eliminar: async function (cargas) {
+			this.cargaSeleccionada = cargas.clavegrupo && cargas.ncontrol;
+			this.mostrarConfirma = true;
 			cargas.mostrarOpciones = !cargas.mostrarOpciones;
-			const res = await axios.delete(URL_DATOS + "/cargas/" + cargas.clavegrupo);
+		},
+		eliminarCarga: async function (cargas) {
+			console.log(cargas);
+			const res = await axios.delete(URL_DATOS + "/cargas/" + cargas.clavegrupo, {
+				params: {
+					ncontrol: cargas.ncontrol,
+				},
+			});
+			console.log(res);
 			this.lista_cargas = await obtenerDatos("cargas");
+			this.mostrarConfirma = false;
+		},
+		cerrarError() {
+			console.log("cerrar error");
+			this.mostrarError = false;
+		},
+		cerrarConfirma() {
+			this.mostrarConfirma = false;
 		},
 	},
 };

@@ -43,10 +43,23 @@
 								</div>
 								<div>
 									<img src="../../../public/images/basura.svg" alt="" />
-									<button @click="eliminarGrupo(grupos)">Eliminar</button>
+									<button @click="eliminar(grupos)">Eliminar</button>
 								</div>
 							</div>
 						</span>
+						<div v-if="mostrarConfirma && grupos.clavegrupo === clavegrupoSeleccionada">
+							<ConfirmaEliminar
+								:mensaje="'Estas seguro que quieres eliminar la materia: ' + grupos.clavegrupo"
+								@si="eliminarGrupo(clavegrupoSeleccionada)"
+								@cerrar="cerrarConfirma"
+							></ConfirmaEliminar>
+						</div>
+						<div v-if="mostrarError">
+							<Error
+								error="No se puede eliminar esta materia ya tiene asignada grupos."
+								@cerrar="cerrarError"
+							></Error>
+						</div>
 					</div>
 				</div>
 			</div>
@@ -58,15 +71,23 @@
 import {URL_DATOS} from "@/utils/constants.js";
 import axios from "axios";
 import {obtenerDatos} from "@/utils/peticiones";
+import Error from "../mensajes/Error.vue";
+import ConfirmaEliminar from "../mensajes/ConfirmaEliminar.vue";
 
 export default {
 	name: "GruposLista",
-	components: {},
+	components: {
+		Error,
+		ConfirmaEliminar,
+	},
 	data: function () {
 		return {
 			lista_grupos: [],
 			clavematerias: [],
 			clavemaestros: [],
+			mostrarError: false,
+			mostrarConfirma: false,
+			clavegrupoSeleccionada: null,
 		};
 	},
 	async created() {
@@ -101,11 +122,28 @@ export default {
 			grupos.mostrarOpciones = !grupos.mostrarOpciones;
 			this.$router.push({name: "editar-grupo", params: {clavegrupo: grupos.clavegrupo}});
 		},
-		eliminarGrupo: async function (grupos) {
+		eliminar: async function (grupos) {
+			this.clavegrupoSeleccionada = grupos.clavegrupo;
+			this.mostrarConfirma = true;
 			grupos.mostrarOpciones = !grupos.mostrarOpciones;
-			const res = await axios.delete(URL_DATOS + "/grupos/" + grupos.clavegrupo);
-			console.log(res);
-			this.lista_grupos = await obtenerDatos("grupos");
+		},
+		eliminarGrupo: async function (clavegrupo) {
+			const response = await axios.get(`${URL_DATOS}/cargaGrupo/${clavegrupo}`);
+			if (response.data.length > 0) {
+				this.mostrarError = true;
+				this.mostrarConfirma = false;
+			} else {
+				const res = await axios.delete(URL_DATOS + "/grupos/" + clavegrupo);
+				this.lista_grupos = await obtenerDatos("grupos");
+				this.mostrarConfirma = false;
+			}
+		},
+		cerrarError() {
+			console.log("cerrar error");
+			this.mostrarError = false;
+		},
+		cerrarConfirma() {
+			this.mostrarConfirma = false;
 		},
 	},
 };

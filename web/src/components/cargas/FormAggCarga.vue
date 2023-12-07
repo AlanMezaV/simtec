@@ -120,6 +120,17 @@ export default {
 				return true;
 			};
 
+			const validaInscritos = () => {
+				const inscritos = this.clavegrupos[0].inscritos;
+				const cupo = this.clavegrupos[0].limitealumnos;
+				if (inscritos >= cupo) {
+					this.mostrarError = true;
+					this.errorMensaje = "El grupo ya esta lleno.";
+					return false;
+				}
+				return true;
+			};
+
 			const validaAlumnoHorario = () => {
 				let band = true;
 				const horario = this.clavegrupos[0].horariolunes;
@@ -140,7 +151,7 @@ export default {
 				return band;
 			};
 			try {
-				if (validaDatos() && validaAlumnoMateria() && validaAlumnoHorario()) {
+				if (validaDatos() && validaAlumnoMateria() && validaAlumnoHorario() && validaInscritos()) {
 					const res = await axios.post(URL_DATOS + "/cargas", {
 						clavemateria: this.cargas.clavemateria,
 						clavegrupo: this.cargas.clavegrupo,
