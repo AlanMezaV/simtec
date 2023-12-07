@@ -37,9 +37,9 @@
 				<label for="limitealumnos">Limite de alumnos:</label>
 				<input v-model="grupos.limitealumnos" type="text" id="limitealumnos" required />
 				<br />
-				<label for="inscritos">Alumnos inscritos:</label>
+				<!-- <label for="inscritos">Alumnos inscritos:</label>
 				<input v-model="grupos.inscritos" type="text" id="inscritos" required />
-				<br />
+				<br /> -->
 				<label for="horariolunes">Horario del lunes:</label>
 				<input v-model="grupos.horariolunes" type="text" id="horariolunes" maxlength="11" />
 				<br />
@@ -113,9 +113,7 @@ export default {
 					this.grupos.clavegrupo == undefined ||
 					this.grupos.limitealumnos == undefined ||
 					this.grupos.clavegrupo == "" ||
-					this.grupos.limitealumnos == "" ||
-					this.grupos.inscritos == undefined ||
-					this.grupos.inscritos == ""
+					this.grupos.limitealumnos == ""
 				) {
 					return false;
 				}
@@ -134,7 +132,7 @@ export default {
 							clavegrupo: this.grupos.clavegrupo,
 							clavemaestro: this.grupos.clavemaestro,
 							limitealumnos: this.grupos.limitealumnos,
-							inscritos: this.grupos.inscritos,
+							inscritos: 0,
 							horariolunes: this.grupos.horariolunes,
 							horariomartes: this.grupos.horariomartes,
 							horariomiercoles: this.grupos.horariomiercoles,

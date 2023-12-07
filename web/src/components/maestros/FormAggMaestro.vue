@@ -25,8 +25,11 @@
 				<label for="departamento">Departamento:</label>
 				<input v-model="maestros.departamento" type="text" id="departamento" maxlength="150" required />
 				<br />
-				<label for="estatus">Estatus:</label>
-				<input v-model="maestros.estatus" type="text" id="estatus" maxlength="1" required />
+				<label for="estatus">Estatus</label>
+				<select v-model="maestros.estatus" id="estatus" class="form-input" required>
+					<option value="V">V</option>
+					<option value="B">B</option>
+				</select>
 				<br />
 				<button type="submit" @click.prevent="agregarMaestro()">Agregar</button>
 			</form>

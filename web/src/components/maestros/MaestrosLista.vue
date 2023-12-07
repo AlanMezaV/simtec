@@ -17,26 +17,36 @@
 						<div>Estatus</div>
 						<div></div>
 					</div>
-					<div class="contenedor-datos">
-
-						<div v-for="maestros in lista_maestros" :key="maestros.clavemaestro" class="datos">
-							<span class="espacio">{{ maestros.clavemaestro }}</span>
-							<span class="espacio">{{ maestros.nombre }}</span>
-							<span class="espacio">{{ maestros.departamento }}</span>
-							<span class="espacio estatus">{{ getEstatus(maestros.estatus) }}</span>
-							<span class="espacio">
-								<button @click="mostrarOpciones(maestros)" class="boton-acciones">···</button>
-								<div v-if="maestros.mostrarOpciones" class="menu-desplegable">
-									<div>
-										<button @click.prevent="editarMaestro(maestros)">Editar</button>
-									</div>
-									<div>
-										<button @click="eliminarMaestro(maestros)">Eliminar</button>
-									</div>
+					<div v-for="maestros in lista_maestros" :key="maestros.clavemaestro" class="datos">
+						<span class="espacio">{{ maestros.clavemaestro }}</span>
+						<span class="espacio">{{ maestros.nombre }}</span>
+						<span class="espacio">{{ maestros.departamento }}</span>
+						<span class="espacio estatus">{{ getEstatus(maestros.estatus) }}</span>
+						<span class="espacio">
+							<button @click="mostrarOpciones(maestros)" class="boton-acciones">···</button>
+							<div v-if="maestros.mostrarOpciones" class="menu-desplegable">
+								<div>
+									<button @click.prevent="editarMaestro(maestros)">Editar</button>
 								</div>
-							</span>
+								<div>
+									<button @click="eliminar(maestros)">Eliminar</button>
+								</div>
+							</div>
+						</span>
+						<div v-if="mostrarConfirma && maestros.clavemaestro === clavemaestroSeleccionado">
+							<ConfirmaEliminar
+								:clave="clavemaestroSeleccionado"
+								:mensaje="'Estas seguro que quieres eliminar el maestro: ' + maestros.nombre"
+								@si="eliminarMaestro(clavemaestroSeleccionado)"
+								@cerrar="cerrarConfirma"
+							></ConfirmaEliminar>
 						</div>
-						
+						<div v-if="mostrarError">
+							<Error
+								error="No se puede eliminar este alumno ya que tiene materias cargadas."
+								@cerrar="cerrarError"
+							></Error>
+						</div>
 					</div>
 				</div>
 			</div>
@@ -48,13 +58,21 @@
 import {URL_DATOS} from "@/utils/constants.js";
 import axios from "axios";
 import {obtenerDatos} from "@/utils/peticiones";
+import Error from "../mensajes/Error.vue";
+import ConfirmaEliminar from "../mensajes/ConfirmaEliminar.vue";
 
 export default {
 	name: "MaestrosLista",
-	components: {},
+	components: {
+		Error,
+		ConfirmaEliminar,
+	},
 	data: function () {
 		return {
 			lista_maestros: [],
+			mostrarError: false,
+			mostrarConfirma: false,
+			clavemaestroSeleccionado: null,
 		};
 	},
 	async created() {
@@ -89,11 +107,28 @@ export default {
 			maestros.mostrarOpciones = !maestros.mostrarOpciones;
 			this.$router.push({name: "editar-maestro", params: {clavemaestro: maestros.clavemaestro}});
 		},
-		eliminarMaestro: async function (maestros) {
+		eliminar: async function (maestros) {
+			this.clavemaestroSeleccionado = maestros.clavemaestro;
+			this.mostrarConfirma = true;
 			maestros.mostrarOpciones = !maestros.mostrarOpciones;
-			const res = await axios.delete(URL_DATOS + "/maestros/" + maestros.clavemaestro);
-			console.log(res);
-			this.lista_maestros = await obtenerDatos("maestros");
+		},
+		eliminarMaestro: async function (clavemaestro) {
+			const response = await axios.get(`${URL_DATOS}/grupoMaestro/${clavemaestro}`);
+			if (response.data.length > 0) {
+				this.mostrarError = true;
+				this.mostrarConfirma = false;
+			} else {
+				const res = await axios.delete(URL_DATOS + "/maestros/" + clavemaestro);
+				this.lista_maestros = await obtenerDatos("maestros");
+				this.mostrarConfirma = false;
+			}
+		},
+		cerrarError() {
+			console.log("cerrar error");
+			this.mostrarError = false;
+		},
+		cerrarConfirma() {
+			this.mostrarConfirma = false;
 		},
 	},
 };

@@ -8,7 +8,7 @@
 				<button @click="cerrarFormulario">✖</button>
 			</div>
 			<form>
-				<label for="ncontrol">Numero de control:</label>
+				<label for="ncontrol">Numero de control</label>
 				<input
 					v-model="alumnos.ncontrol"
 					name="ncontrol"
@@ -21,14 +21,36 @@
 					placeholder="Introduce el numero de control..."
 					class="form-input"
 				/>
-				<label for="nombre">Nombre:</label>
-				<input maxlength="150" v-model="alumnos.nombre" type="text" value="Introduce el nombre" id="nombre" required placeholder="Introduce el nombre..." class="form-input"/>
+				<label for="nombre">Nombre</label>
+				<input
+					maxlength="150"
+					v-model="alumnos.nombre"
+					type="text"
+					value="Introduce el nombre"
+					id="nombre"
+					required
+					placeholder="Introduce el nombre..."
+					class="form-input"
+				/>
 
-				<label for="carrera">Carrera:</label>
-				<input v-model="alumnos.carrera" type="text" id="carrera" maxlength="150" required placeholder="Introduce la carrera..." class="form-input"/>
-				
-				<label for="estatus">Estatus:</label>
-				<input v-model="alumnos.estatus" type="text" id="estatus" maxlength="1" required placeholder="Introduce el estatus..." class="form-input"/>
+				<label for="carrera">Carrera</label>
+				<input
+					v-model="alumnos.carrera"
+					type="text"
+					id="carrera"
+					maxlength="150"
+					required
+					placeholder="Introduce la carrera..."
+					class="form-input"
+				/>
+
+				<label for="estatus">Estatus</label>
+				<select v-model="alumnos.estatus" id="estatus" class="form-input">
+					<option value="V">V</option>
+					<option value="B">B</option>
+				</select>
+				<br />
+
 				<div class="contenedor-form-boton">
 					<button type="submit" @click.prevent="agregarAlumno()" class="form-boton-agregar">
 						Agregar Alumno
@@ -116,9 +138,6 @@ export default {
 
 <style scoped src="../../styles/formAggAlumno.css"></style>
 <style scoped>
-
-
-
 .error-message {
 	color: red;
 	margin-top: 10px;

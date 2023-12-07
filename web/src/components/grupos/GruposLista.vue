@@ -23,34 +23,43 @@
 						<div>Horario viernes</div>
 						<div>  </div>
 					</div>
-					<div class="contenedor-datos">
-
-						<div v-for="grupos in lista_grupos" :key="grupos.clavegrupo" class="datos-grupos">
-							<span class="espacio">{{ grupos.clavegrupo }}</span>
-							<span class="espacio">{{ getNombreMateria(grupos.clavemateria) }}</span>
-							<span class="espacio">{{ getNombreMaestro(grupos.clavemaestro) }}</span>
-							<span class="espacio">{{ grupos.limitealumnos }}</span>
-							<span class="espacio">{{ grupos.inscritos }}</span>
-							<span class="espacio">{{ grupos.horariolunes }}</span>
-							<span class="espacio">{{ grupos.horariomartes }}</span>
-							<span class="espacio">{{ grupos.horariomiercoles }}</span>
-							<span class="espacio">{{ grupos.horariojueves }}</span>
-							<span class="espacio">{{ grupos.horarioviernes }}</span>
-							<span class="espacio">
-								<button @click="mostrarOpciones(grupos)" class="boton-acciones">···</button>
-								<div v-if="grupos.mostrarOpciones" class="menu-desplegable">
-									<div>
-										<img src="../../../public/images/lapiz.svg" alt="" />
-										<button @click.prevent="editarGrupo(grupos)">Editar</button>
-									</div>
-									<div>
-										<img src="../../../public/images/basura.svg" alt="" />
-										<button @click="eliminarGrupo(grupos)">Eliminar</button>
-									</div>
+					<div v-for="grupos in lista_grupos" :key="grupos.clavegrupo" class="datos-grupos">
+						<span class="espacio">{{ grupos.clavegrupo }}</span>
+						<span class="espacio">{{ getNombreMateria(grupos.clavemateria) }}</span>
+						<span class="espacio">{{ getNombreMaestro(grupos.clavemaestro) }}</span>
+						<span class="espacio">{{ grupos.limitealumnos }}</span>
+						<span class="espacio">{{ grupos.inscritos }}</span>
+						<span class="espacio">{{ grupos.horariolunes }}</span>
+						<span class="espacio">{{ grupos.horariomartes }}</span>
+						<span class="espacio">{{ grupos.horariomiercoles }}</span>
+						<span class="espacio">{{ grupos.horariojueves }}</span>
+						<span class="espacio">{{ grupos.horarioviernes }}</span>
+						<span class="espacio">
+							<button @click="mostrarOpciones(grupos)" class="boton-acciones">···</button>
+							<div v-if="grupos.mostrarOpciones" class="menu-desplegable">
+								<div>
+									<img src="../../../public/images/lapiz.svg" alt="" />
+									<button @click.prevent="editarGrupo(grupos)">Editar</button>
 								</div>
-							</span>
+								<div>
+									<img src="../../../public/images/basura.svg" alt="" />
+									<button @click="eliminar(grupos)">Eliminar</button>
+								</div>
+							</div>
+						</span>
+						<div v-if="mostrarConfirma && grupos.clavegrupo === clavegrupoSeleccionada">
+							<ConfirmaEliminar
+								:mensaje="'Estas seguro que quieres eliminar la materia: ' + grupos.clavegrupo"
+								@si="eliminarGrupo(clavegrupoSeleccionada)"
+								@cerrar="cerrarConfirma"
+							></ConfirmaEliminar>
 						</div>
-						
+						<div v-if="mostrarError">
+							<Error
+								error="No se puede eliminar esta materia ya tiene asignada grupos."
+								@cerrar="cerrarError"
+							></Error>
+						</div>
 					</div>
 				</div>
 			</div>
@@ -62,15 +71,23 @@
 import {URL_DATOS} from "@/utils/constants.js";
 import axios from "axios";
 import {obtenerDatos} from "@/utils/peticiones";
+import Error from "../mensajes/Error.vue";
+import ConfirmaEliminar from "../mensajes/ConfirmaEliminar.vue";
 
 export default {
 	name: "GruposLista",
-	components: {},
+	components: {
+		Error,
+		ConfirmaEliminar,
+	},
 	data: function () {
 		return {
 			lista_grupos: [],
 			clavematerias: [],
 			clavemaestros: [],
+			mostrarError: false,
+			mostrarConfirma: false,
+			clavegrupoSeleccionada: null,
 		};
 	},
 	async created() {
@@ -105,11 +122,28 @@ export default {
 			grupos.mostrarOpciones = !grupos.mostrarOpciones;
 			this.$router.push({name: "editar-grupo", params: {clavegrupo: grupos.clavegrupo}});
 		},
-		eliminarGrupo: async function (grupos) {
+		eliminar: async function (grupos) {
+			this.clavegrupoSeleccionada = grupos.clavegrupo;
+			this.mostrarConfirma = true;
 			grupos.mostrarOpciones = !grupos.mostrarOpciones;
-			const res = await axios.delete(URL_DATOS + "/grupos/" + grupos.clavegrupo);
-			console.log(res);
-			this.lista_grupos = await obtenerDatos("grupos");
+		},
+		eliminarGrupo: async function (clavegrupo) {
+			const response = await axios.get(`${URL_DATOS}/cargaGrupo/${clavegrupo}`);
+			if (response.data.length > 0) {
+				this.mostrarError = true;
+				this.mostrarConfirma = false;
+			} else {
+				const res = await axios.delete(URL_DATOS + "/grupos/" + clavegrupo);
+				this.lista_grupos = await obtenerDatos("grupos");
+				this.mostrarConfirma = false;
+			}
+		},
+		cerrarError() {
+			console.log("cerrar error");
+			this.mostrarError = false;
+		},
+		cerrarConfirma() {
+			this.mostrarConfirma = false;
 		},
 	},
 };

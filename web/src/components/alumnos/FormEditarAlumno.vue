@@ -12,8 +12,11 @@
 				<label for="carrera">Carrera:</label>
 				<input v-model="alumnos.carrera" type="text" id="carrera" maxlength="150" required />
 				<br />
-				<label for="estatus">Estatus:</label>
-				<input v-model="alumnos.estatus" type="text" id="estatus" maxlength="1" required />
+				<label for="estatus">Estatus</label>
+				<select v-model="alumnos.estatus" id="estatus" class="form-input">
+					<option value="V">V</option>
+					<option value="B">B</option>
+				</select>
 				<br />
 				<button type="submit" @click.prevent="editarAlumno()">Actualizar alumno</button>
 			</form>
