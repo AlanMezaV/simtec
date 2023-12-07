@@ -93,11 +93,18 @@
 }
 .estatus{
     width: 65%;
-    color: var(--royal-blue);
-    background-color: var(--royal-blue-ligth);
     border-radius: 5px;
     margin: 8px;
+    padding: 3px;
     text-align: center;
+}
+.baja{
+    color: var(--dim-gray);
+    background-color: var(--light-gray);
+}
+.activo{
+    color: var(--royal-blue);
+    background-color: var(--royal-blue-ligth);
 }
 .boton-acciones{
     font-family: 'Poppins', sans-serif;

@@ -22,7 +22,7 @@
 							<span class="espacio">{{ maestros.clavemaestro }}</span>
 							<span class="espacio">{{ maestros.nombre }}</span>
 							<span class="espacio">{{ maestros.departamento }}</span>
-							<span class="espacio estatus">{{ getEstatus(maestros.estatus) }}</span>
+							<span class="espacio estatus" :class="maestros.estatus === 'V'? ' activo': 'baja'">{{ getEstatus(maestros.estatus) }}</span>
 							<span class="espacio">
 								<button @click="mostrarOpciones(maestros)" class="boton-acciones">···</button>
 								<div v-if="maestros.mostrarOpciones" class="menu-desplegable">

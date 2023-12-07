@@ -23,7 +23,7 @@
 							<span class="espacio">{{ alumnos.ncontrol }}</span>
 							<span class="espacio">{{ alumnos.nombre }}</span>
 							<span class="espacio">{{ alumnos.carrera }}</span>
-							<span class="espacio estatus">{{ getEstatus(alumnos.estatus) }}</span>
+							<span class="espacio estatus" :class="alumnos.estatus === 'V'? ' activo': 'baja'">{{ getEstatus(alumnos.estatus) }}</span>
 							<span class="espacio">
 								<button @click="mostrarOpciones(alumnos)" class="boton-acciones">···</button>
 								<div v-if="alumnos.mostrarOpciones" class="menu-desplegable">
