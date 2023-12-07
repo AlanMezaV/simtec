@@ -3,7 +3,7 @@
 	<div>
 		<MaestrosLista></MaestrosLista>
 		<div class="overlay"></div>
-		<div class="FormAggMaestro formAgg">
+		<div class="FormAggMaestro form-agg-edit">
 			<div class="encabezado">
 				Agregar Maestro
 				<button @click="cerrarFormulario">✖</button>
@@ -50,7 +50,7 @@
 				</select>
 
 				<div class="contenedor-form-boton">
-					<button type="submit" @click.prevent="agregarMaestro()" class="form-boton-agregar">
+					<button type="submit" @click.prevent="agregarMaestro()" class="form-boton">
 						Agregar Maestro
 					</button>
 				</div>
@@ -135,28 +135,8 @@ export default {
 };
 </script>
 
-<style scoped src="../../styles/formAgg.css"></style>
+<style scoped src="../../styles/form-agg-editar.css"></style>
 <style scoped>
-/* .overlay {
-	position: fixed;
-	top: 0;
-	left: 0;
-	width: 100%;
-	height: 100%;
-	background: rgba(0, 0, 0, 0.5); /* Fondo oscuro semitransparente */
- /* 
-.FormAggMaestro {
-	position: absolute;
-	top: 50%;
-	left: 50%;
-	transform: translate(-50%, -50%);
-	background-color: white;
-	padding: 20px;
-	border: 1px solid #ccc;
-	border-radius: 5px;
-	box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-}
- */
 .error-message {
 	color: red;
 	margin-top: 10px;

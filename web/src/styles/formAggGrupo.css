@@ -1,9 +1,0 @@
-.contenedor-inputs{
-    display: grid;
-    grid-template-columns: repeat(2, 45%);
-    gap: 10px;
-}
-.contenedor-form-boton-g{
-    position: absolute;
-    right: 0;
-}

@@ -2,7 +2,7 @@
 	<div>
 		<AlumnosLista></AlumnosLista>
 		<div class="overlay"></div>
-		<div class="FormAggAlumno formAgg">
+		<div class="FormAggAlumno form-agg-edit">
 			<div class="encabezado">
 				Agregar Alumno
 				<button @click="cerrarFormulario">✖</button>
@@ -51,7 +51,7 @@
 				</select>
 
 				<div class="contenedor-form-boton">
-					<button type="submit" @click.prevent="agregarAlumno()" class="form-boton-agregar">
+					<button type="submit" @click.prevent="agregarAlumno()" class="form-boton">
 						Agregar Alumno
 					</button>
 				</div>
@@ -135,7 +135,7 @@ export default {
 };
 </script>
 
-<style scoped src="../../styles/formAgg.css"></style>
+<style scoped src="../../styles/form-agg-editar.css"></style>
 <style scoped>
 .error-message {
 	color: red;

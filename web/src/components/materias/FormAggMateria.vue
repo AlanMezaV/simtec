@@ -3,7 +3,7 @@
 	<div>
 		<MateriasLista></MateriasLista>
 		<div class="overlay"></div>
-		<div class="FormAggMateria formAgg">
+		<div class="FormAggMateria form-agg-edit">
 			<div class="encabezado">
 				Agregar Materia
 				<button @click="cerrarFormulario">✖</button>
@@ -45,7 +45,7 @@
 					class="form-input"
 				/>
 				<div class="contenedor-form-boton">
-					<button type="submit" @click.prevent="agregarMateria()" class="form-boton-agregar">
+					<button type="submit" @click.prevent="agregarMateria()" class="form-boton">
 						Agregar
 					</button>
 				</div>
@@ -130,7 +130,7 @@ export default {
 };
 </script>
 
-<style scoped src="../../styles/formAgg.css"></style>
+<style scoped src="../../styles/form-agg-editar.css"></style>
 <style scoped>
 .error-message {
 	color: red;
