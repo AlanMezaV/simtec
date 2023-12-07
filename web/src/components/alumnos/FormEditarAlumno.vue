@@ -2,23 +2,29 @@
 	<div>
 		<AlumnosLista></AlumnosLista>
 		<div class="overlay"></div>
-		<div class="FormEditarAlumno">
-			Editar Alumno
-			<button @click="cerrarFormulario">✖</button>
+		<div class="FormEditarAlumno form-agg-edit">
+			<div class="encabezado">
+				Editar Alumno
+				<button @click="cerrarFormulario">✖</button>
+			</div>
 			<form>
 				<label for="nombre">Nombre:</label>
-				<input v-model="alumnos.nombre" type="text" id="nombre" required />
-				<br />
+				<input v-model="alumnos.nombre" type="text" id="nombre" required class="form-input"/>
+				
 				<label for="carrera">Carrera:</label>
-				<input v-model="alumnos.carrera" type="text" id="carrera" maxlength="150" required />
-				<br />
+				<input v-model="alumnos.carrera" type="text" id="carrera" maxlength="150" required class="form-input"/>
+				
 				<label for="estatus">Estatus</label>
 				<select v-model="alumnos.estatus" id="estatus" class="form-input">
 					<option value="V">V</option>
 					<option value="B">B</option>
 				</select>
-				<br />
-				<button type="submit" @click.prevent="editarAlumno()">Actualizar alumno</button>
+				
+				<div class="contenedor-form-boton">
+					<button type="submit" @click.prevent="editarAlumno()" class="form-boton">
+						Actualizar alumno
+					</button>
+				</div>
 			</form>
 			<div v-if="mostrarError" class="error-message">
 				{{ errorMensaje }}
@@ -100,28 +106,8 @@ export default {
 };
 </script>
 
+<style scoped src="../../styles/form-agg-editar.css"></style>
 <style scoped>
-.overlay {
-	position: fixed;
-	top: 0;
-	left: 0;
-	width: 100%;
-	height: 100%;
-	background: rgba(0, 0, 0, 0.5); /* Fondo oscuro semitransparente */
-}
-
-.FormEditarAlumno {
-	position: absolute;
-	top: 50%;
-	left: 50%;
-	transform: translate(-50%, -50%);
-	background-color: white;
-	padding: 20px;
-	border: 1px solid #ccc;
-	border-radius: 5px;
-	box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-}
-
 .error-message {
 	color: red;
 	margin-top: 10px;

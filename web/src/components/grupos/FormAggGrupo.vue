@@ -3,7 +3,7 @@
 	<div>
 		<GruposLista></GruposLista>
 		<div class="overlay"></div>
-		<div class="FormAggGrupo formAgg">
+		<div class="FormAggGrupo form-agg-edit">
 			<div class="encabezado">
 				Agregar Grupo
 				<button @click="cerrarFormulario">✖</button>
@@ -62,7 +62,7 @@
 					
 				</div>
 				<div class="contenedor-form-boton">
-					<button type="submit" @click.prevent="agregarGrupo()" class="form-boton-agregar">
+					<button type="submit" @click.prevent="agregarGrupo()" class="form-boton">
 						Agregar
 					</button>
 				</div>
@@ -171,9 +171,7 @@ export default {
 };
 </script>
 
-<style scoped src="../../styles/formAgg.css"></style>
-<style scoped src="../../styles/formAggGrupo.css"></style>
-
+<style scoped src="../../styles/form-agg-editar.css"></style>
 <style scoped>
 .error-message {
 	color: red;
