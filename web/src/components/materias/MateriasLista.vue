@@ -25,9 +25,14 @@
 							<span class="espacio">
 								<button @click="mostrarOpciones(materias)" class="boton-acciones">···</button>
 								<div v-if="materias.mostrarOpciones" class="menu-desplegable">
-									<button @click.prevent="editarMateria(materias)">Editar</button>
-									<br />
-									<button @click="eliminar(materias)">Eliminar</button>
+									<div>
+										<img src="../../../public/images/lapiz.svg" alt="" />
+										<button @click.prevent="editarMateria(materias)">Editar</button>
+									</div>
+									<div>
+										<img src="../../../public/images/basura.svg" alt="" />
+										<button @click="eliminar(materias)">Eliminar</button>
+									</div>
 								</div>
 							</span>
 							<div v-if="mostrarConfirma && materias.clavemateria === clavemateriaSeleccionada">

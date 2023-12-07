@@ -3,9 +3,11 @@
 	<div>
 		<MaestrosLista></MaestrosLista>
 		<div class="overlay"></div>
-		<div class="FormAggMaestro">
-			Agregar Maestro
-			<button @click="cerrarFormulario">✖</button>
+		<div class="FormAggMaestro formAgg">
+			<div class="encabezado">
+				Agregar Maestro
+				<button @click="cerrarFormulario">✖</button>
+			</div>
 			<form>
 				<label for="clavemaestro">Clave del maestro:</label>
 				<input
@@ -17,21 +19,41 @@
 					@input="validarSoloNumerosClave"
 					@click.prevent="eliminaError()"
 					required
+					placeholder="Introduce la clave..."
+					class="form-input"
 				/>
-				<br />
 				<label for="nombre">Nombre:</label>
-				<input maxlength="150" v-model="maestros.nombre" type="text" id="nombre" required />
-				<br />
+				<input 
+				maxlength="150" 
+				v-model="maestros.nombre" 
+				type="text" 
+				id="nombre" 
+				required
+				placeholder="Introduce el nombre..."
+				class="form-input"
+				/>
+				
 				<label for="departamento">Departamento:</label>
-				<input v-model="maestros.departamento" type="text" id="departamento" maxlength="150" required />
-				<br />
+				<input 
+				maxlength="150" 
+				v-model="maestros.departamento" 
+				type="text" id="departamento" 
+				required 
+				placeholder="Introduce el departamento..."
+				class="form-input"
+				/>
+				
 				<label for="estatus">Estatus</label>
 				<select v-model="maestros.estatus" id="estatus" class="form-input" required>
 					<option value="V">V</option>
 					<option value="B">B</option>
 				</select>
-				<br />
-				<button type="submit" @click.prevent="agregarMaestro()">Agregar</button>
+
+				<div class="contenedor-form-boton">
+					<button type="submit" @click.prevent="agregarMaestro()" class="form-boton-agregar">
+						Agregar Maestro
+					</button>
+				</div>
 			</form>
 			<div v-if="mostrarError" class="error-message">
 				{{ errorMensaje }}
@@ -113,16 +135,16 @@ export default {
 };
 </script>
 
+<style scoped src="../../styles/formAgg.css"></style>
 <style scoped>
-.overlay {
+/* .overlay {
 	position: fixed;
 	top: 0;
 	left: 0;
 	width: 100%;
 	height: 100%;
 	background: rgba(0, 0, 0, 0.5); /* Fondo oscuro semitransparente */
-}
-
+ /* 
 .FormAggMaestro {
 	position: absolute;
 	top: 50%;
@@ -134,7 +156,7 @@ export default {
 	border-radius: 5px;
 	box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
-
+ */
 .error-message {
 	color: red;
 	margin-top: 10px;
