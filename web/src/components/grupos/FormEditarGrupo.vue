@@ -9,50 +9,83 @@
 			</div>
 			<form>
 				<div class="contenedor-inputs">
-
 					<label for="clavemateria">Clave de materia:</label>
 					<select v-model="grupos.clavemateria" id="clavemateria" class="form-input">
-						<option v-for="materia in clavematerias" :key="materia.clavemateria" :value="materia.clavemateria">
+						<option
+							v-for="materia in clavematerias"
+							:key="materia.clavemateria"
+							:value="materia.clavemateria"
+						>
 							{{ materia.nombre }}
 						</option>
 					</select>
-					
+
 					<label for="clavemaestro">Clave del maestro:</label>
 					<select v-model="grupos.clavemaestro" id="clavemaestro" class="form-input">
-						<option v-for="maestro in clavemaestros" :key="maestro.clavemaestro" :value="maestro.clavemaestro">
+						<option
+							v-for="maestro in clavemaestros"
+							:key="maestro.clavemaestro"
+							:value="maestro.clavemaestro"
+						>
 							{{ maestro.nombre }}
 						</option>
 					</select>
-					
+
 					<label for="limitealumnos">Limite de alumnos:</label>
-					<input v-model="grupos.limitealumnos" type="text" id="limitealumnos" required class="form-input"/>
-					
+					<input v-model="grupos.limitealumnos" type="text" id="limitealumnos" required class="form-input" />
+
 					<label for="inscritos">Alumnos inscritos:</label>
-					<input v-model="grupos.inscritos" type="text" id="inscritos" required class="form-input"/>
-					
+					<input v-model="grupos.inscritos" type="text" id="inscritos" required class="form-input" />
+
 					<label for="horariolunes">Horario del lunes:</label>
-					<input v-model="grupos.horariolunes" type="text" id="horariolunes" maxlength="11" class="form-input" />
-					
+					<input
+						v-model="grupos.horariolunes"
+						type="text"
+						id="horariolunes"
+						maxlength="11"
+						class="form-input"
+					/>
+
 					<label for="horariomartes">Horario del martes:</label>
-					<input v-model="grupos.horariomartes" type="text" id="horariomartes" maxlength="11" class="form-input"/>
-					
+					<input
+						v-model="grupos.horariomartes"
+						type="text"
+						id="horariomartes"
+						maxlength="11"
+						class="form-input"
+					/>
+
 					<label for="horariomiercoles">Horario del miercoles:</label>
-					<input v-model="grupos.horariomiercoles" type="text" id="horariomiercoles" maxlength="11" class="form-input"/>
-					
+					<input
+						v-model="grupos.horariomiercoles"
+						type="text"
+						id="horariomiercoles"
+						maxlength="11"
+						class="form-input"
+					/>
+
 					<label for="horariojueves">Horario del jueves:</label>
-					<input v-model="grupos.horariojueves" type="text" id="horariojueves" maxlength="11" class="form-input"/>
-					
+					<input
+						v-model="grupos.horariojueves"
+						type="text"
+						id="horariojueves"
+						maxlength="11"
+						class="form-input"
+					/>
+
 					<label for="horarioviernes">Horario del viernes:</label>
-					<input v-model="grupos.horarioviernes" type="text" id="horarioviernes" maxlength="11" class="form-input"/>
-					
+					<input
+						v-model="grupos.horarioviernes"
+						type="text"
+						id="horarioviernes"
+						maxlength="11"
+						class="form-input"
+					/>
 				</div>
-					<div class="contenedor-form-boton">
-						<button type="submit" @click.prevent="editarGrupo()" class="form-boton">
-							Actualizar grupo
-						</button>
-					</div>
-					
-				</form>
+				<div class="contenedor-form-boton">
+					<button type="submit" @click.prevent="editarGrupo()" class="form-boton">Actualizar grupo</button>
+				</div>
+			</form>
 			<div v-if="mostrarError" class="error-message">
 				{{ errorMensaje }}
 			</div>
@@ -64,8 +97,7 @@
 import {URL_DATOS} from "@/utils/constants.js";
 import axios from "axios";
 import GruposLista from "./GruposLista.vue";
-import {traeDatos} from "@/utils/peticiones";
-import {obtenerDatos} from "@/utils/peticiones";
+import {traeDatos, obtenerDatos, traeDatosGrupos} from "@/utils/peticiones";
 
 export default {
 	name: "FormEditarGrupo",
@@ -76,12 +108,16 @@ export default {
 		clavegrupo: {
 			type: String,
 		},
+		horaAnterior: {
+			type: String,
+		},
 	},
 	data: function () {
 		return {
 			grupos: [],
 			clavematerias: [],
 			clavemaestros: [],
+			horarioMaestros: [],
 			mostrarError: false,
 			errorMensaje: "",
 		};
@@ -106,8 +142,24 @@ export default {
 				return true;
 			};
 
+			this.horarioMaestros = await traeDatosGrupos("horarioMaestro", this.grupos.clavemaestro);
+			const validaMaestroHorario = () => {
+				let band = true;
+				const hora = this.grupos.horariolunes;
+				this.horarioMaestros.forEach((horario) => {
+					console.log(hora);
+					console.log(horario.horariolunes);
+					if (hora === horario.horariolunes && this.grupos.horariolunes !== this.horaAnterior) {
+						console.log("entro", hora === horario.horariolunes);
+						this.mostrarError = true;
+						this.errorMensaje = "El maestro ya tiene una materia en ese horario.";
+						band = false;
+					}
+				});
+				return band;
+			};
 			try {
-				if (validaDatos()) {
+				if (validaDatos() && validaMaestroHorario()) {
 					const res = await axios.put(URL_DATOS + "/grupos/" + this.clavegrupo, {
 						clavemateria: this.grupos.clavemateria,
 						clavegrupo: this.grupos.clavegrupo,
@@ -121,9 +173,6 @@ export default {
 						horarioviernes: this.grupos.horarioviernes,
 					});
 					this.$router.push("/grupos");
-				} else {
-					this.mostrarError = true;
-					this.errorMensaje = "No debe de haber datos vacios.";
 				}
 			} catch (error) {
 				console.error("Error al verificar la existencia del grupo:", error);

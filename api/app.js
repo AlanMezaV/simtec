@@ -134,6 +134,17 @@ app.get("/api/grupos/materia/:id", (req, res) => {
 	);
 });
 
+//Mostrar los horarios de los grupos que tiene un maestro
+app.get("/api/grupos/horarioMaestro/:id", (req, res) => {
+	conexion.query("SELECT horariolunes FROM grupos WHERE clavemaestro = ?", [req.params.id], (error, filas) => {
+		if (error) {
+			throw error;
+		} else {
+			res.send(filas);
+		}
+	});
+});
+
 //Mostrar las clavemateria a los que esta registrado un alumno mandandole su numero de control
 app.get("/api/grupos/alumno/:id", (req, res) => {
 	conexion.query("SELECT clavemateria FROM carga WHERE ncontrol = ?", [req.params.id], (error, filas) => {

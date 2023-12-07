@@ -122,7 +122,10 @@ export default {
 		},
 		editarGrupo: function (grupos) {
 			grupos.mostrarOpciones = !grupos.mostrarOpciones;
-			this.$router.push({name: "editar-grupo", params: {clavegrupo: grupos.clavegrupo}});
+			this.$router.push({
+				name: "editar-grupo",
+				params: {clavegrupo: grupos.clavegrupo, horaAnterior: grupos.horariolunes},
+			});
 		},
 		eliminar: async function (grupos) {
 			this.clavegrupoSeleccionada = grupos.clavegrupo;
