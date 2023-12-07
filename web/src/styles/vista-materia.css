@@ -1,16 +1,17 @@
 .tabla-encabezado-materias{
     color: var(--black);
     opacity: 50%;
-    margin: 25px;
+    margin: 20px;
     width: 99%;
     display: grid;
-    grid-template-columns: 1fr 3fr 0.8fr 0.3fr;
+    grid-template-columns: 20% 58% 15% 5%;
     grid-gap: 5px;
     overflow: hidden;
 }
 .datos-materias{
     display: grid;  
-    grid-template-columns: 1fr 3fr .8fr 0.3fr;
+    /* grid-template-columns: 1fr 3fr .8fr 0.3fr; */
+    grid-template-columns: 20% 58% 15% 5%;
     border: 1px solid var(--white-smoke);
 
 }

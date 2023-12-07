@@ -3,9 +3,11 @@
 	<div>
 		<MateriasLista></MateriasLista>
 		<div class="overlay"></div>
-		<div class="FormAggMateria">
-			Agregar Materia
-			<button @click="cerrarFormulario">✖</button>
+		<div class="FormAggMateria formAgg">
+			<div class="encabezado">
+				Agregar Materia
+				<button @click="cerrarFormulario">✖</button>
+			</div>
 			<form>
 				<label for="clavemateria">Clave de materia:</label>
 				<input
@@ -17,11 +19,21 @@
 					@input="validarSoloNumerosClave"
 					@click.prevent="eliminaError()"
 					required
+					placeholder="Introduce la clave..."
+					class="form-input"
 				/>
-				<br />
+				
 				<label for="nombre">Nombre:</label>
-				<input maxlength="150" v-model="materias.nombre" type="text" id="nombre" required />
-				<br />
+				<input 
+					maxlength="150" 
+					v-model="materias.nombre" 
+					type="text" 
+					id="nombre" 
+					required 
+					placeholder="Introduce el nombre..."
+					class="form-input"
+				/>
+				
 				<label for="creditos">Creditos:</label>
 				<input
 					v-model="materias.creditos"
@@ -29,9 +41,14 @@
 					id="creditos"
 					@input="validarSoloNumerosCreditos"
 					required
+					placeholder="Introduce el número de creditos..."
+					class="form-input"
 				/>
-				<br />
-				<button type="submit" @click.prevent="agregarMateria()">Agregar</button>
+				<div class="contenedor-form-boton">
+					<button type="submit" @click.prevent="agregarMateria()" class="form-boton-agregar">
+						Agregar
+					</button>
+				</div>
 			</form>
 			<div v-if="mostrarError" class="error-message">
 				{{ errorMensaje }}
@@ -113,28 +130,8 @@ export default {
 };
 </script>
 
+<style scoped src="../../styles/formAgg.css"></style>
 <style scoped>
-.overlay {
-	position: fixed;
-	top: 0;
-	left: 0;
-	width: 100%;
-	height: 100%;
-	background: rgba(0, 0, 0, 0.5); /* Fondo oscuro semitransparente */
-}
-
-.FormAggMateria {
-	position: absolute;
-	top: 50%;
-	left: 50%;
-	transform: translate(-50%, -50%);
-	background-color: white;
-	padding: 20px;
-	border: 1px solid #ccc;
-	border-radius: 5px;
-	box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-}
-
 .error-message {
 	color: red;
 	margin-top: 10px;

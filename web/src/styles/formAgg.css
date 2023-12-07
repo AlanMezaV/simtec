@@ -6,8 +6,7 @@
 	height: 100%;
 	background: rgba(0, 0, 0, 0.5); /* Fondo oscuro semitransparente */
 }
-
-.FormAggAlumno{
+.formAgg{
     font-weight: bold;
     color: var(--dim-gray);
     display: flex;
@@ -23,10 +22,26 @@
 	border-radius: 5px;
 	box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
-.FormAggAlumno form{
+.formAgg form{
     display: flex;
     flex-direction: column;
     gap: 10px;
+}
+.FormAggMaestro{ /* ES EXACTAMENTE LO MISMO QUE FromAggAlumno */
+     font-weight: bold;
+    color: var(--dim-gray);
+    display: flex;
+    flex-direction: column;
+    width: 500px;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	background-color: var(--white);
+	padding: 20px;
+	border: 1px solid var(--smoke-white);
+	border-radius: 5px;
+	box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
 .form-input{
     height: 40px;
