@@ -34,9 +34,6 @@
 					<label for="limitealumnos">Limite de alumnos:</label>
 					<input v-model="grupos.limitealumnos" type="text" id="limitealumnos" required class="form-input" />
 
-					<label for="inscritos">Alumnos inscritos:</label>
-					<input v-model="grupos.inscritos" type="text" id="inscritos" required class="form-input" />
-
 					<label for="horariolunes">Horario del lunes:</label>
 					<input
 						v-model="grupos.horariolunes"
@@ -137,6 +134,8 @@ export default {
 					this.grupos.clavegrupo == "" ||
 					this.grupos.limitealumnos == ""
 				) {
+					this.mostrarError = true;
+					this.errorMensaje = "Solo se acepta que este vacio el horario.";
 					return false;
 				}
 				return true;

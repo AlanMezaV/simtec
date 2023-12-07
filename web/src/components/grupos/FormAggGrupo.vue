@@ -100,13 +100,7 @@
 					/>
 				</div>
 				<div class="contenedor-form-boton">
-<<<<<<< HEAD
-					<button type="submit" @click.prevent="agregarGrupo()" class="form-boton-agregar">Agregar</button>
-=======
-					<button type="submit" @click.prevent="agregarGrupo()" class="form-boton">
-						Agregar
-					</button>
->>>>>>> 1955243e6a38742203740cb3dfd1d5904dffc2b5
+					<button type="submit" @click.prevent="agregarGrupo()" class="form-boton">Agregar</button>
 				</div>
 			</form>
 			<div v-if="mostrarError" class="error-message">
@@ -169,6 +163,8 @@ export default {
 					this.grupos.clavegrupo == "" ||
 					this.grupos.limitealumnos == ""
 				) {
+					this.mostrarError = true;
+					this.errorMensaje = "Solo se acepta que este vacio el horario.";
 					return false;
 				}
 				return true;

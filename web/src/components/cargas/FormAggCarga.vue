@@ -142,13 +142,7 @@ export default {
 				const horario = this.clavegrupos[0].horariolunes;
 				console.log(horario);
 				this.horarios.forEach((hora) => {
-					console.log({
-						hora,
-						horario,
-					});
-					console.log("VALIDACION", hora === horario);
 					if (hora === horario) {
-						console.log("entro");
 						this.mostrarError = true;
 						this.errorMensaje = "El alumno ya tiene una materia en ese horario.";
 						band = false;
