@@ -17,18 +17,22 @@
 						<div>Creditos</div>
 						<div></div>
 					</div>
-					<div v-for="materias in lista_materias" :key="materias.clavemateria" class="datos-materias">
-						<span class="espacio">{{ materias.clavemateria }}</span>
-						<span class="espacio">{{ materias.nombre }}</span>
-						<span class="espacio">{{ materias.creditos }}</span>
-						<span class="espacio">
-							<button @click="mostrarOpciones(materias)" class="boton-acciones">···</button>
-							<div v-if="materias.mostrarOpciones" class="menu-desplegable">
-								<button @click.prevent="editarMateria(materias)">Editar</button>
-								<br />
-								<button @click="eliminarMateria(materias)">Eliminar</button>
-							</div>
-						</span>
+					<div class="contenedor-datos">
+
+						<div v-for="materias in lista_materias" :key="materias.clavemateria" class="datos-materias">
+							<span class="espacio">{{ materias.clavemateria }}</span>
+							<span class="espacio">{{ materias.nombre }}</span>
+							<span class="espacio">{{ materias.creditos }}</span>
+							<span class="espacio">
+								<button @click="mostrarOpciones(materias)" class="boton-acciones">···</button>
+								<div v-if="materias.mostrarOpciones" class="menu-desplegable">
+									<button @click.prevent="editarMateria(materias)">Editar</button>
+									<br />
+									<button @click="eliminarMateria(materias)">Eliminar</button>
+								</div>
+							</span>
+						</div>
+						
 					</div>
 				</div>
 			</div>

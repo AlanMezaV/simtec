@@ -17,22 +17,26 @@
 						<div>Estatus</div>
 						<div></div>
 					</div>
-					<div v-for="maestros in lista_maestros" :key="maestros.clavemaestro" class="datos">
-						<span class="espacio">{{ maestros.clavemaestro }}</span>
-						<span class="espacio">{{ maestros.nombre }}</span>
-						<span class="espacio">{{ maestros.departamento }}</span>
-						<span class="espacio estatus">{{ getEstatus(maestros.estatus) }}</span>
-						<span class="espacio">
-							<button @click="mostrarOpciones(maestros)" class="boton-acciones">···</button>
-							<div v-if="maestros.mostrarOpciones" class="menu-desplegable">
-								<div>
-									<button @click.prevent="editarMaestro(maestros)">Editar</button>
+					<div class="contenedor-datos">
+
+						<div v-for="maestros in lista_maestros" :key="maestros.clavemaestro" class="datos">
+							<span class="espacio">{{ maestros.clavemaestro }}</span>
+							<span class="espacio">{{ maestros.nombre }}</span>
+							<span class="espacio">{{ maestros.departamento }}</span>
+							<span class="espacio estatus">{{ getEstatus(maestros.estatus) }}</span>
+							<span class="espacio">
+								<button @click="mostrarOpciones(maestros)" class="boton-acciones">···</button>
+								<div v-if="maestros.mostrarOpciones" class="menu-desplegable">
+									<div>
+										<button @click.prevent="editarMaestro(maestros)">Editar</button>
+									</div>
+									<div>
+										<button @click="eliminarMaestro(maestros)">Eliminar</button>
+									</div>
 								</div>
-								<div>
-									<button @click="eliminarMaestro(maestros)">Eliminar</button>
-								</div>
-							</div>
-						</span>
+							</span>
+						</div>
+						
 					</div>
 				</div>
 			</div>
