@@ -16,31 +16,35 @@
 						<div>Creditos</div>
 						<div></div>
 					</div>
-					<div v-for="materias in lista_materias" :key="materias.clavemateria" class="datos-materias">
-						<span class="espacio">{{ materias.clavemateria }}</span>
-						<span class="espacio">{{ materias.nombre }}</span>
-						<span class="espacio">{{ materias.creditos }}</span>
-						<span class="espacio">
-							<button @click="mostrarOpciones(materias)" class="boton-acciones">···</button>
-							<div v-if="materias.mostrarOpciones" class="menu-desplegable">
-								<button @click.prevent="editarMateria(materias)">Editar</button>
-								<br />
-								<button @click="eliminar(materias)">Eliminar</button>
-							</div>
-						</span>
-						<div v-if="mostrarConfirma && materias.clavemateria === clavemateriaSeleccionada">
-							<ConfirmaEliminar
+					<div class="contenedor-datos">
+
+						<div v-for="materias in lista_materias" :key="materias.clavemateria" class="datos-materias">
+							<span class="espacio">{{ materias.clavemateria }}</span>
+							<span class="espacio">{{ materias.nombre }}</span>
+							<span class="espacio">{{ materias.creditos }}</span>
+							<span class="espacio">
+								<button @click="mostrarOpciones(materias)" class="boton-acciones">···</button>
+								<div v-if="materias.mostrarOpciones" class="menu-desplegable">
+									<button @click.prevent="editarMateria(materias)">Editar</button>
+									<br />
+									<button @click="eliminar(materias)">Eliminar</button>
+								</div>
+							</span>
+							<div v-if="mostrarConfirma && materias.clavemateria === clavemateriaSeleccionada">
+								<ConfirmaEliminar
 								:mensaje="'Estas seguro que quieres eliminar la materia: ' + materias.nombre"
 								@si="eliminarMateria(clavemateriaSeleccionada)"
 								@cerrar="cerrarConfirma"
-							></ConfirmaEliminar>
-						</div>
-						<div v-if="mostrarError">
-							<Error
+								></ConfirmaEliminar>
+							</div>
+							<div v-if="mostrarError">
+								<Error
 								error="No se puede eliminar esta materia ya tiene asignada grupos."
 								@cerrar="cerrarError"
-							></Error>
+								></Error>
+							</div>
 						</div>
+						
 					</div>
 				</div>
 			</div>

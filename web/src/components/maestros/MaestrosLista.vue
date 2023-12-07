@@ -17,36 +17,40 @@
 						<div>Estatus</div>
 						<div></div>
 					</div>
-					<div v-for="maestros in lista_maestros" :key="maestros.clavemaestro" class="datos">
-						<span class="espacio">{{ maestros.clavemaestro }}</span>
-						<span class="espacio">{{ maestros.nombre }}</span>
-						<span class="espacio">{{ maestros.departamento }}</span>
-						<span class="espacio estatus">{{ getEstatus(maestros.estatus) }}</span>
-						<span class="espacio">
-							<button @click="mostrarOpciones(maestros)" class="boton-acciones">···</button>
-							<div v-if="maestros.mostrarOpciones" class="menu-desplegable">
-								<div>
-									<button @click.prevent="editarMaestro(maestros)">Editar</button>
+					<div class="contenedor-datos">
+
+						<div v-for="maestros in lista_maestros" :key="maestros.clavemaestro" class="datos">
+							<span class="espacio">{{ maestros.clavemaestro }}</span>
+							<span class="espacio">{{ maestros.nombre }}</span>
+							<span class="espacio">{{ maestros.departamento }}</span>
+							<span class="espacio estatus">{{ getEstatus(maestros.estatus) }}</span>
+							<span class="espacio">
+								<button @click="mostrarOpciones(maestros)" class="boton-acciones">···</button>
+								<div v-if="maestros.mostrarOpciones" class="menu-desplegable">
+									<div>
+										<button @click.prevent="editarMaestro(maestros)">Editar</button>
+									</div>
+									<div>
+										<button @click="eliminar(maestros)">Eliminar</button>
+									</div>
 								</div>
-								<div>
-									<button @click="eliminar(maestros)">Eliminar</button>
-								</div>
-							</div>
-						</span>
-						<div v-if="mostrarConfirma && maestros.clavemaestro === clavemaestroSeleccionado">
-							<ConfirmaEliminar
+							</span>
+							<div v-if="mostrarConfirma && maestros.clavemaestro === clavemaestroSeleccionado">
+								<ConfirmaEliminar
 								:clave="clavemaestroSeleccionado"
 								:mensaje="'Estas seguro que quieres eliminar el maestro: ' + maestros.nombre"
 								@si="eliminarMaestro(clavemaestroSeleccionado)"
 								@cerrar="cerrarConfirma"
-							></ConfirmaEliminar>
-						</div>
-						<div v-if="mostrarError">
-							<Error
+								></ConfirmaEliminar>
+							</div>
+							<div v-if="mostrarError">
+								<Error
 								error="No se puede eliminar este alumno ya que tiene materias cargadas."
 								@cerrar="cerrarError"
-							></Error>
+								></Error>
+							</div>
 						</div>
+						
 					</div>
 				</div>
 			</div>

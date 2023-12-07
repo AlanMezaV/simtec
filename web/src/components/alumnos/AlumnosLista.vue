@@ -17,37 +17,41 @@
 						<div>Estatus</div>
 						<div></div>
 					</div>
-					<div v-for="alumnos in lista_alumnos" :key="alumnos.ncontrol" class="datos">
-						<span class="espacio">{{ alumnos.ncontrol }}</span>
-						<span class="espacio">{{ alumnos.nombre }}</span>
-						<span class="espacio">{{ alumnos.carrera }}</span>
-						<span class="espacio estatus">{{ getEstatus(alumnos.estatus) }}</span>
-						<span class="espacio">
-							<button @click="mostrarOpciones(alumnos)" class="boton-acciones">···</button>
-							<div v-if="alumnos.mostrarOpciones" class="menu-desplegable">
-								<div>
-									<img src="../../../public/images/lapiz.svg" alt="" />
-									<button @click.prevent="editarAlumno(alumnos)">Editar</button>
+					<div class="contenedor-datos">
+
+						<div v-for="alumnos in lista_alumnos" :key="alumnos.ncontrol" class="datos">
+							<span class="espacio">{{ alumnos.ncontrol }}</span>
+							<span class="espacio">{{ alumnos.nombre }}</span>
+							<span class="espacio">{{ alumnos.carrera }}</span>
+							<span class="espacio estatus">{{ getEstatus(alumnos.estatus) }}</span>
+							<span class="espacio">
+								<button @click="mostrarOpciones(alumnos)" class="boton-acciones">···</button>
+								<div v-if="alumnos.mostrarOpciones" class="menu-desplegable">
+									<div>
+										<img src="../../../public/images/lapiz.svg" alt="" />
+										<button @click.prevent="editarAlumno(alumnos)">Editar</button>
+									</div>
+									<div>
+										<img src="../../../public/images/basura.svg" alt="" />
+										<button @click="eliminar(alumnos)">Eliminar</button>
+									</div>
 								</div>
-								<div>
-									<img src="../../../public/images/basura.svg" alt="" />
-									<button @click="eliminar(alumnos)">Eliminar</button>
-								</div>
-							</div>
-						</span>
-						<div v-if="mostrarConfirma && alumnos.ncontrol === numeroControlSeleccionado">
+							</span>
+							<div v-if="mostrarConfirma && alumnos.ncontrol === numeroControlSeleccionado">
 							<ConfirmaEliminar
 								:mensaje="'Estas seguro que quieres eliminar el alumno: ' + alumnos.nombre"
 								@si="eliminarAlumno(numeroControlSeleccionado)"
 								@cerrar="cerrarConfirma"
-							></ConfirmaEliminar>
-						</div>
-						<div v-if="mostrarError">
-							<Error
+								></ConfirmaEliminar>
+							</div>
+							<div v-if="mostrarError">
+								<Error
 								error="No se puede eliminar este maestro ya tiene asignados grupos."
 								@cerrar="cerrarError"
-							></Error>
+								></Error>
+							</div>
 						</div>
+						
 					</div>
 				</div>
 			</div>
