@@ -1,11 +1,12 @@
 <template>
 	<div class="overlay">
 		<div class="error">
-			<div>
+			<div class="encabezado">
 				Error
 				<button @click="cerrarError">✖</button>
 			</div>
-			<div>{{ error }}</div>
+			<div class="mensaje">{{ error }}</div>
+			
 		</div>
 	</div>
 </template>
@@ -27,16 +28,16 @@ export default {
 };
 </script>
 
+<style scoped src="../../styles/mensajes.css"></style>
 <style>
-.overlay {
+/* .overlay {
 	position: fixed;
 	top: 0;
 	left: 0;
 	width: 100%;
 	height: 100%;
 	background: rgba(0, 0, 0, 0.5); /* Fondo oscuro semitransparente */
-}
-
+/* 
 .error {
 	font-weight: bold;
 	color: var(--dim-gray);
@@ -52,5 +53,5 @@ export default {
 	border: 1px solid var(--smoke-white);
 	border-radius: 5px;
 	box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-}
+} */
 </style>

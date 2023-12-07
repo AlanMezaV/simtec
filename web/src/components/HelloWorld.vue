@@ -1,5 +1,7 @@
 <template>
-	<div class="hello">
+	<div class="contenedor-principal">
+		<div class="MaestrosLista contenedor-lista">
+		</div>
 	</div>
 		
 </template>
@@ -14,6 +16,7 @@ export default {
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
+<style scoped src="../styles/vistas.css"></style>
 <style scoped lang="scss">
 .hello{
 	background-color: #42b983;
