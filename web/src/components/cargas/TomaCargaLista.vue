@@ -38,12 +38,6 @@
 								@cerrar="cerrarConfirma"
 							></ConfirmaEliminar>
 						</div>
-						<div v-if="mostrarError">
-							<Error
-								error="No se puede eliminar esta materia ya tiene asignada grupos."
-								@cerrar="cerrarError"
-							></Error>
-						</div>
 					</tr>
 				</tbody>
 			</table>
@@ -54,7 +48,7 @@
 <script>
 import {URL_DATOS} from "@/utils/constants.js";
 import axios from "axios";
-import {obtenerDatos} from "@/utils/peticiones";
+import {obtenerDatos, traeDatos} from "@/utils/peticiones";
 import Error from "../mensajes/Error.vue";
 import ConfirmaEliminar from "../mensajes/ConfirmaEliminar.vue";
 
@@ -69,6 +63,7 @@ export default {
 			lista_cargas: [],
 			clavematerias: [],
 			clavealumnos: [],
+			grupoActualizar: [],
 			mostrarError: false,
 			mostrarConfirma: false,
 			cargaSeleccionada: [],
@@ -129,12 +124,17 @@ export default {
 		},
 		eliminarCarga: async function (cargas) {
 			console.log(cargas);
-			const res = await axios.delete(URL_DATOS + "/cargas/" + cargas.clavegrupo, {
-				params: {
-					ncontrol: cargas.ncontrol,
-				},
+			const res = await axios
+				.delete(URL_DATOS + `/cargas/${cargas.clavegrupo}/${cargas.ncontrol}`)
+				.then((response) => {
+					// Maneja la respuesta exitosa si es necesario
+					console.log("Carga eliminada con éxito", response.data);
+				});
+			this.grupoActualizar = await traeDatos("grupos", cargas.clavegrupo);
+			const response = await axios.put(URL_DATOS + "/grupos/inscritos/" + cargas.clavegrupo, {
+				clavegrupo: cargas.clavegrupo,
+				inscritos: this.grupoActualizar.inscritos - 1,
 			});
-			console.log(res);
 			this.lista_cargas = await obtenerDatos("cargas");
 			this.mostrarConfirma = false;
 		},

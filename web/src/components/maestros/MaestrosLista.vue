@@ -18,7 +18,6 @@
 						<div></div>
 					</div>
 					<div class="contenedor-datos">
-
 						<div v-for="maestros in lista_maestros" :key="maestros.clavemaestro" class="datos">
 							<span class="espacio">{{ maestros.clavemaestro }}</span>
 							<span class="espacio">{{ maestros.nombre }}</span>
@@ -37,20 +36,19 @@
 							</span>
 							<div v-if="mostrarConfirma && maestros.clavemaestro === clavemaestroSeleccionado">
 								<ConfirmaEliminar
-								:clave="clavemaestroSeleccionado"
-								:mensaje="'Estas seguro que quieres eliminar el maestro: ' + maestros.nombre"
-								@si="eliminarMaestro(clavemaestroSeleccionado)"
-								@cerrar="cerrarConfirma"
+									:clave="clavemaestroSeleccionado"
+									:mensaje="'Estas seguro que quieres eliminar el maestro: ' + maestros.nombre"
+									@si="eliminarMaestro(clavemaestroSeleccionado)"
+									@cerrar="cerrarConfirma"
 								></ConfirmaEliminar>
 							</div>
 							<div v-if="mostrarError">
 								<Error
-								error="No se puede eliminar este alumno ya que tiene materias cargadas."
-								@cerrar="cerrarError"
+									error="No se puede eliminar este maestro ya que tiene grupos asignados."
+									@cerrar="cerrarError"
 								></Error>
 							</div>
 						</div>
-						
 					</div>
 				</div>
 			</div>

@@ -21,10 +21,9 @@
 						<div>Horario miercoles</div>
 						<div>Horario jueves</div>
 						<div>Horario viernes</div>
-						<div>  </div>
+						<div></div>
 					</div>
 					<div class="contenedor-datos">
-
 						<div v-for="grupos in lista_grupos" :key="grupos.clavegrupo" class="datos-grupos">
 							<span class="espacio">{{ grupos.clavegrupo }}</span>
 							<span class="espacio">{{ getNombreMateria(grupos.clavemateria) }}</span>
@@ -51,19 +50,18 @@
 							</span>
 							<div v-if="mostrarConfirma && grupos.clavegrupo === clavegrupoSeleccionada">
 								<ConfirmaEliminar
-								:mensaje="'Estas seguro que quieres eliminar la materia: ' + grupos.clavegrupo"
-								@si="eliminarGrupo(clavegrupoSeleccionada)"
-								@cerrar="cerrarConfirma"
+									:mensaje="'Estas seguro que quieres eliminar el grupo: ' + grupos.clavegrupo"
+									@si="eliminarGrupo(clavegrupoSeleccionada)"
+									@cerrar="cerrarConfirma"
 								></ConfirmaEliminar>
 							</div>
 							<div v-if="mostrarError">
 								<Error
-								error="No se puede eliminar esta materia ya tiene asignada grupos."
-								@cerrar="cerrarError"
+									error="No se puede eliminar este grupo ya tiene asignadas cargas."
+									@cerrar="cerrarError"
 								></Error>
 							</div>
 						</div>
-						
 					</div>
 				</div>
 			</div>

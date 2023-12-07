@@ -90,9 +90,7 @@ export default {
 					this.grupos.clavegrupo == undefined ||
 					this.grupos.limitealumnos == undefined ||
 					this.grupos.clavegrupo == "" ||
-					this.grupos.limitealumnos == "" ||
-					this.grupos.inscritos == undefined ||
-					this.grupos.inscritos == ""
+					this.grupos.limitealumnos == ""
 				) {
 					return false;
 				}

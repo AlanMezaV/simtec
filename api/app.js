@@ -386,6 +386,20 @@ app.put("/api/materias/:id", (req, res) => {
 	});
 });
 
+//Actualizar inscritos de un grupo
+app.put("/api/grupos/inscritos/:id", (req, res) => {
+	let clavegrupo = req.body.clavegrupo;
+	let inscritos = req.body.inscritos;
+	let sql = "UPDATE grupos SET inscritos = ? WHERE clavegrupo = ?";
+	conexion.query(sql, [inscritos, clavegrupo], (error, results) => {
+		if (error) {
+			throw error;
+		} else {
+			res.send(results);
+		}
+	});
+});
+
 //Actualizar un grupo
 app.put("/api/grupos/:id", (req, res) => {
 	let clavemateria = req.body.clavemateria;
@@ -488,9 +502,9 @@ app.delete("/api/grupos/:id", (req, res) => {
 });
 
 //Eliminar una carga
-app.delete("/api/cargas/:id", (req, res) => {
+app.delete("/api/cargas/:id/:ncontrol", (req, res) => {
 	let clavegrupo = req.params.id;
-	let ncontrol = req.body.ncontrol;
+	let ncontrol = req.params.ncontrol;
 	conexion.query(
 		"DELETE FROM carga WHERE clavegrupo = ? AND ncontrol = ?",
 		[clavegrupo, ncontrol],

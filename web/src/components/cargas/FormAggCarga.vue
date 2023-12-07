@@ -43,8 +43,7 @@
 import {URL_DATOS} from "@/utils/constants.js";
 import axios from "axios";
 import TomaCargaLista from "./TomaCargaLista.vue";
-import {obtenerDatos} from "@/utils/peticiones";
-import {traeDatosGrupos} from "@/utils/peticiones";
+import {obtenerDatos, traeDatos, traeDatosGrupos} from "@/utils/peticiones";
 
 export default {
 	name: "FormAggCarga",
@@ -72,8 +71,13 @@ export default {
 	watch: {
 		"cargas.clavemateria": "peticionGruposClaveMateria",
 		"cargas.ncontrol": ["peticionGruposNcontrol", "peticionAlumnosClvGyClvM"],
+		"cargas.clavegrupo": "pedirNuevoGrupo",
 	},
 	methods: {
+		pedirNuevoGrupo: async function () {
+			this.grupoActualizar = await traeDatos("grupos", this.cargas.clavegrupo);
+			console.log("Grupo actualizado", this.grupoActualizar);
+		},
 		peticionGruposClaveMateria: async function () {
 			this.clavegrupos = await traeDatosGrupos("materia", this.cargas.clavemateria);
 		},
@@ -121,9 +125,11 @@ export default {
 			};
 
 			const validaInscritos = () => {
-				const inscritos = this.clavegrupos[0].inscritos;
-				const cupo = this.clavegrupos[0].limitealumnos;
-				if (inscritos >= cupo) {
+				const inscritos = this.grupoActualizar.inscritos;
+				console.log("Alumnos inscritos" + this.grupoActualizar.inscritos);
+				const cupo = this.grupoActualizar.limitealumnos;
+				console.log("Cupo" + this.grupoActualizar.limitealumnos);
+				if (inscritos === cupo) {
 					this.mostrarError = true;
 					this.errorMensaje = "El grupo ya esta lleno.";
 					return false;
@@ -152,6 +158,11 @@ export default {
 			};
 			try {
 				if (validaDatos() && validaAlumnoMateria() && validaAlumnoHorario() && validaInscritos()) {
+					const response = await axios.put(URL_DATOS + "/grupos/inscritos/" + this.cargas.clavegrupo, {
+						clavegrupo: this.cargas.clavegrupo,
+						inscritos: this.grupoActualizar.inscritos + 1,
+					});
+
 					const res = await axios.post(URL_DATOS + "/cargas", {
 						clavemateria: this.cargas.clavemateria,
 						clavegrupo: this.cargas.clavegrupo,

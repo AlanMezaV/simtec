@@ -43,7 +43,7 @@
 import {URL_DATOS} from "@/utils/constants.js";
 import axios from "axios";
 import TomaCargaLista from "./TomaCargaLista.vue";
-import {obtenerDatos} from "@/utils/peticiones";
+import {obtenerDatos, traeDatos} from "@/utils/peticiones";
 import {traeDatosGrupos} from "@/utils/peticiones";
 
 export default {
@@ -69,7 +69,9 @@ export default {
 			clavealumnos: [],
 			clavegrupos: [],
 			pedir: [],
+			grupoViejo: [],
 			materiasDeAlumno: [],
+			grupoActualizar: [],
 			horarios: [],
 			mostrarError: false,
 			errorMensaje: "",
@@ -77,7 +79,6 @@ export default {
 	},
 	async created() {
 		this.cargas = await this.traeCarga();
-		console.log(this.cargas);
 		this.clavematerias = await obtenerDatos("materias");
 		this.clavegrupos = await traeDatosGrupos("materia", this.clavemateria);
 		this.clavealumnos = await obtenerDatos("alumnos");
@@ -85,6 +86,7 @@ export default {
 	watch: {
 		"cargas.clavemateria": "peticionGruposClaveMateria",
 		"cargas.ncontrol": ["peticionGruposNcontrol", "peticionAlumnosClvGyClvM"],
+		"cargas.clavegrupo": "pedirNuevoGrupo",
 	},
 	methods: {
 		traeCarga: async function () {
@@ -107,9 +109,12 @@ export default {
 				return {};
 			}
 		},
+		pedirNuevoGrupo: async function () {
+			this.grupoActualizar = await traeDatos("grupos", this.cargas.clavegrupo);
+			console.log("Grupo actualizado", this.grupoActualizar);
+		},
 		peticionGruposClaveMateria: async function () {
 			this.clavegrupos = await traeDatosGrupos("materia", this.cargas.clavemateria);
-			console.log(this.clavegrupos);
 		},
 		peticionGruposNcontrol: async function () {
 			this.materiasDeAlumno = await traeDatosGrupos("alumno", this.cargas.ncontrol);
@@ -168,8 +173,36 @@ export default {
 				}
 				return true;
 			};
+
+			const validaInscritos = () => {
+				const inscritos = this.grupoActualizar.inscritos;
+				console.log("Alumnos inscritos" + this.grupoActualizar.inscritos);
+				const cupo = this.grupoActualizar.limitealumnos;
+				console.log("Cupo" + this.grupoActualizar.limitealumnos);
+				if (inscritos === cupo) {
+					this.mostrarError = true;
+					this.errorMensaje = "El grupo ya esta lleno.";
+					return false;
+				}
+				return true;
+			};
+
 			try {
-				if (validaDatos() && validaAlumnoMateria() && validaAlumnoHorario()) {
+				if (validaDatos() && validaAlumnoMateria() && validaAlumnoHorario() && validaInscritos()) {
+					if (this.cargas.clavegrupo !== this.clavegrupo) {
+						this.grupoViejo = await traeDatos("grupos", this.clavegrupo);
+						let nuevaCantidad = this.grupoViejo.inscritos - 1;
+						const response = await axios.put(URL_DATOS + "/grupos/inscritos/" + this.clavegrupo, {
+							clavegrupo: this.clavegrupo,
+							inscritos: nuevaCantidad,
+						});
+						let Cantidad = this.grupoActualizar.inscritos + 1;
+						const response2 = await axios.put(URL_DATOS + "/grupos/inscritos/" + this.cargas.clavegrupo, {
+							clavegrupo: this.cargas.clavegrupo,
+							inscritos: Cantidad,
+						});
+					}
+
 					const res = await axios.put(URL_DATOS + "/cargas", {
 						clavemateria: this.cargas.clavemateria,
 						clavegrupo: this.cargas.clavegrupo,
