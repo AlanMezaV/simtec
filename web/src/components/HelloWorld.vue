@@ -1,6 +1,15 @@
 <template>
 	<div class="contenedor-principal">
-		<div class="MaestrosLista contenedor-lista">
+		<div class="contenedor-lista">
+			<img src="../../public/images/LOGO-TECNM.png" alt="">
+			<div class="contenedor-info">
+				<h1>Instituto Tecnológico Campus Culiacán</h1>
+				<h2>Simulación de Sistema de Integración escolar</h2>
+				<h3>
+					Angulo Sánchez Monica <br>
+					Meza Valenzuela Alan
+				</h3>
+			</div>
 		</div>
 	</div>
 		
@@ -16,23 +25,5 @@ export default {
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
+<style scoped src="../styles/home.css"></style>
 <style scoped src="../styles/vistas.css"></style>
-<style scoped lang="scss">
-.hello{
-	background-color: #42b983;
-}
-h3 {
-	margin: 40px 0 0;
-}
-ul {
-	list-style-type: none;
-	padding: 0;
-}
-li {
-	display: inline-block;
-	margin: 0 10px;
-}
-a {
-	color: #42b983;
-}
-</style>

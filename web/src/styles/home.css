@@ -1,0 +1,11 @@
+.contenedor-lista{
+    font-size: 30px;
+    color: var(--midnigth-blue-tecnm);
+}
+.contenedor-info{
+    display: flex;
+    flex-direction: column;
+    gap: 50px;
+    margin-top: 20px;
+    align-items: center;
+}
