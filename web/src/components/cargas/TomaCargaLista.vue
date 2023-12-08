@@ -10,14 +10,38 @@
 						<th>Materia</th>
 						<th>Numero de control</th>
 						<th>Alumno</th>
+						<th>Horario lunes</th>
+						<th>Horario martes</th>
+						<th>Horario miércoles</th>
+						<th>Horario jueves</th>
+						<th>Horario viernes</th>
 					</tr>
 				</thead>
 				<tbody>
 					<tr v-for="cargas in lista_cargas" :key="cargas.clavegrupo + cargas.ncontrol">
 						<td class="espacio">{{ cargas.clavegrupo }}</td>
-						<span class="espacio">{{ getNombreMateria(cargas.clavemateria) }}</span>
+						<td class="espacio">
+							<span>{{ getNombreMateria(cargas.clavemateria) }}</span>
+						</td>
 						<td class="espacio">{{ cargas.ncontrol }}</td>
-						<span class="espacio">{{ getNombreAlumno(cargas.ncontrol) }}</span>
+						<td>
+							<span class="espacio">{{ getNombreAlumno(cargas.ncontrol) }}</span>
+						</td>
+						<td class="espacio">
+							<span>{{ getHorarioAlumno(cargas.clavegrupo, "lunes") }}</span>
+						</td>
+						<td class="espacio">
+							<span>{{ getHorarioAlumno(cargas.clavegrupo, "martes") }}</span>
+						</td>
+						<td class="espacio">
+							<span>{{ getHorarioAlumno(cargas.clavegrupo, "miercoles") }}</span>
+						</td>
+						<td class="espacio">
+							<span>{{ getHorarioAlumno(cargas.clavegrupo, "jueves") }}</span>
+						</td>
+						<td class="espacio">
+							<span>{{ getHorarioAlumno(cargas.clavegrupo, "viernes") }}</span>
+						</td>
 						<td class="espacio">
 							<button @click="mostrarOpciones(cargas)">...</button>
 							<div v-if="cargas.mostrarOpciones" class="menu-desplegable">
@@ -48,7 +72,7 @@
 <script>
 import {URL_DATOS} from "@/utils/constants.js";
 import axios from "axios";
-import {obtenerDatos, traeDatos} from "@/utils/peticiones";
+import {obtenerDatos, traeDatos, traeDatosGrupos} from "@/utils/peticiones";
 import Error from "../mensajes/Error.vue";
 import ConfirmaEliminar from "../mensajes/ConfirmaEliminar.vue";
 
@@ -63,7 +87,9 @@ export default {
 			lista_cargas: [],
 			clavematerias: [],
 			clavealumnos: [],
+			clavegrupos: [],
 			grupoActualizar: [],
+			horario: [],
 			mostrarError: false,
 			mostrarConfirma: false,
 			cargaSeleccionada: [],
@@ -71,8 +97,10 @@ export default {
 	},
 	async created() {
 		this.lista_cargas = await obtenerDatos("cargas");
+		console.log("Lista cargas", this.lista_cargas);
 		this.clavematerias = await obtenerDatos("materias");
 		this.clavealumnos = await obtenerDatos("alumnos");
+		this.clavegrupos = await obtenerDatos("grupos");
 	},
 	methods: {
 		getNombreMateria(claveMateria) {
@@ -81,21 +109,36 @@ export default {
 		},
 		getNombreAlumno(Ncontrol) {
 			const alumno = this.clavealumnos.find((alumno) => alumno.ncontrol === Ncontrol);
+
 			return alumno ? alumno.nombre : "Alumno no encontrado";
 		},
-		traeCargas: async function () {
-			let a = [];
-			await axios
-				.get(URL_DATOS + "/cargas")
-				.then(function (response) {
-					a = response.data;
-					a = response.data.map((carga) => ({...carga, mostrarOpciones: false}));
-				})
-				.catch(function (error) {
-					console.log(error);
-				});
-			this.cargas = a;
+		// getHorarioAlumno(clavegrupo) {
+		// 	const grupo = this.clavegrupos.find((grupo) => grupo.clavegrupo === clavegrupo);
+		// 	return grupo ? grupo.horariolunes : "Horario no encontrado";
+		// },
+		getHorarioAlumno(clavegrupo, dia) {
+			const grupo = this.clavegrupos.find((grupo) => grupo.clavegrupo === clavegrupo);
+
+			if (grupo) {
+				switch (dia.toLowerCase()) {
+					case "lunes":
+						return grupo.horariolunes;
+					case "martes":
+						return grupo.horariomartes;
+					case "miercoles":
+						return grupo.horariomiercoles;
+					case "jueves":
+						return grupo.horariojueves;
+					case "viernes":
+						return grupo.horarioviernes;
+					default:
+						return "Día no válido";
+				}
+			} else {
+				return "Horario no encontrado";
+			}
 		},
+
 		nuevaCarga: function () {
 			this.lista_cargas.forEach((m) => {
 				m.mostrarOpciones = false;

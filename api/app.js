@@ -170,13 +170,17 @@ app.get("/api/grupos/alumnito/:id", (req, res) => {
 //Mostrar el horario de un grupo mandandole su clavegrupo y clavemateria
 app.get("/api/grupos/horario/:id", (req, res) => {
 	let clavegrupo = req.params.id; // Utiliza req.params para obtener el parámetro de la URL
-	conexion.query("SELECT horariolunes FROM grupos WHERE clavegrupo = ?", [clavegrupo], (error, filas) => {
-		if (error) {
-			throw error;
-		} else {
-			res.send(filas);
+	conexion.query(
+		"SELECT horariolunes, clavegrupo, horariomartes FROM grupos WHERE clavegrupo = ?",
+		[clavegrupo],
+		(error, filas) => {
+			if (error) {
+				throw error;
+			} else {
+				res.send(filas);
+			}
 		}
-	});
+	);
 });
 
 // Mostrar una carga
