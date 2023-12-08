@@ -1,7 +1,7 @@
 import axios from "axios";
 import {URL_DATOS} from "./constants";
 
-async function obtenerDatos(entidad) {
+export async function obtenerDatos(entidad) {
 	try {
 		const response = await axios.get(URL_DATOS + `/${entidad}`);
 		return response.data.map((dato) => ({...dato, mostrarOpciones: false}));
@@ -11,7 +11,7 @@ async function obtenerDatos(entidad) {
 	}
 }
 
-async function traeDatos(entidad, primaryKey) {
+export async function traeDatos(entidad, primaryKey) {
 	try {
 		const response = await axios.get(URL_DATOS + `/${entidad}/${primaryKey}`);
 		return response.data[0];
@@ -21,7 +21,7 @@ async function traeDatos(entidad, primaryKey) {
 	}
 }
 
-async function traeDatosGrupos(entidad, primaryKey) {
+export async function traeDatosGrupos(entidad, primaryKey) {
 	try {
 		const response = await axios.get(URL_DATOS + `/grupos/${entidad}/${primaryKey}`);
 		return response.data;
@@ -31,6 +31,22 @@ async function traeDatosGrupos(entidad, primaryKey) {
 	}
 }
 
-export {obtenerDatos};
-export {traeDatos};
-export {traeDatosGrupos};
+export async function traeCargaAlumnos(primaryKey) {
+	try {
+		const response = await axios.get(`${URL_DATOS}/cargaAlumno/${primaryKey}`);
+		return response;
+	} catch (error) {
+		console.error(`Error al obtener alumnos`, error);
+		throw error;
+	}
+}
+
+export async function elimina(entidad, clave) {
+	try {
+		const res = await axios.delete(`${URL_DATOS}/${entidad}/${clave}`);
+		return res;
+	} catch (error) {
+		console.error(`Error al aliminar ${entidad}`, error);
+		throw error;
+	}
+}
