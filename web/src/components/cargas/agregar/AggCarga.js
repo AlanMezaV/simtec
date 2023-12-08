@@ -1,52 +1,7 @@
-<template>
-	<div>
-		<TomaCargaLista></TomaCargaLista>
-		<div class="overlay"></div>
-		<div class="FormAggCarga form-agg-edit">
-			<div class="encabezado">
-				Agregar Carga
-				<button @click="cerrarFormulario">✖</button>
-			</div>
-			<form>
-				<label for="clavemateria">Materia:</label>
-				<select v-model="cargas.clavemateria" id="clavemateria" class="form-input">
-					<option v-for="materia in clavematerias" :key="materia.clavemateria" :value="materia.clavemateria">
-						{{ materia.nombre }}
-					</option>
-				</select>
-
-				<label for="clavegrupo">Grupos</label>
-				<select v-model="cargas.clavegrupo" id="clavegrupo" class="clavegrupo form-input">
-					<option v-for="grupo in clavegrupos" :key="grupo.clavegrupo" :value="grupo.clavegrupo">
-						{{ grupo.clavegrupo }}
-					</option>
-				</select>
-
-				<label for="ncontrol">Numero de control:</label>
-				<select v-model="cargas.ncontrol" id="ncontrol" class="form-input">
-					<option v-for="alumno in clavealumnos" :key="alumno.ncontrol" :value="alumno.ncontrol">
-						{{ alumno.nombre }}
-					</option>
-				</select>
-
-				<div class="contenedor-form-boton">
-					<button type="submit" @click.prevent="agregarCarga()" class="form-boton">
-						Agregar Carga
-					</button>
-				</div>
-			</form>
-			<div v-if="mostrarError" class="error-message">
-				{{ errorMensaje }}
-			</div>
-		</div>
-	</div>
-</template>
-
-<script>
 import {URL_DATOS} from "@/utils/constants.js";
 import axios from "axios";
-import TomaCargaLista from "./TomaCargaLista.vue";
-import {obtenerDatos, traeDatos, traeDatosGrupos} from "@/utils/peticiones";
+import TomaCargaLista from "../lista/TomaCargaLista.vue";
+import {obtenerDatos, traeDatos, traeDatosGrupos, traeEstatus} from "@/utils/peticiones";
 
 export default {
 	name: "FormAggCarga",
@@ -69,7 +24,7 @@ export default {
 	async created() {
 		this.clavematerias = await obtenerDatos("materias");
 		this.clavealumnos = await obtenerDatos("alumnos");
-		this.clavegrupos = await traeDatosGrupos("materia", this.cargas.clavemateria);
+		// this.clavegrupos = await traeDatosGrupos("materia", this.cargas.clavemateria);
 	},
 	watch: {
 		"cargas.clavemateria": "peticionGruposClaveMateria",
@@ -140,6 +95,16 @@ export default {
 				return true;
 			};
 
+			let estatus = await traeEstatus("alumnos", this.cargas.ncontrol);
+			const validaAlumnoVigencia = () => {
+				if (estatus[0].estatus === "B") {
+					this.mostrarError = true;
+					this.errorMensaje = "el Alumno ya no esta vigente.";
+					return false;
+				}
+				return true;
+			};
+
 			const validaAlumnoHorario = () => {
 				let band = true;
 				const horario = this.clavegrupos[0].horariolunes;
@@ -154,7 +119,13 @@ export default {
 				return band;
 			};
 			try {
-				if (validaDatos() && validaAlumnoMateria() && validaAlumnoHorario() && validaInscritos()) {
+				if (
+					validaDatos() &&
+					validaAlumnoMateria() &&
+					validaAlumnoHorario() &&
+					validaInscritos() &&
+					validaAlumnoVigencia()
+				) {
 					const response = await axios.put(URL_DATOS + "/grupos/inscritos/" + this.cargas.clavegrupo, {
 						clavegrupo: this.cargas.clavegrupo,
 						inscritos: this.grupoActualizar.inscritos + 1,
@@ -179,12 +150,3 @@ export default {
 		},
 	},
 };
-</script>
-
-<style scoped src="../../styles/form-agg-editar.css"></style>
-<style scoped>
-
-.clavegrupo {
-	width: 100%;
-}
-</style>

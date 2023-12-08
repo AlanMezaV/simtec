@@ -6,16 +6,16 @@ import Maestros from "../views/Maestros.vue";
 import Materias from "../views/Materias.vue";
 import Grupos from "../views/Grupos.vue";
 import TomaCarga from "../views/TomaCarga.vue";
-import FormEditarMateria from "../components/materias/FormEditarMateria.vue";
-import FormAggMateria from "../components/materias/FormAggMateria.vue";
-import FormAggAlumno from "../components/alumnos/FormAggAlumno.vue";
-import FormEditarAlumno from "../components/alumnos/FormEditarAlumno.vue";
-import FormAggMaestro from "../components/maestros/FormAggMaestro.vue";
-import FormEditarMaestro from "../components/maestros/FormEditarMaestro.vue";
-import FormAggGrupo from "../components/grupos/FormAggGrupo.vue";
-import FormEditarGrupo from "../components/grupos/FormEditarGrupo.vue";
-import FormAggCarga from "../components/cargas/FormAggCarga.vue";
-import FormEditarCarga from "../components/cargas/FormEditarCarga.vue";
+import FormEditarMateria from "../components/materias/editar/FormEditarMateria.vue";
+import FormAggMateria from "../components/materias/agregar/FormAggMateria.vue";
+import FormAggAlumno from "../components/alumnos/agregar/FormAggAlumno.vue";
+import FormEditarAlumno from "../components/alumnos/editar/FormEditarAlumno.vue";
+import FormAggMaestro from "../components/maestros/agregar/FormAggMaestro.vue";
+import FormEditarMaestro from "../components/maestros/editar/FormEditarMaestro.vue";
+import FormAggGrupo from "../components/grupos/agregar/FormAggGrupo.vue";
+import FormEditarGrupo from "../components/grupos/editar/FormEditarGrupo.vue";
+import FormAggCarga from "../components/cargas/agregar/FormAggCarga.vue";
+import FormEditarCarga from "../components/cargas/editar/FormEditarCarga.vue";
 
 Vue.use(VueRouter);
 

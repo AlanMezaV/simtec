@@ -3,7 +3,7 @@
 </template>
 
 <script>
-import AlumnosLista from "@/components/alumnos/AlumnosLista.vue";
+import AlumnosLista from "@/components/alumnos/lista/AlumnosLista.vue";
 export default {
 	name: "Alumnos",
 	components: {AlumnosLista},

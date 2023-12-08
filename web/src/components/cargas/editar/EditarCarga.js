@@ -1,53 +1,7 @@
-<template>
-	<div>
-		<TomaCargaLista></TomaCargaLista>
-		<div class="overlay"></div>
-		<div class="FormEditarCarga form-agg-edit">
-			<div class="encabezado">
-				Actualizar Carga
-				<button @click="cerrarFormulario">✖</button>
-			</div>
-			<form>
-				<label for="clavemateria">Materia:</label>
-				<select v-model="cargas.clavemateria" id="clavemateria" class="form-input">
-					<option v-for="materia in clavematerias" :key="materia.clavemateria" :value="materia.clavemateria">
-						{{ materia.nombre }}
-					</option>
-				</select>
-
-				<label for="clavegrupo">Grupos</label>
-				<select v-model="cargas.clavegrupo" id="clavegrupo" class="clavegrupo form-input">
-					<option v-for="grupo in clavegrupos" :key="grupo.clavegrupo" :value="grupo.clavegrupo">
-						{{ grupo.clavegrupo }}
-					</option>
-				</select>
-
-				<label for="ncontrol">Numero de control:</label>
-				<select v-model="cargas.ncontrol" id="ncontrol" class="form-input">
-					<option v-for="alumno in clavealumnos" :key="alumno.ncontrol" :value="alumno.ncontrol">
-						{{ alumno.nombre }}
-					</option>
-				</select>
-
-				<div class="contenedor-form-boton">
-					<button type="submit" @click.prevent="agregarCarga()" class="form-boton">
-						Actualizar Carga
-					</button>
-				</div>
-			</form>
-			<div v-if="mostrarError" class="error-message">
-				{{ errorMensaje }}
-			</div>
-		</div>
-	</div>
-</template>
-
-<script>
 import {URL_DATOS} from "@/utils/constants.js";
 import axios from "axios";
-import TomaCargaLista from "./TomaCargaLista.vue";
-import {obtenerDatos, traeDatos} from "@/utils/peticiones";
-import {traeDatosGrupos} from "@/utils/peticiones";
+import TomaCargaLista from "../lista/TomaCargaLista.vue";
+import {obtenerDatos, traeDatos, traeEstatus, traeDatosGrupos} from "@/utils/peticiones";
 
 export default {
 	name: "FormEditarCarga",
@@ -155,7 +109,7 @@ export default {
 				const horario = this.clavegrupos[0].horariolunes;
 				const horaAnterior = traeDatosGrupos("materia", this.clavemateria);
 				this.horarios.forEach((hora) => {
-					if (hora === horario && hora === horaAnterior) {
+					if (hora === horario && hora !== horaAnterior) {
 						this.mostrarError = true;
 						this.errorMensaje = "El alumno ya tiene una materia en ese horario.";
 						band = false;
@@ -228,6 +182,3 @@ export default {
 		},
 	},
 };
-</script>
-
-<style scoped src="../../styles/form-agg-editar.css"></style>

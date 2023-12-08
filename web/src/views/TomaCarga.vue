@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import TomaCargaLista from "@/components/cargas/TomaCargaLista.vue";
+import TomaCargaLista from "@/components/cargas/lista/TomaCargaLista.vue";
 export default {
 	name: "TomaCarga",
 	components: {

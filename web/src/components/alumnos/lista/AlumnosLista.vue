@@ -4,7 +4,7 @@
 			<div class="contenedor-encabezado">
 				<h2>Alumnos</h2>
 				<button @click.prevent="nuevoAlumno" class="boton-agregar">
-					<img src="../../../public/images/boton-mas.svg" alt="" />
+					<img src="../../../../public/images/boton-mas.svg" alt="" />
 					Agregar Alumno
 				</button>
 			</div>
@@ -29,11 +29,11 @@
 								<button @click="mostrarOpciones(alumnos)" class="boton-acciones">···</button>
 								<div v-if="alumnos.mostrarOpciones" class="menu-desplegable">
 									<div>
-										<img src="../../../public/images/lapiz.svg" alt="" />
+										<img src="../../../../public/images/lapiz.svg" alt="" />
 										<button @click.prevent="editarAlumno(alumnos)">Editar</button>
 									</div>
 									<div>
-										<img src="../../../public/images/basura.svg" alt="" />
+										<img src="../../../../public/images/basura.svg" alt="" />
 										<button @click="eliminar(alumnos)">Eliminar</button>
 									</div>
 								</div>
@@ -59,7 +59,7 @@
 	</div>
 </template>
 
-<script src="../../scripts/alumnos/AlumnosLista"></script>
+<script src="./AlumnosLista"></script>
 
-<style global src="../../styles/variables.css"></style>
-<style scoped src="../../styles/vistas.css"></style>
+<style global src="../../../styles/variables.css"></style>
+<style scoped src="../../../styles/vistas.css"></style>
