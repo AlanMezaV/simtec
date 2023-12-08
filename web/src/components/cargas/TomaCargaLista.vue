@@ -57,7 +57,7 @@
 									<button @click.prevent="editarCarga(cargas)">Editar</button>
 								</div>
 								<div>
-									
+									<img src="../../../public/images/basura.svg" alt="" />
 									<button @click="eliminar(cargas)">Eliminar</button>
 								</div>
 							</div>

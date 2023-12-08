@@ -2,35 +2,38 @@
 	<div>
 		<TomaCargaLista></TomaCargaLista>
 		<div class="overlay"></div>
-		<div class="FormEditarCarga">
-			Actualizar Carga
-			<button @click="cerrarFormulario">✖</button>
+		<div class="FormEditarCarga form-agg-edit">
+			<div class="encabezado">
+				Actualizar Carga
+				<button @click="cerrarFormulario">✖</button>
+			</div>
 			<form>
 				<label for="clavemateria">Materia:</label>
-				<select v-model="cargas.clavemateria" id="clavemateria">
+				<select v-model="cargas.clavemateria" id="clavemateria" class="form-input">
 					<option v-for="materia in clavematerias" :key="materia.clavemateria" :value="materia.clavemateria">
 						{{ materia.nombre }}
 					</option>
 				</select>
-				<br />
 
 				<label for="clavegrupo">Grupos</label>
-				<select v-model="cargas.clavegrupo" id="clavegrupo" class="clavegrupo">
+				<select v-model="cargas.clavegrupo" id="clavegrupo" class="clavegrupo form-input">
 					<option v-for="grupo in clavegrupos" :key="grupo.clavegrupo" :value="grupo.clavegrupo">
 						{{ grupo.clavegrupo }}
 					</option>
 				</select>
-				<br />
 
 				<label for="ncontrol">Numero de control:</label>
-				<select v-model="cargas.ncontrol" id="ncontrol">
+				<select v-model="cargas.ncontrol" id="ncontrol" class="form-input">
 					<option v-for="alumno in clavealumnos" :key="alumno.ncontrol" :value="alumno.ncontrol">
 						{{ alumno.nombre }}
 					</option>
 				</select>
-				<br />
 
-				<button type="submit" @click.prevent="agregarCarga()">Actualizar</button>
+				<div class="contenedor-form-boton">
+					<button type="submit" @click.prevent="agregarCarga()" class="form-boton">
+						Actualizar Carga
+					</button>
+				</div>
 			</form>
 			<div v-if="mostrarError" class="error-message">
 				{{ errorMensaje }}
@@ -226,34 +229,4 @@ export default {
 };
 </script>
 
-<style scoped>
-.overlay {
-	position: fixed;
-	top: 0;
-	left: 0;
-	width: 100%;
-	height: 100%;
-	background: rgba(0, 0, 0, 0.5); /* Fondo oscuro semitransparente */
-}
-
-.FormEditarCarga {
-	position: absolute;
-	top: 50%;
-	left: 50%;
-	transform: translate(-50%, -50%);
-	background-color: white;
-	padding: 20px;
-	border: 1px solid #ccc;
-	border-radius: 5px;
-	box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-}
-
-.error-message {
-	color: red;
-	margin-top: 10px;
-}
-
-.clavegrupo {
-	width: 100%;
-}
-</style>
+<style scoped src="../../styles/form-agg-editar.css"></style>

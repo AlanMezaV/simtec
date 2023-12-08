@@ -84,6 +84,7 @@
     border-radius: 5px;
 }
 .datos{
+    font-size: 12px;
     display: grid;  
     gap: 10px;
     grid-template-columns: 18% 38% 19% 14% 7%;
@@ -94,12 +95,12 @@
     align-self: center;
 }
 .centrar{
-    padding: 20px;
+    
 }
 .estatus{
     width: 65%;
     border-radius: 5px;
-    margin: 8px;
+    /* margin: 8px; */
     padding: 3px;
     text-align: center;
 }
