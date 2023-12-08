@@ -63,7 +63,7 @@
     margin: 20px;
     width: 99%;
     display: grid;
-    grid-template-columns: 20% 37% 20% 15% 8%;
+    grid-template-columns: 19% 38% 20% 15% 8%;
     grid-gap: 5px;
     overflow: hidden;
 }
@@ -85,11 +85,16 @@
 }
 .datos{
     display: grid;  
-    grid-template-columns: 20% 37% 20% 15% 8%;
+    gap: 10px;
+    grid-template-columns: 18% 38% 19% 14% 7%;
     border: 1px solid var(--white-smoke);
+    padding: 10px 0px 10px 25px;
 }
-.espacio{
-    margin: auto 0px;
+.datos span{
+    align-self: center;
+}
+.centrar{
+    padding: 20px;
 }
 .estatus{
     width: 65%;

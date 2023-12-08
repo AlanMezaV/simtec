@@ -19,11 +19,11 @@
 					</div>
 					<div class="contenedor-datos">
 						<div v-for="maestros in lista_maestros" :key="maestros.clavemaestro" class="datos">
-							<span class="espacio">{{ maestros.clavemaestro }}</span>
-							<span class="espacio">{{ maestros.nombre }}</span>
-							<span class="espacio">{{ maestros.departamento }}</span>
-							<span class="espacio estatus" :class="maestros.estatus === 'V'? ' activo': 'baja'">{{ getEstatus(maestros.estatus) }}</span>
-							<span class="espacio">
+							<span class="centrar">{{ maestros.clavemaestro }}</span>
+							<span>{{ maestros.nombre }}</span>
+							<span class="centrar">{{ maestros.departamento }}</span>
+							<span class="estatus" :class="maestros.estatus === 'V'? ' activo': 'baja'">{{ getEstatus(maestros.estatus) }}</span>
+							<span>
 								<button @click="mostrarOpciones(maestros)" class="boton-acciones">···</button>
 								<div v-if="maestros.mostrarOpciones" class="menu-desplegable">
 									<div>

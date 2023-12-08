@@ -1,6 +1,6 @@
 <template>
 	<div class="overlay">
-		<div class="error">
+		<div class="error ">
 			<div class="encabezado">
 				Error
 				<button @click="cerrarError">✖</button>

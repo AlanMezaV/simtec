@@ -25,17 +25,17 @@
 					</div>
 					<div class="contenedor-datos">
 						<div v-for="grupos in lista_grupos" :key="grupos.clavegrupo" class="datos-grupos">
-							<span class="espacio">{{ grupos.clavegrupo }}</span>
-							<span class="espacio">{{ getNombreMateria(grupos.clavemateria) }}</span>
-							<span class="espacio">{{ getNombreMaestro(grupos.clavemaestro) }}</span>
-							<span class="espacio">{{ grupos.limitealumnos }}</span>
-							<span class="espacio">{{ grupos.inscritos }}</span>
-							<span class="espacio">{{ grupos.horariolunes }}</span>
-							<span class="espacio">{{ grupos.horariomartes }}</span>
-							<span class="espacio">{{ grupos.horariomiercoles }}</span>
-							<span class="espacio">{{ grupos.horariojueves }}</span>
-							<span class="espacio">{{ grupos.horarioviernes }}</span>
-							<span class="espacio">
+							<span >{{ grupos.clavegrupo }}</span>
+							<span >{{ getNombreMateria(grupos.clavemateria) }}</span>
+							<span >{{ getNombreMaestro(grupos.clavemaestro) }}</span>
+							<span class="centrar">{{ grupos.limitealumnos }}</span>
+							<span class="centrar">{{ grupos.inscritos }}</span>
+							<span >{{ grupos.horariolunes }}</span>
+							<span >{{ grupos.horariomartes }}</span>
+							<span >{{ grupos.horariomiercoles }}</span>
+							<span >{{ grupos.horariojueves }}</span>
+							<span >{{ grupos.horarioviernes }}</span>
+							<span >
 								<button @click="mostrarOpciones(grupos)" class="boton-acciones">···</button>
 								<div v-if="grupos.mostrarOpciones" class="menu-desplegable">
 									<div>

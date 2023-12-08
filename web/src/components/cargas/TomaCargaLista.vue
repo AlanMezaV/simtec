@@ -1,55 +1,67 @@
 <template>
-	<div class="contenedor-principal-cargas">
-		<div class="TomaCargaLista">
-			<span>Toma de carga</span>
-			<button @click.prevent="nuevaCarga">Agregar</button>
-			<table>
-				<thead>
-					<tr>
-						<th>Clave grupo</th>
-						<th>Materia</th>
-						<th>Numero de control</th>
-						<th>Alumno</th>
-						<th>Horario lunes</th>
-						<th>Horario martes</th>
-						<th>Horario miércoles</th>
-						<th>Horario jueves</th>
-						<th>Horario viernes</th>
-					</tr>
-				</thead>
-				<tbody>
-					<tr v-for="cargas in lista_cargas" :key="cargas.clavegrupo + cargas.ncontrol">
-						<td class="espacio">{{ cargas.clavegrupo }}</td>
-						<td class="espacio">
+	<div class="contenedor-principal">
+		<div class="TomaCargaLista contenedor-lista">
+			<div class="contenedor-encabezado">
+				<h2>Toma de carga</h2>
+				<button @click.prevent="nuevaCarga" class="boton-agregar">
+					<img src="../../../public/images/boton-mas.svg" alt="" />
+					Agregar Carga
+				</button>
+			</div>
+			<div class="contenedor-tabla">
+				<div class="tabla">
+					<div class="tabla-encabezado-carga">
+						<div>Clave grupo</div>
+						<div>Materia</div>
+						<div>Numero de control</div>
+						<div>Alumno</div>
+						<div>Horario lunes</div>
+						<div>Horario martes</div>
+						<div>Horario miércoles</div>
+						<div>Horario jueves</div>
+						<div>Horario viernes</div>
+						<div></div>
+					</div>
+					<div class="contenedor-datos">
+						<div v-for="cargas in lista_cargas" :key="cargas.clavegrupo + cargas.ncontrol" class="datos-carga">
+						<span>
+							{{ cargas.clavegrupo }}
+						</span>
+						<span>
 							<span>{{ getNombreMateria(cargas.clavemateria) }}</span>
-						</td>
-						<td class="espacio">{{ cargas.ncontrol }}</td>
-						<td>
-							<span class="espacio">{{ getNombreAlumno(cargas.ncontrol) }}</span>
-						</td>
-						<td class="espacio">
+						</span>
+						<span>{{ cargas.ncontrol }}</span>
+						<span>
+							<span>{{ getNombreAlumno(cargas.ncontrol) }}</span>
+						</span>
+						<span>
 							<span>{{ getHorarioAlumno(cargas.clavegrupo, "lunes") }}</span>
-						</td>
-						<td class="espacio">
+						</span>
+						<span>
 							<span>{{ getHorarioAlumno(cargas.clavegrupo, "martes") }}</span>
-						</td>
-						<td class="espacio">
+						</span>
+						<span>
 							<span>{{ getHorarioAlumno(cargas.clavegrupo, "miercoles") }}</span>
-						</td>
-						<td class="espacio">
+						</span>
+						<span>
 							<span>{{ getHorarioAlumno(cargas.clavegrupo, "jueves") }}</span>
-						</td>
-						<td class="espacio">
+						</span>
+						<span>
 							<span>{{ getHorarioAlumno(cargas.clavegrupo, "viernes") }}</span>
-						</td>
-						<td class="espacio">
-							<button @click="mostrarOpciones(cargas)">...</button>
+						</span>
+						<span>
+							<button @click="mostrarOpciones(cargas)" class="boton-acciones">···</button>
 							<div v-if="cargas.mostrarOpciones" class="menu-desplegable">
-								<button @click.prevent="editarCarga(cargas)">Editar</button>
-								<br />
-								<button @click="eliminar(cargas)">Eliminar</button>
+								<div>
+									<img src="../../../public/images/lapiz.svg" alt="" />
+									<button @click.prevent="editarCarga(cargas)">Editar</button>
+								</div>
+								<div>
+									
+									<button @click="eliminar(cargas)">Eliminar</button>
+								</div>
 							</div>
-						</td>
+						</span>
 						<div v-if="mostrarConfirma && cargas.clavegrupo && cargas.ncontrol === cargaSeleccionada">
 							<ConfirmaEliminar
 								:mensaje="
@@ -62,9 +74,12 @@
 								@cerrar="cerrarConfirma"
 							></ConfirmaEliminar>
 						</div>
-					</tr>
-				</tbody>
-			</table>
+					</div>
+					</div>
+
+				</div>
+			</div>
+
 		</div>
 	</div>
 </template>
@@ -192,12 +207,9 @@ export default {
 };
 </script>
 
+<style scoped src="../../styles/vistas.css"></style>
+<style scoped src="../../styles/vista-carga.css"></style>
 <style>
-.espacio {
-	padding-right: 35px;
-	padding-left: 20px;
-}
-
 .menu-desplegable {
 	position: absolute;
 	background-color: #fff;

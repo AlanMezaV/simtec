@@ -19,10 +19,10 @@
 					<div class="contenedor-datos">
 
 						<div v-for="materias in lista_materias" :key="materias.clavemateria" class="datos-materias">
-							<span class="espacio">{{ materias.clavemateria }}</span>
-							<span class="espacio">{{ materias.nombre }}</span>
-							<span class="espacio">{{ materias.creditos }}</span>
-							<span class="espacio">
+							<span class="centrar">{{ materias.clavemateria }}</span>
+							<span >{{ materias.nombre }}</span>
+							<span class="centrar">{{ materias.creditos }}</span>
+							<span >
 								<button @click="mostrarOpciones(materias)" class="boton-acciones">···</button>
 								<div v-if="materias.mostrarOpciones" class="menu-desplegable">
 									<div>

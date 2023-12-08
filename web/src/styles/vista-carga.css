@@ -1,20 +1,20 @@
-.tabla-encabezado-grupos{
+.tabla-encabezado-carga{
     
     color: var(--dim-gray);
     margin: 25px;
     width: 99%;
     display: grid;
-    grid-template-columns: 8% 12% 12% 9% 9% 9% 9% 9% 9% 9% 5%;
+    grid-template-columns: 10% 14% 10% 13% 9% 9% 9% 9% 9% 7% ;
     overflow: hidden;
 }
-.datos-grupos{
+.datos-carga{
     font-size: 12px;
-    display: grid; 
-    gap: 10px; 
-    grid-template-columns: 7% 11% 11% 8% 8% 8% 8% 8% 8% 8% 5%;
+    display: grid;  
+    gap: 10px;
+    grid-template-columns: 9% 13% 9% 13% 8% 8% 8% 8% 8% 7% ;
     border: 1px solid var(--white-smoke);
     padding: 10px 0px 10px 25px;
 }
-.datos-grupos span{
+.datos-carga span{
     align-self: center;
 }
