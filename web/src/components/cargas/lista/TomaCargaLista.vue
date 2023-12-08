@@ -56,11 +56,11 @@
 							<span>
 								<button @click="mostrarOpciones(cargas)" class="boton-acciones">···</button>
 								<div v-if="cargas.mostrarOpciones" class="menu-desplegable">
-									<button @click.prevent="editarAlumno(alumnos)">
+									<button @click.prevent="editarCarga(cargas)">
 										<img src="../../../../public/images/lapiz.svg" alt="" />
 										Editar
 									</button>
-									<button @click="eliminar(alumnos)" >
+									<button @click="eliminar(cargas)">
 										<img src="../../../../public/images/basura.svg" alt="" />
 										Eliminar
 									</button>
