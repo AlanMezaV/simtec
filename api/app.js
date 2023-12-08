@@ -178,6 +178,28 @@ app.get("/api/alumnos/estatus/:id", (req, res) => {
 	});
 });
 
+//Mostrar el estatus de un alumno mandandole su numero de control
+app.get("/api/maestros/estatus/:id", (req, res) => {
+	conexion.query("SELECT estatus FROM maestros WHERE clavemaestro = ?", [req.params.id], (error, filas) => {
+		if (error) {
+			throw error;
+		} else {
+			res.send(filas);
+		}
+	});
+});
+
+//Mostrar el estatus de un alumno mandandole su numero de control
+app.get("/api/materias/creditos/:id", (req, res) => {
+	conexion.query("SELECT creditos FROM materias WHERE clavemateria = ?", [req.params.id], (error, filas) => {
+		if (error) {
+			throw error;
+		} else {
+			res.send(filas);
+		}
+	});
+});
+
 //Mostrar el horario de un grupo mandandole su clavegrupo y clavemateria
 app.get("/api/grupos/horario/:id", (req, res) => {
 	let clavegrupo = req.params.id; // Utiliza req.params para obtener el parámetro de la URL

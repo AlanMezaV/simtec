@@ -95,8 +95,9 @@
 						type="text"
 						id="horarioviernes"
 						maxlength="11"
-						placeholder="Introduce le horario"
+						v-bind:placeholder="placeholderHorarioViernes"
 						class="form-input"
+						v-bind:disabled="inputDeshabilitado"
 					/>
 				</div>
 				<div class="contenedor-form-boton">

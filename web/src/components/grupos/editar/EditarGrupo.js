@@ -1,7 +1,7 @@
 import {URL_DATOS} from "@/utils/constants.js";
 import axios from "axios";
 import GruposLista from "../lista/GruposLista.vue";
-import {traeDatos, obtenerDatos, traeDatosGrupos} from "@/utils/peticiones";
+import {traeDatos, obtenerDatos, traeDatosGrupos, traeEstatus, traeCreditos} from "@/utils/peticiones";
 
 export default {
 	name: "FormEditarGrupo",
@@ -23,8 +23,12 @@ export default {
 			clavemaestros: [],
 			horarioMaestros: [],
 			mostrarError: false,
+			inputDeshabilitado: false,
 			errorMensaje: "",
 		};
+	},
+	watch: {
+		"grupos.clavemateria": "deshabilitarViernes",
 	},
 	async created() {
 		this.grupos = await traeDatos("grupos", this.clavegrupo);
@@ -33,16 +37,93 @@ export default {
 		this.clavemaestros = await obtenerDatos("maestros");
 	},
 	methods: {
+		async deshabilitarViernes() {
+			let creditos = await traeCreditos(this.grupos.clavemateria);
+			if (creditos[0].creditos == 4) {
+				this.grupos.horarioviernes = "";
+				this.inputDeshabilitado = true;
+			} else {
+				this.inputDeshabilitado = false;
+			}
+		},
 		editarGrupo: async function () {
+			let creditos = await traeCreditos(this.grupos.clavemateria);
 			const validaDatos = () => {
-				if (
-					this.grupos.clavegrupo == undefined ||
-					this.grupos.limitealumnos == undefined ||
-					this.grupos.clavegrupo == "" ||
-					this.grupos.limitealumnos == ""
+				if (creditos[0].creditos == 4) {
+					if (
+						this.grupos.clavegrupo == undefined ||
+						this.grupos.limitealumnos == undefined ||
+						this.grupos.clavegrupo == "" ||
+						this.grupos.limitealumnos == "" ||
+						this.grupos.horariolunes == "" ||
+						this.grupos.horariolunes == undefined ||
+						this.grupos.horariomartes == "" ||
+						this.grupos.horariomartes == undefined ||
+						this.grupos.horariomiercoles == "" ||
+						this.grupos.horariomiercoles == undefined ||
+						this.grupos.horariojueves == "" ||
+						this.grupos.horariojueves == undefined
+					) {
+						this.mostrarError = true;
+						this.errorMensaje = "Solo se acepta que este vacio el horario viernes.";
+						return false;
+					}
+				} else {
+					if (
+						this.grupos.clavegrupo == undefined ||
+						this.grupos.limitealumnos == undefined ||
+						this.grupos.clavegrupo == "" ||
+						this.grupos.limitealumnos == "" ||
+						this.grupos.horariolunes == "" ||
+						this.grupos.horariolunes == undefined ||
+						this.grupos.horariomartes == "" ||
+						this.grupos.horariomartes == undefined ||
+						this.grupos.horariomiercoles == "" ||
+						this.grupos.horariomiercoles == undefined ||
+						this.grupos.horariojueves == "" ||
+						this.grupos.horariojueves == undefined ||
+						this.grupos.horarioviernes == "" ||
+						this.grupos.horarioviernes == undefined
+					) {
+						this.mostrarError = true;
+						this.errorMensaje = "No se aceptan vacios.";
+						return false;
+					}
+				}
+				return true;
+			};
+
+			const validaHoras = () => {
+				console.log(this.placeholderHorarioViernes === "Materia con 4 creditos");
+				if (this.grupos.horarioviernes === "") {
+					if (
+						this.grupos.horariomartes !== this.grupos.horariolunes ||
+						this.grupos.horariomiercoles !== this.grupos.horariolunes ||
+						this.grupos.horariojueves !== this.grupos.horariolunes
+					) {
+						this.grupos.horarioviernes = "";
+						this.mostrarError = true;
+						this.errorMensaje = "Todas las horas registradas tienen que ser iguales.";
+						return false;
+					}
+				} else if (
+					this.grupos.horariomartes !== this.grupos.horariolunes ||
+					this.grupos.horariomiercoles !== this.grupos.horariolunes ||
+					this.grupos.horariojueves !== this.grupos.horariolunes ||
+					this.grupos.horarioviernes !== this.grupos.horariolunes
 				) {
 					this.mostrarError = true;
-					this.errorMensaje = "Solo se acepta que este vacio el horario.";
+					this.errorMensaje = "Todas las horas registradas tienen que ser iguales.";
+					return false;
+				}
+				return true;
+			};
+
+			let estatus = await traeEstatus("maestros", this.grupos.clavemaestro);
+			const validaMaestroEstatus = () => {
+				if (estatus[0].estatus === "B") {
+					this.mostrarError = true;
+					this.errorMensaje = "El maestro esta dado de baja.";
 					return false;
 				}
 				return true;
@@ -53,10 +134,7 @@ export default {
 				let band = true;
 				const hora = this.grupos.horariolunes;
 				this.horarioMaestros.forEach((horario) => {
-					console.log(hora);
-					console.log(horario.horariolunes);
 					if (hora === horario.horariolunes && this.grupos.horariolunes !== this.horaAnterior) {
-						console.log("entro", hora === horario.horariolunes);
 						this.mostrarError = true;
 						this.errorMensaje = "El maestro ya tiene una materia en ese horario.";
 						band = false;
@@ -65,7 +143,7 @@ export default {
 				return band;
 			};
 			try {
-				if (validaDatos() && validaMaestroHorario()) {
+				if (validaDatos() && validaMaestroHorario() && validaMaestroEstatus() && validaHoras()) {
 					const res = await axios.put(URL_DATOS + "/grupos/" + this.clavegrupo, {
 						clavemateria: this.grupos.clavemateria,
 						clavegrupo: this.grupos.clavegrupo,

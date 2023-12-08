@@ -96,10 +96,10 @@ export default {
 			};
 
 			let estatus = await traeEstatus("alumnos", this.cargas.ncontrol);
-			const validaAlumnoVigencia = () => {
+			const validaAlumnoEstatus = () => {
 				if (estatus[0].estatus === "B") {
 					this.mostrarError = true;
-					this.errorMensaje = "el Alumno ya no esta vigente.";
+					this.errorMensaje = "El alumno esta dado de baja.";
 					return false;
 				}
 				return true;
@@ -124,7 +124,7 @@ export default {
 					validaAlumnoMateria() &&
 					validaAlumnoHorario() &&
 					validaInscritos() &&
-					validaAlumnoVigencia()
+					validaAlumnoEstatus()
 				) {
 					const response = await axios.put(URL_DATOS + "/grupos/inscritos/" + this.cargas.clavegrupo, {
 						clavegrupo: this.cargas.clavegrupo,

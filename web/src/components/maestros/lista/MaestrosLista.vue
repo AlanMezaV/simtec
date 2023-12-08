@@ -60,6 +60,6 @@
 	</div>
 </template>
 
-<script></script>
+<script src="./MaestrosLista"></script>
 
 <style scoped src="../../../styles/vistas.css"></style>

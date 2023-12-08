@@ -1,7 +1,7 @@
 import {URL_DATOS} from "@/utils/constants.js";
 import axios from "axios";
 import MaestrosLista from "../lista/MaestrosLista.vue";
-import {traeDatos} from "@/utils/peticiones";
+import {traeDatos, traeEstatus} from "@/utils/peticiones";
 
 export default {
 	name: "FormEditarMaestro",

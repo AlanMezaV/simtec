@@ -77,6 +77,7 @@
 						id="horarioviernes"
 						maxlength="11"
 						class="form-input"
+						v-bind:disabled="inputDeshabilitado"
 					/>
 				</div>
 				<div class="contenedor-form-boton">

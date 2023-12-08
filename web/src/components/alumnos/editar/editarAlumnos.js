@@ -43,7 +43,6 @@ export default {
 			};
 
 			try {
-				// Realiza una solicitud GET para verificar si la materia ya existe
 				if (validaDatos()) {
 					const res = await axios.put(URL_DATOS + "/alumnos/" + this.ncontrol, {
 						ncontrol: this.alumnos.ncontrol,

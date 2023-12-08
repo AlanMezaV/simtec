@@ -132,6 +132,16 @@ export default {
 				return true;
 			};
 
+			let estatus = await traeEstatus("alumnos", this.cargas.ncontrol);
+			const validaAlumnoEstatus = () => {
+				if (estatus[0].estatus === "B") {
+					this.mostrarError = true;
+					this.errorMensaje = "El alumno esta dado de baja.";
+					return false;
+				}
+				return true;
+			};
+
 			const validaInscritos = () => {
 				const inscritos = this.grupoActualizar.inscritos;
 				console.log("Alumnos inscritos" + this.grupoActualizar.inscritos);
@@ -146,7 +156,13 @@ export default {
 			};
 
 			try {
-				if (validaDatos() && validaAlumnoMateria() && validaAlumnoHorario() && validaInscritos()) {
+				if (
+					validaDatos() &&
+					validaAlumnoMateria() &&
+					validaAlumnoHorario() &&
+					validaInscritos() &&
+					validaAlumnoEstatus()
+				) {
 					if (this.cargas.clavegrupo !== this.clavegrupo) {
 						this.grupoViejo = await traeDatos("grupos", this.clavegrupo);
 						let nuevaCantidad = this.grupoViejo.inscritos - 1;
