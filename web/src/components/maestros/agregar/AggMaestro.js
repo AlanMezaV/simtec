@@ -1,6 +1,5 @@
-import {URL_DATOS} from "@/utils/constants.js";
-import axios from "axios";
 import MaestrosLista from "../lista/MaestrosLista.vue";
+import {obtenConClave, agrega} from "@/utils/peticiones";
 
 export default {
 	name: "FormAggMaestro",
@@ -16,7 +15,6 @@ export default {
 	},
 	methods: {
 		validarSoloNumerosClave() {
-			// Elimina caracteres no numéricos del valor de clavemateria
 			this.maestros.clavemaestro = this.maestros.clavemaestro.replace(/\D/g, "");
 		},
 		agregarMaestro: async function () {
@@ -31,20 +29,21 @@ export default {
 					this.maestros.estatus == undefined ||
 					this.maestros.estatus == ""
 				) {
+					this.mostrarError = true;
+					this.errorMensaje = "No debe de haber datos vacios.";
 					return false;
 				}
 				return true;
 			};
 
 			try {
-				// Realiza una solicitud GET para verificar si la materia ya existe
 				if (validaDatos()) {
-					const response = await axios.get(`${URL_DATOS}/maestros/${this.maestros.clavemaestro}`);
+					const response = await obtenConClave("maestros", this.maestros.clavemaestro);
 					if (response.data.length > 0) {
 						this.mostrarError = true;
 						this.errorMensaje = "El maestro ya existe, no se puede agregar.";
 					} else {
-						const res = await axios.post(URL_DATOS + "/maestros", {
+						await agrega("maestros", {
 							clavemaestro: this.maestros.clavemaestro,
 							nombre: this.maestros.nombre,
 							departamento: this.maestros.departamento,
@@ -52,12 +51,9 @@ export default {
 						});
 						this.$router.push("/maestros");
 					}
-				} else {
-					this.mostrarError = true;
-					this.errorMensaje = "No debe de haber datos vacios.";
 				}
 			} catch (error) {
-				console.error("Error al verificar la existencia de la materia:", error);
+				console.error("Error al verificar la existencia del maestro:", error);
 			}
 		},
 		eliminaError() {

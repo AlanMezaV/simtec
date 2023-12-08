@@ -1,6 +1,5 @@
-import {URL_DATOS} from "@/utils/constants.js";
-import axios from "axios";
 import AlumnosLista from "../lista/AlumnosLista.vue";
+import {obtenConClave, agrega} from "@/utils/peticiones";
 
 export default {
 	name: "FormAggAlumno",
@@ -30,20 +29,21 @@ export default {
 					this.alumnos.estatus == undefined ||
 					this.alumnos.estatus == ""
 				) {
+					this.mostrarError = true;
+					this.errorMensaje = "No debe de haber datos vacios.";
 					return false;
 				}
 				return true;
 			};
 
 			try {
-				// Realiza una solicitud GET para verificar si la materia ya existe
 				if (validaDatos()) {
-					const response = await axios.get(`${URL_DATOS}/alumnos/${this.alumnos.ncontrol}`);
-					if (response.data.length > 0) {
+					const res = await obtenConClave("alumnos", this.alumnos.ncontrol);
+					if (res.data.length > 0) {
 						this.mostrarError = true;
 						this.errorMensaje = "El alumno ya existe, no se puede agregar.";
 					} else {
-						const res = await axios.post(URL_DATOS + "/alumnos", {
+						const response = await agrega("alumnos", {
 							ncontrol: this.alumnos.ncontrol,
 							nombre: this.alumnos.nombre,
 							carrera: this.alumnos.carrera,
@@ -51,12 +51,9 @@ export default {
 						});
 						this.$router.push("/alumnos");
 					}
-				} else {
-					this.mostrarError = true;
-					this.errorMensaje = "No debe de haber datos vacios.";
 				}
 			} catch (error) {
-				console.error("Error al verificar la existencia de la materia:", error);
+				console.error("Error al agregar el alumno:", error);
 			}
 		},
 		eliminaError() {

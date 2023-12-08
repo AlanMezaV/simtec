@@ -40,10 +40,6 @@ export default {
 
 			return alumno ? alumno.nombre : "Alumno no encontrado";
 		},
-		// getHorarioAlumno(clavegrupo) {
-		// 	const grupo = this.clavegrupos.find((grupo) => grupo.clavegrupo === clavegrupo);
-		// 	return grupo ? grupo.horariolunes : "Horario no encontrado";
-		// },
 		getHorarioAlumno(clavegrupo, dia) {
 			const grupo = this.clavegrupos.find((grupo) => grupo.clavegrupo === clavegrupo);
 

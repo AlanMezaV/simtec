@@ -1,6 +1,4 @@
-import {URL_DATOS} from "@/utils/constants.js";
-import axios from "axios";
-import {obtenerDatos} from "@/utils/peticiones";
+import {obtenerDatos, elimina, obtenConClave} from "@/utils/peticiones";
 import Error from "../../mensajes/Error.vue";
 import ConfirmaEliminar from "../../mensajes/ConfirmaEliminar.vue";
 
@@ -46,12 +44,12 @@ export default {
 			materias.mostrarOpciones = !materias.mostrarOpciones;
 		},
 		eliminarMateria: async function (clavemateria) {
-			const response = await axios.get(`${URL_DATOS}/grupoMateria/${clavemateria}`);
+			const response = await obtenConClave("grupoMateria", clavemateria);
 			if (response.data.length > 0) {
 				this.mostrarError = true;
 				this.mostrarConfirma = false;
 			} else {
-				const res = await axios.delete(URL_DATOS + "/materias/" + clavemateria);
+				await elimina("materias", clavemateria);
 				this.lista_materias = await obtenerDatos("materias");
 				this.mostrarConfirma = false;
 			}

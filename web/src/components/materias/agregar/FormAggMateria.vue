@@ -1,4 +1,3 @@
-<!-- AddForm.vue -->
 <template>
 	<div>
 		<MateriasLista></MateriasLista>

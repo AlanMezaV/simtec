@@ -1,7 +1,5 @@
-import {URL_DATOS} from "@/utils/constants.js";
-import axios from "axios";
 import MaestrosLista from "../lista/MaestrosLista.vue";
-import {traeDatos, traeEstatus} from "@/utils/peticiones";
+import {obtenDatosEditar, actualiza} from "@/utils/peticiones";
 
 export default {
 	name: "FormEditarMaestro",
@@ -21,7 +19,7 @@ export default {
 		};
 	},
 	async created() {
-		this.maestros = await traeDatos("maestros", this.clavemaestro);
+		this.maestros = await obtenDatosEditar("maestros", this.clavemaestro);
 	},
 	methods: {
 		editarMaestro: async function () {
@@ -36,6 +34,8 @@ export default {
 					this.maestros.estatus == undefined ||
 					this.maestros.estatus == ""
 				) {
+					this.mostrarError = true;
+					this.errorMensaje = "No debe de haber datos vacios.";
 					return false;
 				}
 				return true;
@@ -43,16 +43,13 @@ export default {
 
 			try {
 				if (validaDatos()) {
-					const res = await axios.put(URL_DATOS + "/maestros/" + this.clavemaestro, {
+					await actualiza("maestros", this.clavemaestro, {
 						clavemaestro: this.maestros.clavemaestro,
 						nombre: this.maestros.nombre,
 						departamento: this.maestros.departamento,
 						estatus: this.maestros.estatus,
 					});
 					this.$router.push("/maestros");
-				} else {
-					this.mostrarError = true;
-					this.errorMensaje = "No debe de haber datos vacios.";
 				}
 			} catch (error) {
 				console.error("Error al verificar la existencia del maestro:", error);

@@ -1,7 +1,5 @@
-import {URL_DATOS} from "@/utils/constants.js";
-import axios from "axios";
 import MateriasLista from "../lista/MateriasLista.vue";
-import {traeDatos} from "@/utils/peticiones";
+import {obtenDatosEditar, actualiza} from "@/utils/peticiones";
 
 export default {
 	name: "FormEditarMateria",
@@ -16,13 +14,12 @@ export default {
 	data: function () {
 		return {
 			materias: [],
-			visible: false,
 			mostrarError: false,
 			errorMensaje: "",
 		};
 	},
 	async created() {
-		this.materias = await traeDatos("materias", this.clavemateria);
+		this.materias = await obtenDatosEditar("materias", this.clavemateria);
 	},
 	methods: {
 		validarSoloNumerosClave() {
@@ -41,6 +38,8 @@ export default {
 					this.materias.nombre == undefined ||
 					this.materias.nombre == ""
 				) {
+					this.mostrarError = true;
+					this.errorMensaje = "No debe de haber datos vacios.";
 					return false;
 				}
 				return true;
@@ -48,19 +47,15 @@ export default {
 
 			try {
 				if (validaDatos()) {
-					const res = await axios.put(URL_DATOS + "/materias/" + this.clavemateria, {
+					await actualiza("materias", this.clavemateria, {
 						id: this.materias.clavemateria,
 						nom: this.materias.nombre,
 						cre: this.materias.creditos,
 					});
-					console.log(res);
 					this.$router.push("/materias");
-				} else {
-					this.mostrarError = true;
-					this.errorMensaje = "No debe de haber datos vacios.";
 				}
 			} catch (error) {
-				console.error("Error al verificar la existencia de la materia:", error);
+				console.error("Error al actualizar la materia:", error);
 			}
 		},
 		eliminaError() {

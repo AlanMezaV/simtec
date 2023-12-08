@@ -1,6 +1,5 @@
-import {URL_DATOS} from "@/utils/constants.js";
-import axios from "axios";
 import MateriasLista from "../lista/MateriasLista.vue";
+import {obtenConClave, agrega} from "@/utils/peticiones";
 
 export default {
 	name: "FormAggMateria",
@@ -16,7 +15,6 @@ export default {
 	},
 	methods: {
 		validarSoloNumerosClave() {
-			// Elimina caracteres no numéricos del valor de clavemateria
 			this.materias.clavemateria = this.materias.clavemateria.replace(/\D/g, "");
 		},
 		validarSoloNumerosCreditos() {
@@ -32,29 +30,27 @@ export default {
 					this.materias.nombre == undefined ||
 					this.materias.nombre == ""
 				) {
+					this.mostrarError = true;
+					this.errorMensaje = "No debe de haber datos vacios.";
 					return false;
 				}
 				return true;
 			};
 
 			try {
-				// Realiza una solicitud GET para verificar si la materia ya existe
 				if (validaDatos()) {
-					const response = await axios.get(`${URL_DATOS}/materias/${this.materias.clavemateria}`);
+					const response = await obtenConClave("materias", this.materias.clavemateria);
 					if (response.data.length > 0) {
 						this.mostrarError = true;
 						this.errorMensaje = "La materia ya existe. No se puede agregar una duplicada.";
 					} else {
-						const res = await axios.post(URL_DATOS + "/materias", {
+						await agrega("materias", {
 							cla: this.materias.clavemateria,
 							nom: this.materias.nombre,
 							cre: this.materias.creditos,
 						});
 						this.$router.push("/materias");
 					}
-				} else {
-					this.mostrarError = true;
-					this.errorMensaje = "No debe de haber datos vacios.";
 				}
 			} catch (error) {
 				console.error("Error al verificar la existencia de la materia:", error);

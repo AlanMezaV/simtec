@@ -1,6 +1,4 @@
-import {URL_DATOS} from "@/utils/constants.js";
-import axios from "axios";
-import {obtenerDatos} from "@/utils/peticiones";
+import {obtenerDatos, elimina, obtenConClave} from "@/utils/peticiones";
 import Error from "../../mensajes/Error.vue";
 import ConfirmaEliminar from "../../mensajes/ConfirmaEliminar.vue";
 
@@ -56,12 +54,12 @@ export default {
 			maestros.mostrarOpciones = !maestros.mostrarOpciones;
 		},
 		eliminarMaestro: async function (clavemaestro) {
-			const response = await axios.get(`${URL_DATOS}/grupoMaestro/${clavemaestro}`);
+			const response = await obtenConClave("grupoMaestro", clavemaestro);
 			if (response.data.length > 0) {
 				this.mostrarError = true;
 				this.mostrarConfirma = false;
 			} else {
-				const res = await axios.delete(URL_DATOS + "/maestros/" + clavemaestro);
+				await elimina("maestros", clavemaestro);
 				this.lista_maestros = await obtenerDatos("maestros");
 				this.mostrarConfirma = false;
 			}

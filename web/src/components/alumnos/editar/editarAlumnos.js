@@ -1,7 +1,5 @@
-import {URL_DATOS} from "@/utils/constants.js";
-import axios from "axios";
 import AlumnosLista from "../lista/AlumnosLista.vue";
-import {traeDatos} from "@/utils/peticiones";
+import {obtenDatosEditar, actualiza} from "@/utils/peticiones";
 
 export default {
 	name: "FormEditarAlumno",
@@ -17,12 +15,11 @@ export default {
 		return {
 			alumnos: [],
 			mostrarError: false,
-			visible: false,
 			errorMensaje: "",
 		};
 	},
 	async created() {
-		this.alumnos = await traeDatos("alumnos", this.ncontrol);
+		this.alumnos = await obtenDatosEditar("alumnos", this.ncontrol);
 	},
 	methods: {
 		editarAlumno: async function () {
@@ -37,6 +34,8 @@ export default {
 					this.alumnos.estatus == undefined ||
 					this.alumnos.estatus == ""
 				) {
+					this.mostrarError = true;
+					this.errorMensaje = "No debe de haber datos vacios.";
 					return false;
 				}
 				return true;
@@ -44,19 +43,16 @@ export default {
 
 			try {
 				if (validaDatos()) {
-					const res = await axios.put(URL_DATOS + "/alumnos/" + this.ncontrol, {
+					const response = await actualiza("alumnos", this.ncontrol, {
 						ncontrol: this.alumnos.ncontrol,
 						nombre: this.alumnos.nombre,
 						carrera: this.alumnos.carrera,
 						estatus: this.alumnos.estatus,
 					});
 					this.$router.push("/alumnos");
-				} else {
-					this.mostrarError = true;
-					this.errorMensaje = "No debe de haber datos vacios.";
 				}
 			} catch (error) {
-				console.error("Error al verificar la existencia de la materia:", error);
+				console.error("Error al actualizar el alumno", error);
 			}
 		},
 		eliminaError() {
