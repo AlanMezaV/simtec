@@ -63,7 +63,7 @@
     margin: 20px;
     width: 99%;
     display: grid;
-    grid-template-columns: 20% 37% 20% 15% 8%;
+    grid-template-columns: 19% 38% 20% 15% 8%;
     grid-gap: 5px;
     overflow: hidden;
 }
@@ -84,17 +84,23 @@
     border-radius: 5px;
 }
 .datos{
+    font-size: 12px;
     display: grid;  
-    grid-template-columns: 20% 37% 20% 15% 8%;
+    gap: 10px;
+    grid-template-columns: 18% 38% 19% 14% 7%;
     border: 1px solid var(--white-smoke);
+    padding: 10px 0px 10px 25px;
 }
-.espacio{
-    margin: auto 0px;
+.datos span{
+    align-self: center;
+}
+.centrar{
+    
 }
 .estatus{
     width: 65%;
     border-radius: 5px;
-    margin: 8px;
+    /* margin: 8px; */
     padding: 3px;
     text-align: center;
 }
