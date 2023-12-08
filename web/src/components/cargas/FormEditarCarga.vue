@@ -160,6 +160,7 @@ export default {
 				});
 				return band;
 			};
+
 			const validaAlumnoMateria = () => {
 				for (const materia of this.materiasDeAlumno) {
 					if (
