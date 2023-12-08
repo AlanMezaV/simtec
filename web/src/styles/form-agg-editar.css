@@ -45,6 +45,7 @@
 .encabezado button{
     border: none;
     background-color: var(--white);
+    cursor: pointer;
 }
 .contenedor-form-boton{
     display: flex;
@@ -55,9 +56,14 @@
     height: 30px;
     background-color: var(--royal-blue);
     color: var(--white);
-    border: none;
+    border: 1px solid var(--royal-blue);
     border-radius: 5px;
     cursor: pointer;
+}
+.form-boton:hover{
+    transition:all .5s ease-in-out;
+    border: 1px solid var(--light-steel-blue);
+    filter: brightness(110%);
 }
 /* Contenedor de los inputs de la vista de grupos (es diferente layout) */
 .contenedor-inputs{
