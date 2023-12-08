@@ -8,10 +8,15 @@
     color: var(--dim-gray);
     font-weight: 500;
 }
-.menu-desplegable div{
+.menu-desplegable{
     display: flex;
+    flex-direction: column;
     margin: 5px;
     align-items: start;
+    
+}
+.menu-desplegable button{
+    cursor: pointer;
 }
 .contenedor-principal{
     width: 80vw;
@@ -34,6 +39,9 @@
     display: flex;
     justify-content: space-between;
 }
+.contenedor-encabezado button{
+    cursor: pointer;
+}
 .boton-agregar{
     font-size: 12px;
     font-weight: bold;
@@ -46,6 +54,7 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
+    cursor: pointer;
 }
 .contenedor-tabla{
     background-color: var(--white);
@@ -100,7 +109,6 @@
 .estatus{
     width: 65%;
     border-radius: 5px;
-    /* margin: 8px; */
     padding: 3px;
     text-align: center;
 }
@@ -118,4 +126,5 @@
     border: none;
     background-color: var(--white);
     justify-self: center;
+    cursor: pointer;
 }

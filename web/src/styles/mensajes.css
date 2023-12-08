@@ -16,6 +16,7 @@
 .encabezado button{
     border: none;
     background-color: var(--white);
+	cursor: pointer;
 }
 .error {
 	font-weight: bold;
@@ -51,6 +52,7 @@
 }
 .boton-si{
     background-color: var(--royal-blue);
+	cursor: pointer;
 }
 .boton-no{
     background-color: var(--red);

@@ -28,14 +28,16 @@
 							<span>
 								<button @click="mostrarOpciones(alumnos)" class="boton-acciones">···</button>
 								<div v-if="alumnos.mostrarOpciones" class="menu-desplegable">
-									<div>
-										<img src="../../../../public/images/lapiz.svg" alt="" />
-										<button @click.prevent="editarAlumno(alumnos)">Editar</button>
-									</div>
-									<div>
-										<img src="../../../../public/images/basura.svg" alt="" />
-										<button @click="eliminar(alumnos)">Eliminar</button>
-									</div>
+								
+										<button @click.prevent="editarAlumno(alumnos)">
+											<img src="../../../../public/images/lapiz.svg" alt="" />
+											Editar
+										</button>
+										<button @click="eliminar(alumnos)" >
+											<img src="../../../../public/images/basura.svg" alt="" />
+											Eliminar
+										</button>
+									
 								</div>
 							</span>
 							<div v-if="mostrarConfirma && alumnos.ncontrol === numeroControlSeleccionado">

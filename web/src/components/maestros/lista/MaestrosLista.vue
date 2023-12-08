@@ -28,14 +28,14 @@
 							<span>
 								<button @click="mostrarOpciones(maestros)" class="boton-acciones">···</button>
 								<div v-if="maestros.mostrarOpciones" class="menu-desplegable">
-									<div>
+									<button @click.prevent="editarAlumno(alumnos)">
 										<img src="../../../../public/images/lapiz.svg" alt="" />
-										<button @click.prevent="editarMaestro(maestros)">Editar</button>
-									</div>
-									<div>
+										Editar
+									</button>
+									<button @click="eliminar(alumnos)" >
 										<img src="../../../../public/images/basura.svg" alt="" />
-										<button @click="eliminar(maestros)">Eliminar</button>
-									</div>
+										Eliminar
+									</button>
 								</div>
 							</span>
 							<div v-if="mostrarConfirma && maestros.clavemaestro === clavemaestroSeleccionado">

@@ -38,14 +38,14 @@
 							<span>
 								<button @click="mostrarOpciones(grupos)" class="boton-acciones">···</button>
 								<div v-if="grupos.mostrarOpciones" class="menu-desplegable">
-									<div>
+									<button @click.prevent="editarAlumno(alumnos)">
 										<img src="../../../../public/images/lapiz.svg" alt="" />
-										<button @click.prevent="editarGrupo(grupos)">Editar</button>
-									</div>
-									<div>
+										Editar
+									</button>
+									<button @click="eliminar(alumnos)" >
 										<img src="../../../../public/images/basura.svg" alt="" />
-										<button @click="eliminar(grupos)">Eliminar</button>
-									</div>
+										Eliminar
+									</button>
 								</div>
 							</span>
 							<div v-if="mostrarConfirma && grupos.clavegrupo === clavegrupoSeleccionada">

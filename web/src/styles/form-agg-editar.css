@@ -32,9 +32,9 @@
     border: 1px solid var(--light-gray);
     border-radius: 3px;
     margin-left: 5px;
+    padding: 10px;
 }
 .form-input::placeholder{
-    padding-left: 10px;
     color: var(--light-steel-blue);
 }
 .encabezado{
@@ -57,7 +57,7 @@
     color: var(--white);
     border: none;
     border-radius: 5px;
-
+    cursor: pointer;
 }
 /* Contenedor de los inputs de la vista de grupos (es diferente layout) */
 .contenedor-inputs{

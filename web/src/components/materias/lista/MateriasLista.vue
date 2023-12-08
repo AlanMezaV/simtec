@@ -24,14 +24,14 @@
 							<span>
 								<button @click="mostrarOpciones(materias)" class="boton-acciones">···</button>
 								<div v-if="materias.mostrarOpciones" class="menu-desplegable">
-									<div>
+									<button @click.prevent="editarAlumno(alumnos)">
 										<img src="../../../../public/images/lapiz.svg" alt="" />
-										<button @click.prevent="editarMateria(materias)">Editar</button>
-									</div>
-									<div>
+										Editar
+									</button>
+									<button @click="eliminar(alumnos)" >
 										<img src="../../../../public/images/basura.svg" alt="" />
-										<button @click="eliminar(materias)">Eliminar</button>
-									</div>
+										Eliminar
+									</button>
 								</div>
 							</span>
 							<div v-if="mostrarConfirma && materias.clavemateria === clavemateriaSeleccionada">

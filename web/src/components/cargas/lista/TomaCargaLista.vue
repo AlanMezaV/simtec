@@ -56,14 +56,14 @@
 							<span>
 								<button @click="mostrarOpciones(cargas)" class="boton-acciones">···</button>
 								<div v-if="cargas.mostrarOpciones" class="menu-desplegable">
-									<div>
+									<button @click.prevent="editarAlumno(alumnos)">
 										<img src="../../../../public/images/lapiz.svg" alt="" />
-										<button @click.prevent="editarCarga(cargas)">Editar</button>
-									</div>
-									<div>
+										Editar
+									</button>
+									<button @click="eliminar(alumnos)" >
 										<img src="../../../../public/images/basura.svg" alt="" />
-										<button @click="eliminar(cargas)">Eliminar</button>
-									</div>
+										Eliminar
+									</button>
 								</div>
 							</span>
 							<div v-if="mostrarConfirma && cargas.clavegrupo && cargas.ncontrol === cargaSeleccionada">
