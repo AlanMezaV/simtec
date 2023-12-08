@@ -122,9 +122,14 @@
 }
 .boton-acciones{
     font-family: 'Poppins', sans-serif;
+    height: 30px;
     font-size: 1.5em;
     border: none;
     background-color: var(--white);
     justify-self: center;
     cursor: pointer;
+}
+.boton-acciones:hover{
+    font-size: 1.7em;
+    color: var(--dim-gray);
 }

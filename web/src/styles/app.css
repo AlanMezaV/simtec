@@ -40,7 +40,20 @@ nav a{
 .router-link-exact-active {
     color: var(--royal-blue);
     background-color: var(--white);
+    box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, 0.2)
+
 }
 .router-link-exact-active img{
+    filter: none;
+}
+nav a:hover{
+    transition:all .5s ease-in-out;
+    color: var(--royal-blue);
+    background-color: var(--white-smoke);
+    box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, 0.2)
+
+}
+nav a:hover img{
+    transition:all .5s ease-in-out;
     filter: none;
 }
