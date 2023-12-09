@@ -45,7 +45,7 @@
 				/>
 
 				<label for="estatus">Estatus</label>
-				<select v-model="maestros.estatus" id="estatus" class="form-input" required>
+				<select v-model="maestros.estatus" id="estatus" class="form-input combos" required>
 					<option value="V">V</option>
 					<option value="B">B</option>
 				</select>

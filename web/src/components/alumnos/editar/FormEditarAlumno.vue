@@ -15,7 +15,7 @@
 				<input v-model="alumnos.carrera" type="text" id="carrera" maxlength="150" required class="form-input" />
 
 				<label for="estatus">Estatus</label>
-				<select v-model="alumnos.estatus" id="estatus" class="form-input">
+				<select v-model="alumnos.estatus" id="estatus" class="form-input combos">
 					<option value="V">V</option>
 					<option value="B">B</option>
 				</select>

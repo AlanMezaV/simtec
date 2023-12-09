@@ -25,7 +25,7 @@
 					/>
 
 					<label for="clavemateria">Materia:</label>
-					<select v-model="grupos.clavemateria" id="clavemateria" class="form-input">
+					<select v-model="grupos.clavemateria" id="clavemateria" class="form-input combos">
 						<option
 							v-for="materia in clavematerias"
 							:key="materia.clavemateria"
@@ -36,7 +36,7 @@
 					</select>
 
 					<label for="clavemaestro">Maestro:</label>
-					<select v-model="grupos.clavemaestro" id="clavemaestro" class="form-input">
+					<select v-model="grupos.clavemaestro" id="clavemaestro" class="form-input combos">
 						<option
 							v-for="maestro in clavemaestros"
 							:key="maestro.clavemaestro"
@@ -55,7 +55,7 @@
 						type="text"
 						id="horariolunes"
 						maxlength="11"
-						placeholder="Introduce le horario"
+						placeholder="Introduce el horario"
 						class="form-input"
 					/>
 
@@ -65,7 +65,7 @@
 						type="text"
 						id="horariomartes"
 						maxlength="11"
-						placeholder="Introduce le horario"
+						placeholder="Introduce el horario"
 						class="form-input"
 					/>
 
@@ -75,7 +75,7 @@
 						type="text"
 						id="horariomiercoles"
 						maxlength="11"
-						placeholder="Introduce le horario"
+						placeholder="Introduce el horario"
 						class="form-input"
 					/>
 
@@ -85,7 +85,7 @@
 						type="text"
 						id="horariojueves"
 						maxlength="11"
-						placeholder="Introduce le horario"
+						placeholder="Introduce el horario"
 						class="form-input"
 					/>
 

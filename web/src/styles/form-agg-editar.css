@@ -37,6 +37,11 @@
 .form-input::placeholder{
     color: var(--light-steel-blue);
 }
+.combos option {
+    color: var(--dim-gray);
+    background-color: var(--smoke-white);
+    font-size: 16px;
+}
 .encabezado{
     display: flex;
     justify-content: space-between;

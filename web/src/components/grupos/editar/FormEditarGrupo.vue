@@ -10,7 +10,7 @@
 			<form>
 				<div class="contenedor-inputs">
 					<label for="clavemateria">Clave de materia:</label>
-					<select v-model="grupos.clavemateria" id="clavemateria" class="form-input">
+					<select v-model="grupos.clavemateria" id="clavemateria" class="form-input combos">
 						<option
 							v-for="materia in clavematerias"
 							:key="materia.clavemateria"
@@ -21,7 +21,7 @@
 					</select>
 
 					<label for="clavemaestro">Clave del maestro:</label>
-					<select v-model="grupos.clavemaestro" id="clavemaestro" class="form-input">
+					<select v-model="grupos.clavemaestro" id="clavemaestro" class="form-input combos">
 						<option
 							v-for="maestro in clavemaestros"
 							:key="maestro.clavemaestro"
