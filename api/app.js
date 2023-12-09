@@ -31,6 +31,66 @@ conexion.connect(function (error) {
 
 //Gets de todas las tablas
 
+// //Trae ultimo ncontrol
+app.get("/api/alumnos/ultimaClave", (req, res) => {
+	const query = "SELECT MAX(ncontrol) as ultima_clave FROM alumnos";
+
+	conexion.query(query, (error, resultados) => {
+		if (error) {
+			console.error("Error al ejecutar la consulta:", error);
+			res.status(500).json({error: "Error en el servidor"});
+		} else {
+			const ultimaClave = resultados[0].ultima_clave;
+			res.json({ultima_clave: ultimaClave});
+		}
+	});
+});
+
+// //Trae ultima clavemaestro
+app.get("/api/maestros/ultimaClave", (req, res) => {
+	const query = "SELECT MAX(clavemaestro) as ultima_clave FROM maestros";
+
+	conexion.query(query, (error, resultados) => {
+		if (error) {
+			console.error("Error al ejecutar la consulta:", error);
+			res.status(500).json({error: "Error en el servidor"});
+		} else {
+			const ultimaClave = resultados[0].ultima_clave;
+			res.json({ultima_clave: ultimaClave});
+		}
+	});
+});
+
+//Trae ultima clavemateria
+app.get("/api/materias/ultimaClave", (req, res) => {
+	const query = "SELECT MAX(clavemateria) as ultima_clave FROM materias";
+
+	conexion.query(query, (error, resultados) => {
+		if (error) {
+			console.error("Error al ejecutar la consulta:", error);
+			res.status(500).json({error: "Error en el servidor"});
+		} else {
+			const ultimaClave = resultados[0].ultima_clave;
+			res.json({ultima_clave: ultimaClave});
+		}
+	});
+});
+
+//Trae ultima clavegrupo
+app.get("/api/grupos/ultimaClave", (req, res) => {
+	const query = "SELECT MAX(clavegrupo) as ultima_clave FROM grupos";
+
+	conexion.query(query, (error, resultados) => {
+		if (error) {
+			console.error("Error al ejecutar la consulta:", error);
+			res.status(500).json({error: "Error en el servidor"});
+		} else {
+			const ultimaClave = resultados[0].ultima_clave;
+			res.json({ultima_clave: ultimaClave});
+		}
+	});
+});
+
 //Mostrar un alumno
 app.get("/api/alumnos/:id", (req, res) => {
 	conexion.query("SELECT * FROM alumnos WHERE ncontrol = ? LIMIT 1", [req.params.id], (error, fila) => {
@@ -119,19 +179,19 @@ app.get("/api/grupos", (req, res) => {
 	});
 });
 
-//Mostrar los grupos a los que una materia esta registrada mandandole su clavemateria
+// //Mostrar los grupos a los que una materia esta registrada mandandole su clavemateria
 app.get("/api/grupos/materia/:id", (req, res) => {
-	conexion.query(
-		"SELECT clavegrupo, clavemaestro, horariolunes, horariomartes, horariomiercoles, horariojueves, horarioviernes, limitealumnos, inscritos FROM grupos WHERE clavemateria = ?",
-		[req.params.id],
-		(error, filas) => {
-			if (error) {
-				throw error;
-			} else {
-				res.send(filas);
-			}
+	const query = `
+        SELECT g.clavegrupo, g.clavemaestro, m.nombre as nombremaestro, g.horariolunes, g.horariomartes, g.horariomiercoles, g.horariojueves, g.horarioviernes, g.limitealumnos, g.inscritos FROM grupos g JOIN maestros m ON g.clavemaestro = m.clavemaestro WHERE g.clavemateria = ?
+    `;
+
+	conexion.query(query, [req.params.id], (error, filas) => {
+		if (error) {
+			throw error;
+		} else {
+			res.send(filas);
 		}
-	);
+	});
 });
 
 //Mostrar los horarios de los grupos que tiene un maestro

@@ -1,5 +1,5 @@
 import AlumnosLista from "../lista/AlumnosLista.vue";
-import {obtenConClave, agrega} from "@/utils/peticiones";
+import {obtenConClave, agrega, obtenClave} from "@/utils/peticiones";
 
 export default {
 	name: "FormAggAlumno",
@@ -8,10 +8,18 @@ export default {
 	},
 	data: function () {
 		return {
-			alumnos: [],
+			alumnos: {
+				ncontrol: 0,
+				nombre: "",
+				departamento: "",
+				estatus: "",
+			},
 			mostrarError: false,
 			errorMensaje: "",
 		};
+	},
+	async created() {
+		this.alumnos.ncontrol = (await obtenClave("alumnos", "ultimaClave")) + 1;
 	},
 	methods: {
 		validarSoloNumerosClave() {

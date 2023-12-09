@@ -1,5 +1,5 @@
 import MaestrosLista from "../lista/MaestrosLista.vue";
-import {obtenConClave, agrega} from "@/utils/peticiones";
+import {obtenConClave, agrega, obtenClave} from "@/utils/peticiones";
 
 export default {
 	name: "FormAggMaestro",
@@ -8,10 +8,18 @@ export default {
 	},
 	data: function () {
 		return {
-			maestros: [],
+			maestros: {
+				clavemaestro: 0,
+				nombre: "",
+				departamento: "",
+				estatus: "",
+			},
 			mostrarError: false,
 			errorMensaje: "",
 		};
+	},
+	async created() {
+		this.maestros.clavemaestro = (await obtenClave("maestros", "ultimaClave")) + 1;
 	},
 	methods: {
 		validarSoloNumerosClave() {

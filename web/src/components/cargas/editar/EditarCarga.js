@@ -30,6 +30,7 @@ export default {
 			materiasDeAlumno: [],
 			grupoActualizar: [],
 			horarios: [],
+			grupoSeleccionado: [],
 			mostrarError: false,
 			errorMensaje: "",
 		};
@@ -39,13 +40,32 @@ export default {
 		this.clavealumnos = await this.obtenerAlumnos();
 		await this.obtenerMaterias();
 		this.clavegrupos = await traeDatosGrupos("materia", this.clavemateria);
+		this.traeHorario();
 	},
 	watch: {
 		"cargas.clavemateria": "peticionGruposClaveMateria",
 		"cargas.ncontrol": ["peticionGruposNcontrol", "peticionAlumnosClvGyClvM"],
-		"cargas.clavegrupo": "pedirNuevoGrupo",
+		"cargas.clavegrupo": ["pedirNuevoGrupo", "actualizarHorarios"],
 	},
 	methods: {
+		traeHorario() {
+			this.grupoSeleccionado = this.clavegrupos.find((grupo) => grupo.clavegrupo === this.clavegrupo);
+			this.cargas.horariolunes = this.grupoSeleccionado.horariolunes;
+			this.cargas.horariomartes = this.grupoSeleccionado.horariomartes;
+			this.cargas.horariomiercoles = this.grupoSeleccionado.horariomiercoles;
+			this.cargas.horariojueves = this.grupoSeleccionado.horariojueves;
+			this.cargas.horarioviernes = this.grupoSeleccionado.horarioviernes;
+			this.cargas.nombreMaestro = this.grupoSeleccionado.nombremaestro;
+		},
+		async actualizarHorarios() {
+			this.grupoSeleccionado = this.clavegrupos.find((grupo) => grupo.clavegrupo === this.cargas.clavegrupo);
+			this.cargas.horariolunes = this.grupoSeleccionado.horariolunes;
+			this.cargas.horariomartes = this.grupoSeleccionado.horariomartes;
+			this.cargas.horariomiercoles = this.grupoSeleccionado.horariomiercoles;
+			this.cargas.horariojueves = this.grupoSeleccionado.horariojueves;
+			this.cargas.horarioviernes = this.grupoSeleccionado.horarioviernes;
+			this.cargas.nombreMaestro = this.grupoSeleccionado.nombremaestro;
+		},
 		async obtenerAlumnos() {
 			this.clavealumnos = await obtenerDatos("alumnos");
 			return this.clavealumnos.filter((alumno) => alumno.estatus === "V");
@@ -78,10 +98,15 @@ export default {
 		},
 		pedirNuevoGrupo: async function () {
 			this.grupoActualizar = await traeDatos("grupos", this.cargas.clavegrupo);
-			console.log("Grupo actualizado", this.grupoActualizar);
 		},
 		peticionGruposClaveMateria: async function () {
 			this.clavegrupos = await traeDatosGrupos("materia", this.cargas.clavemateria);
+			this.cargas.horariolunes = "";
+			this.cargas.horariomartes = "";
+			this.cargas.horariomiercoles = "";
+			this.cargas.horariojueves = "";
+			this.cargas.horarioviernes = "";
+			this.cargas.nombreMaestro = "";
 		},
 		peticionGruposNcontrol: async function () {
 			this.materiasDeAlumno = await traeDatosGrupos("alumno", this.cargas.ncontrol);

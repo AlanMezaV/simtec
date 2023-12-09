@@ -22,6 +22,77 @@
 					</option>
 				</select>
 
+				<label for="nombreMaestro">Maestro</label>
+				<input
+					type="text"
+					id="nombreMaestro"
+					v-model="cargas.nombreMaestro"
+					maxlength="150"
+					required
+					placeholder="Nombre del maestro"
+					class="form-input"
+					disabled
+				/>
+
+				<label for="horariolunes">Horario lunes</label>
+				<input
+					type="text"
+					id="horariolunes"
+					v-model="cargas.horariolunes"
+					maxlength="150"
+					required
+					placeholder="Hora de la clase"
+					class="form-input"
+					disabled
+				/>
+				<label for="horariomartes">Horario martes</label>
+				<input
+					type="text"
+					id="horariomartes"
+					v-model="cargas.horariomartes"
+					maxlength="150"
+					required
+					placeholder="Hora de la clase"
+					class="form-input"
+					disabled
+				/>
+
+				<label for="horariomiercoles">Horario miercoles</label>
+				<input
+					type="text"
+					id="horariomiercoles"
+					v-model="cargas.horariomiercoles"
+					maxlength="150"
+					required
+					placeholder="Hora de la clase"
+					class="form-input"
+					disabled
+				/>
+
+				<label for="horariojueves">Horario jueves</label>
+				<input
+					type="text"
+					id="horariojueves"
+					v-model="cargas.horariojueves"
+					maxlength="150"
+					required
+					placeholder="Hora de la clase"
+					class="form-input"
+					disabled
+				/>
+
+				<label for="horarioviernes">Horario viernes</label>
+				<input
+					type="text"
+					id="horarioviernes"
+					v-model="cargas.horarioviernes"
+					maxlength="150"
+					required
+					placeholder="Hora de la clase"
+					class="form-input"
+					disabled
+				/>
+
 				<label for="ncontrol">Numero de control:</label>
 				<select v-model="cargas.ncontrol" id="ncontrol" class="form-input combos">
 					<option v-for="alumno in clavealumnos" :key="alumno.ncontrol" :value="alumno.ncontrol">

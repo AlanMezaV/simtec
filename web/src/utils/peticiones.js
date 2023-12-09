@@ -32,6 +32,16 @@ export async function obtenDatosEditar(entidad, primaryKey) {
 	}
 }
 
+export async function obtenClave(entidad, primaryKey) {
+	try {
+		const response = await axios.get(URL_DATOS + `/${entidad}/${primaryKey}`);
+		return response.data.ultima_clave;
+	} catch (error) {
+		console.error(`Error al obtener ${entidad}:`, error);
+		throw error;
+	}
+}
+
 export async function obtenConClave(entidad, primaryKey) {
 	try {
 		const response = await axios.get(URL_DATOS + `/${entidad}/${primaryKey}`);
