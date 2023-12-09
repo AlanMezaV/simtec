@@ -10,6 +10,7 @@
 			<form>
 				<label for="clavemateria">Materia:</label>
 				<select v-model="cargas.clavemateria" id="clavemateria" class="form-input">
+					<option disabled selected value="">Seleccione</option>
 					<option v-for="materia in clavematerias" :key="materia.clavemateria" :value="materia.clavemateria">
 						{{ materia.nombre }}
 					</option>
@@ -17,6 +18,7 @@
 
 				<label for="clavegrupo">Grupos</label>
 				<select v-model="cargas.clavegrupo" id="clavegrupo" class="clavegrupo form-input">
+					<option disabled selected value="">Seleccione</option>
 					<option v-for="grupo in clavegrupos" :key="grupo.clavegrupo" :value="grupo.clavegrupo">
 						{{ grupo.clavegrupo }}
 					</option>
@@ -24,6 +26,7 @@
 
 				<label for="ncontrol">Numero de control:</label>
 				<select v-model="cargas.ncontrol" id="ncontrol" class="form-input">
+					<option disabled selected value="">Seleccione</option>
 					<option v-for="alumno in clavealumnos" :key="alumno.ncontrol" :value="alumno.ncontrol">
 						{{ alumno.nombre }}
 					</option>

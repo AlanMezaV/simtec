@@ -1,7 +1,5 @@
-import {URL_DATOS} from "@/utils/constants.js";
-import axios from "axios";
 import GruposLista from "../lista/GruposLista.vue";
-import {traeDatos, obtenerDatos, traeDatosGrupos, traeEstatus, traeCreditos} from "@/utils/peticiones";
+import {traeDatos, obtenerDatos, traeDatosGrupos, traeEstatus, traeCreditos, actualiza} from "@/utils/peticiones";
 
 export default {
 	name: "FormEditarGrupo",
@@ -34,9 +32,13 @@ export default {
 		this.grupos = await traeDatos("grupos", this.clavegrupo);
 		console.log(this.grupos);
 		this.clavematerias = await obtenerDatos("materias");
-		this.clavemaestros = await obtenerDatos("maestros");
+		this.clavemaestros = await this.filtrarMaestros();
 	},
 	methods: {
+		async filtrarMaestros() {
+			this.clavemaestros = await obtenerDatos("maestros");
+			return this.clavemaestros.filter((maestro) => maestro.estatus === "V");
+		},
 		async deshabilitarViernes() {
 			let creditos = await traeCreditos(this.grupos.clavemateria);
 			if (creditos[0].creditos == 4) {
@@ -144,7 +146,7 @@ export default {
 			};
 			try {
 				if (validaDatos() && validaMaestroHorario() && validaMaestroEstatus() && validaHoras()) {
-					const res = await axios.put(URL_DATOS + "/grupos/" + this.clavegrupo, {
+					await actualiza("grupos", this.clavegrupo, {
 						clavemateria: this.grupos.clavemateria,
 						clavegrupo: this.grupos.clavegrupo,
 						clavemaestro: this.grupos.clavemaestro,

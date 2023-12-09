@@ -1,7 +1,5 @@
-import {URL_DATOS} from "@/utils/constants.js";
-import axios from "axios";
 import GruposLista from "../lista/GruposLista.vue";
-import {traeDatosGrupos, traeEstatus, traeCreditos} from "@/utils/peticiones";
+import {traeDatosGrupos, traeEstatus, traeCreditos, obtenerDatos, obtenConClave, agrega} from "@/utils/peticiones";
 
 export default {
 	name: "FormAggGrupo",
@@ -20,9 +18,9 @@ export default {
 			errorMensaje: "",
 		};
 	},
-	created() {
-		this.obtenerMaterias();
-		this.obtenerMaestros();
+	async created() {
+		this.clavematerias = await obtenerDatos("materias");
+		this.clavemaestros = await this.obtenerMaestros();
 	},
 	watch: {
 		"grupos.clavemateria": "deshabilitarViernes",
@@ -36,21 +34,9 @@ export default {
 				this.placeholderHorarioViernes = "Materia con 4 creditos";
 			}
 		},
-		async obtenerMaterias() {
-			try {
-				const response = await axios.get(`${URL_DATOS}/materias`);
-				this.clavematerias = response.data;
-			} catch (error) {
-				console.error("Error al obtener materias:", error);
-			}
-		},
 		async obtenerMaestros() {
-			try {
-				const response = await axios.get(`${URL_DATOS}/maestros`);
-				this.clavemaestros = response.data;
-			} catch (error) {
-				console.error("Error al obtener maestros:", error);
-			}
+			this.clavemaestros = await obtenerDatos("maestros");
+			return this.clavemaestros.filter((maestro) => maestro.estatus === "V");
 		},
 		validarSoloNumerosClave() {
 			this.grupos.clavegrupo = this.grupos.clavegrupo.replace(/\D/g, "");
@@ -154,12 +140,12 @@ export default {
 
 			try {
 				if (validaDatos() && validaMaestroHorario() && validaMaestroEstatus() && validaHoras()) {
-					const response = await axios.get(`${URL_DATOS}/grupos/${this.grupos.clavegrupo}`);
+					const response = await obtenConClave("grupos", this.grupos.clavegrupo);
 					if (response.data.length > 0) {
 						this.mostrarError = true;
 						this.errorMensaje = "El grupo ya existe, no se puede agregar.";
 					} else {
-						const res = await axios.post(URL_DATOS + "/grupos", {
+						await agrega("grupos", {
 							clavemateria: this.grupos.clavemateria,
 							clavegrupo: this.grupos.clavegrupo,
 							clavemaestro: this.grupos.clavemaestro,

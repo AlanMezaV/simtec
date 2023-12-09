@@ -36,9 +36,9 @@ export default {
 	},
 	async created() {
 		this.cargas = await this.traeCarga();
-		this.clavematerias = await obtenerDatos("materias");
+		this.clavealumnos = await this.obtenerAlumnos();
+		await this.obtenerMaterias();
 		this.clavegrupos = await traeDatosGrupos("materia", this.clavemateria);
-		this.clavealumnos = await obtenerDatos("alumnos");
 	},
 	watch: {
 		"cargas.clavemateria": "peticionGruposClaveMateria",
@@ -46,6 +46,16 @@ export default {
 		"cargas.clavegrupo": "pedirNuevoGrupo",
 	},
 	methods: {
+		async obtenerAlumnos() {
+			this.clavealumnos = await obtenerDatos("alumnos");
+			return this.clavealumnos.filter((alumno) => alumno.estatus === "V");
+		},
+		async obtenerMaterias() {
+			const materias = await obtenerDatos("materias");
+			const grupos = await obtenerDatos("grupos");
+			const clavesConGrupos = grupos.map((grupo) => grupo.clavemateria);
+			this.clavematerias = materias.filter((materia) => clavesConGrupos.includes(materia.clavemateria));
+		},
 		traeCarga: async function () {
 			try {
 				const response = await axios.get(URL_DATOS + "/cargas/" + this.clavegrupo, {

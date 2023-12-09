@@ -22,9 +22,8 @@ export default {
 		};
 	},
 	async created() {
-		this.clavematerias = await obtenerDatos("materias");
-		this.clavealumnos = await obtenerDatos("alumnos");
-		// this.clavegrupos = await traeDatosGrupos("materia", this.cargas.clavemateria);
+		this.clavealumnos = await this.obtenerAlumnos();
+		await this.obtenerMaterias();
 	},
 	watch: {
 		"cargas.clavemateria": "peticionGruposClaveMateria",
@@ -32,6 +31,16 @@ export default {
 		"cargas.clavegrupo": "pedirNuevoGrupo",
 	},
 	methods: {
+		async obtenerMaterias() {
+			const materias = await obtenerDatos("materias");
+			const grupos = await obtenerDatos("grupos");
+			const clavesConGrupos = grupos.map((grupo) => grupo.clavemateria);
+			this.clavematerias = materias.filter((materia) => clavesConGrupos.includes(materia.clavemateria));
+		},
+		async obtenerAlumnos() {
+			this.clavealumnos = await obtenerDatos("alumnos");
+			return this.clavealumnos.filter((alumno) => alumno.estatus === "V");
+		},
 		pedirNuevoGrupo: async function () {
 			this.grupoActualizar = await traeDatos("grupos", this.cargas.clavegrupo);
 			console.log("Grupo actualizado", this.grupoActualizar);
