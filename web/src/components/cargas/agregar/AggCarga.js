@@ -28,9 +28,31 @@ export default {
 	watch: {
 		"cargas.clavemateria": "peticionGruposClaveMateria",
 		"cargas.ncontrol": ["peticionGruposNcontrol", "peticionAlumnosClvGyClvM"],
-		"cargas.clavegrupo": "pedirNuevoGrupo",
+		"cargas.clavegrupo": ["pedirNuevoGrupo", "ActualizarHorarios"],
 	},
 	methods: {
+		async ActualizarHorarios() {
+			const grupoSeleccionado = this.clavegrupos.find((grupo) => grupo.clavegrupo === this.cargas.clavegrupo);
+			console.log("Grupo seleccionado", grupoSeleccionado);
+			const maestro = await traeDatos("maestros", grupoSeleccionado.clavemaestro);
+			console.log("Maestro", maestro.nombre);
+
+			if (grupoSeleccionado) {
+				this.cargas.horariolunes = grupoSeleccionado.horariolunes;
+				this.cargas.horariomartes = grupoSeleccionado.horariomartes;
+				this.cargas.horariomiercoles = grupoSeleccionado.horariomiercoles;
+				this.cargas.horariojueves = grupoSeleccionado.horariojueves;
+				this.cargas.horarioviernes = grupoSeleccionado.horarioviernes;
+				this.cargas.nombreMaestro = maestro.nombre;
+			} else {
+				this.cargas.horariolunes = "";
+				this.cargas.horariomartes = "";
+				this.cargas.horariomiercoles = "";
+				this.cargas.horariojueves = "";
+				this.cargas.horarioviernes = "";
+				this.cargas.nombreMaestro = "";
+			}
+		},
 		async obtenerMaterias() {
 			const materias = await obtenerDatos("materias");
 			const grupos = await obtenerDatos("grupos");
@@ -43,7 +65,6 @@ export default {
 		},
 		pedirNuevoGrupo: async function () {
 			this.grupoActualizar = await traeDatos("grupos", this.cargas.clavegrupo);
-			console.log("Grupo actualizado", this.grupoActualizar);
 		},
 		peticionGruposClaveMateria: async function () {
 			this.clavegrupos = await traeDatosGrupos("materia", this.cargas.clavemateria);
@@ -93,9 +114,7 @@ export default {
 
 			const validaInscritos = () => {
 				const inscritos = this.grupoActualizar.inscritos;
-				console.log("Alumnos inscritos" + this.grupoActualizar.inscritos);
 				const cupo = this.grupoActualizar.limitealumnos;
-				console.log("Cupo" + this.grupoActualizar.limitealumnos);
 				if (inscritos === cupo) {
 					this.mostrarError = true;
 					this.errorMensaje = "El grupo ya esta lleno.";
@@ -117,7 +136,6 @@ export default {
 			const validaAlumnoHorario = () => {
 				let band = true;
 				const horario = this.clavegrupos[0].horariolunes;
-				console.log(horario);
 				this.horarios.forEach((hora) => {
 					if (hora === horario) {
 						this.mostrarError = true;

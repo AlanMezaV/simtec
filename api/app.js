@@ -122,7 +122,7 @@ app.get("/api/grupos", (req, res) => {
 //Mostrar los grupos a los que una materia esta registrada mandandole su clavemateria
 app.get("/api/grupos/materia/:id", (req, res) => {
 	conexion.query(
-		"SELECT clavegrupo, horariolunes, limitealumnos, inscritos FROM grupos WHERE clavemateria = ?",
+		"SELECT clavegrupo, clavemaestro, horariolunes, horariomartes, horariomiercoles, horariojueves, horarioviernes, limitealumnos, inscritos FROM grupos WHERE clavemateria = ?",
 		[req.params.id],
 		(error, filas) => {
 			if (error) {
