@@ -94,3 +94,12 @@
 .datos span{
     align-self: center;
 }
+.contenedor-carga-horario{
+    border: 1px solid var(--dim-gray);
+    border-radius: 5px;
+    background-color: azure;
+}
+.contenedor-carga-dias{
+    display: flex;
+    justify-content: space-between;
+}

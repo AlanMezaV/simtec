@@ -1,0 +1,19 @@
+.contenedor-carga-horario{
+    height: 70px;
+    border: 1px solid var(--light-steel-blue);
+    border-radius: 10px;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    justify-content: center;
+}
+.contenedor-carga-dias{
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+}
+.contenedor-carga-horas{
+    font-size: 12px;
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+}

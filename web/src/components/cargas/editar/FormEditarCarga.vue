@@ -22,76 +22,43 @@
 					</option>
 				</select>
 
-				<label for="nombreMaestro">Maestro</label>
-				<input
-					type="text"
-					id="nombreMaestro"
-					v-model="cargas.nombreMaestro"
-					maxlength="150"
-					required
-					placeholder="Nombre del maestro"
-					class="form-input"
-					disabled
-				/>
+				<span id="nombreMaestro" > 
+					Maestro:	{{ cargas.nombreMaestro }} 
+				</span>
+				
+				<div class="contenedor-carga-horario">
 
-				<label for="horariolunes">Horario lunes</label>
-				<input
-					type="text"
-					id="horariolunes"
-					v-model="cargas.horariolunes"
-					maxlength="150"
-					required
-					placeholder="Hora de la clase"
-					class="form-input"
-					disabled
-				/>
-				<label for="horariomartes">Horario martes</label>
-				<input
-					type="text"
-					id="horariomartes"
-					v-model="cargas.horariomartes"
-					maxlength="150"
-					required
-					placeholder="Hora de la clase"
-					class="form-input"
-					disabled
-				/>
-
-				<label for="horariomiercoles">Horario miercoles</label>
-				<input
-					type="text"
-					id="horariomiercoles"
-					v-model="cargas.horariomiercoles"
-					maxlength="150"
-					required
-					placeholder="Hora de la clase"
-					class="form-input"
-					disabled
-				/>
-
-				<label for="horariojueves">Horario jueves</label>
-				<input
-					type="text"
-					id="horariojueves"
-					v-model="cargas.horariojueves"
-					maxlength="150"
-					required
-					placeholder="Hora de la clase"
-					class="form-input"
-					disabled
-				/>
-
-				<label for="horarioviernes">Horario viernes</label>
-				<input
-					type="text"
-					id="horarioviernes"
-					v-model="cargas.horarioviernes"
-					maxlength="150"
-					required
-					placeholder="Hora de la clase"
-					class="form-input"
-					disabled
-				/>
+					<div class="contenedor-carga-dias">
+						<span>Lunes</span>
+						<span>Martes</span>
+						<span>Miercoles</span>
+						<span>Juves</span>
+						<span>Viernes</span>
+					</div>
+					<div class="contenedor-carga-horas">
+						
+						<span id="horariolunes"> 
+							{{ cargas.horariolunes }}
+						</span>
+					
+						<span id="horariomartes">
+							{{ cargas.horariomartes }}
+						</span>
+					
+						<span id="horariomiercoles">
+							{{ cargas.horariomiercoles }}
+						</span>
+					
+						<span id="horariojueves">
+							{{ cargas.horariojueves }}
+						</span>
+					
+						<span id="horarioviernes">
+							{{ cargas.horarioviernes }}
+						</span>	
+					</div>
+				
+				</div>
 
 				<label for="ncontrol">Numero de control:</label>
 				<select v-model="cargas.ncontrol" id="ncontrol" class="form-input combos">
@@ -113,4 +80,5 @@
 
 <script src="./EditarCarga"></script>
 
+<style scoped src="../../../styles/cargas-agg-edit.css"></style>
 <style scoped src="../../../styles/form-agg-editar.css"></style>
