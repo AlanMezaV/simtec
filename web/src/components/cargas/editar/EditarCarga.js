@@ -182,6 +182,9 @@ export default {
 				console.log("Alumnos inscritos" + this.grupoActualizar.inscritos);
 				const cupo = this.grupoActualizar.limitealumnos;
 				console.log("Cupo" + this.grupoActualizar.limitealumnos);
+				if (this.ncontrol !== this.cargas.ncontrol && this.clavegrupo === this.cargas.clavegrupo) {
+					return true;
+				}
 				if (inscritos === cupo) {
 					this.mostrarError = true;
 					this.errorMensaje = "El grupo ya esta lleno.";
