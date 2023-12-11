@@ -13,6 +13,7 @@
 					<div class="tabla-encabezado-carga">
 						<div>Clave grupo</div>
 						<div>Materia</div>
+						<div>Maestro</div>
 						<div>Numero de control</div>
 						<div>Alumno</div>
 						<div>Horario lunes</div>
@@ -34,6 +35,10 @@
 							<span>
 								<span>{{ getNombreMateria(cargas.clavemateria) }}</span>
 							</span>
+							<span>
+								<span>{{ getNombreMaestro(cargas.clavegrupo) }}</span>
+							</span>
+
 							<span>{{ cargas.ncontrol }}</span>
 							<span>
 								<span>{{ getNombreAlumno(cargas.ncontrol) }}</span>

@@ -16,6 +16,7 @@ export default {
 			clavematerias: [],
 			clavealumnos: [],
 			clavegrupos: [],
+			clavemaestros: [],
 			grupoActualizar: [],
 			horario: [],
 			mostrarError: false,
@@ -29,8 +30,14 @@ export default {
 		this.clavematerias = await obtenerDatos("materias");
 		this.clavealumnos = await obtenerDatos("alumnos");
 		this.clavegrupos = await obtenerDatos("grupos");
+		this.clavemaestros = await obtenerDatos("maestros");
 	},
 	methods: {
+		getNombreMaestro(claveGrupo) {
+			const grupo = this.clavegrupos.find((grupo) => grupo.clavegrupo === claveGrupo);
+			const maestro = this.clavemaestros.find((maestro) => maestro.clavemaestro === grupo.clavemaestro);
+			return maestro ? maestro.nombre : "Maestro no encontrado";
+		},
 		getNombreMateria(claveMateria) {
 			const materia = this.clavematerias.find((materia) => materia.clavemateria === claveMateria);
 			return materia ? materia.nombre : "Materia no encontrada";
