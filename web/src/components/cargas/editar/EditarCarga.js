@@ -89,13 +89,6 @@ export default {
 		traeCarga: async function () {
 			try {
 				const response = await traeCarga("cargas", this.clavegrupo, this.ncontrol);
-				console.log("Response", response);
-				// const response = await axios.get(URL_DATOS + "/cargas/" + this.clavegrupo, {
-				// 	params: {
-				// 		ncontrol: this.ncontrol,
-				// 	},
-				// });
-
 				const cargaObjeto = response.data[0];
 				const propiedadesFormateadas = Object.entries(cargaObjeto).reduce((acc, [clave, valor]) => {
 					acc[clave] = valor;

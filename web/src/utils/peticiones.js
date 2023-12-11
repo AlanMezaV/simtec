@@ -21,16 +21,6 @@ export async function obtenConClave(entidad, primaryKey) {
 	}
 }
 
-export async function traeDatos(entidad, primaryKey) {
-	try {
-		const response = await axios.get(URL_DATOS + `/${entidad}/${primaryKey}`);
-		return response.data[0];
-	} catch (error) {
-		console.error(`Error al obtener ${entidad}:`, error);
-		throw error;
-	}
-}
-
 //obtener datos para editar
 export async function obtenDatosEditar(entidad, primaryKey) {
 	try {
@@ -113,6 +103,16 @@ export async function elimina(entidad, clave) {
 	}
 }
 
+export async function eliminaCarga(entidad, claveGrupo, nControl) {
+	try {
+		const res = await axios.delete(`${URL_DATOS}/${entidad}/${claveGrupo}/${nControl}`);
+		return res;
+	} catch (error) {
+		console.error(`Error al eliminar ${entidad}`, error);
+		throw error;
+	}
+}
+
 //Actualizar datos
 export async function actualiza(entidad, clave, datos) {
 	try {
@@ -123,13 +123,6 @@ export async function actualiza(entidad, clave, datos) {
 		throw error;
 	}
 }
-
-//Haz que esto se pueda hacer como los anteriores:
-// const response = await axios.get(URL_DATOS + "/cargas/" + this.clavegrupo, {
-// 	params: {
-// 		ncontrol: this.ncontrol,
-// 	},
-// });
 
 export async function traeCarga(entidad, primaryKey, Ncontrol) {
 	try {

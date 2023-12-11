@@ -1,6 +1,4 @@
-import {URL_DATOS} from "@/utils/constants.js";
-import axios from "axios";
-import {obtenerDatos} from "@/utils/peticiones";
+import {elimina, obtenerDatos, obtenConClave} from "@/utils/peticiones";
 import Error from "../../mensajes/Error.vue";
 import ConfirmaEliminar from "../../mensajes/ConfirmaEliminar.vue";
 
@@ -61,12 +59,12 @@ export default {
 			grupos.mostrarOpciones = !grupos.mostrarOpciones;
 		},
 		eliminarGrupo: async function (clavegrupo) {
-			const response = await axios.get(`${URL_DATOS}/cargaGrupo/${clavegrupo}`);
+			const response = await obtenConClave("cargaGrupo", clavegrupo);
 			if (response.data.length > 0) {
 				this.mostrarError = true;
 				this.mostrarConfirma = false;
 			} else {
-				const res = await axios.delete(URL_DATOS + "/grupos/" + clavegrupo);
+				await elimina("grupos", clavegrupo);
 				this.lista_grupos = await obtenerDatos("grupos");
 				this.mostrarConfirma = false;
 			}

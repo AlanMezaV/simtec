@@ -1,5 +1,12 @@
 import GruposLista from "../lista/GruposLista.vue";
-import {traeDatos, obtenerDatos, traeDatosGrupos, traeEstatus, traeCreditos, actualiza} from "@/utils/peticiones";
+import {
+	obtenerDatos,
+	traeDatosGrupos,
+	traeEstatus,
+	traeCreditos,
+	actualiza,
+	obtenDatosEditar,
+} from "@/utils/peticiones";
 
 export default {
 	name: "FormEditarGrupo",
@@ -29,7 +36,7 @@ export default {
 		"grupos.clavemateria": "deshabilitarViernes",
 	},
 	async created() {
-		this.grupos = await traeDatos("grupos", this.clavegrupo);
+		this.grupos = await obtenDatosEditar("grupos", this.clavegrupo);
 		console.log(this.grupos);
 		this.clavematerias = await obtenerDatos("materias");
 		this.clavemaestros = await this.filtrarMaestros();

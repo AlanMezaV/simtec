@@ -1,7 +1,5 @@
-import {URL_DATOS} from "@/utils/constants.js";
-import axios from "axios";
 import TomaCargaLista from "../lista/TomaCargaLista.vue";
-import {obtenerDatos, traeDatos, traeDatosGrupos, traeEstatus} from "@/utils/peticiones";
+import {actualiza, agrega, obtenerDatos, obtenDatosEditar, traeDatosGrupos, traeEstatus} from "@/utils/peticiones";
 
 export default {
 	name: "FormAggCarga",
@@ -52,7 +50,7 @@ export default {
 			return this.clavealumnos.filter((alumno) => alumno.estatus === "V");
 		},
 		pedirNuevoGrupo: async function () {
-			this.grupoActualizar = await traeDatos("grupos", this.cargas.clavegrupo);
+			this.grupoActualizar = await obtenDatosEditar("grupos", this.cargas.clavegrupo);
 		},
 		peticionGruposClaveMateria: async function () {
 			this.clavegrupos = await traeDatosGrupos("materia", this.cargas.clavemateria);
@@ -147,12 +145,11 @@ export default {
 					validaInscritos() &&
 					validaAlumnoEstatus()
 				) {
-					const response = await axios.put(URL_DATOS + "/grupos/inscritos/" + this.cargas.clavegrupo, {
+					await actualiza("grupos/inscritos", this.clavegrupo, {
 						clavegrupo: this.cargas.clavegrupo,
 						inscritos: this.grupoActualizar.inscritos + 1,
 					});
-
-					const res = await axios.post(URL_DATOS + "/cargas", {
+					await agrega("cargas", {
 						clavemateria: this.cargas.clavemateria,
 						clavegrupo: this.cargas.clavegrupo,
 						ncontrol: this.cargas.ncontrol,

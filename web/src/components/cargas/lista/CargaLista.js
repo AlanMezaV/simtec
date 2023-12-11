@@ -1,6 +1,4 @@
-import {URL_DATOS} from "@/utils/constants.js";
-import axios from "axios";
-import {obtenerDatos, traeDatos, traeDatosGrupos} from "@/utils/peticiones";
+import {actualiza, eliminaCarga, obtenConClave, obtenerDatos} from "@/utils/peticiones";
 import Error from "../../mensajes/Error.vue";
 import ConfirmaEliminar from "../../mensajes/ConfirmaEliminar.vue";
 
@@ -97,15 +95,9 @@ export default {
 			cargas.mostrarOpciones = !cargas.mostrarOpciones;
 		},
 		eliminarCarga: async function (cargas) {
-			console.log(cargas);
-			const res = await axios
-				.delete(URL_DATOS + `/cargas/${cargas.clavegrupo}/${cargas.ncontrol}`)
-				.then((response) => {
-					// Maneja la respuesta exitosa si es necesario
-					console.log("Carga eliminada con éxito", response.data);
-				});
-			this.grupoActualizar = await traeDatos("grupos", cargas.clavegrupo);
-			const response = await axios.put(URL_DATOS + "/grupos/inscritos/" + cargas.clavegrupo, {
+			await eliminaCarga("cargas", cargas.clavegrupo, cargas.ncontrol);
+			this.grupoActualizar = await obtenConClave("grupos", cargas.clavegrupo);
+			await actualiza("grupos/inscritos", cargas.clavegrupo, {
 				clavegrupo: cargas.clavegrupo,
 				inscritos: this.grupoActualizar.inscritos - 1,
 			});
