@@ -4,14 +4,14 @@
     margin: 25px;
     width: 99%;
     display: grid;
-    grid-template-columns: 10% 14% 10% 13% 9% 9% 9% 9% 9% 7% ;
+    grid-template-columns: 6% 12% 11% 9% 13% 8% 8% 8% 8% 8% 6% ;
     overflow: hidden;
 }
 .datos-carga{
     font-size: 12px;
     display: grid;  
-    gap: 10px;
-    grid-template-columns: 9% 13% 9% 13% 8% 8% 8% 8% 8% 7% ;
+    gap: 5px;
+    grid-template-columns: 5% 13% 10% 9% 13% 8% 8% 8% 8% 8% 5% ;
     border: 1px solid var(--white-smoke);
     padding: 10px 0px 10px 25px;
 }

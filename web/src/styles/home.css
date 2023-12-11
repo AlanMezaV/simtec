@@ -5,7 +5,7 @@
 .contenedor-info{
     display: flex;
     flex-direction: column;
-    gap: 50px;
+    gap: 40px;
     margin-top: 20px;
     align-items: center;
 }

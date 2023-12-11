@@ -6,7 +6,9 @@
 				<h1>Instituto Tecnológico Campus Culiacán</h1>
 				<h2>Simulación de Sistema de Integración escolar</h2>
 				<h3>
-					Angulo Sánchez Monica <br>
+					Angulo Sánchez Monica
+				</h3>
+				<h3>
 					Meza Valenzuela Alan
 				</h3>
 			</div>
