@@ -194,16 +194,34 @@ app.get("/api/grupos/materia/:id", (req, res) => {
 	});
 });
 
-//Mostrar los horarios de los grupos que tiene un maestro
-app.get("/api/grupos/horarioMaestro/:id", (req, res) => {
-	conexion.query("SELECT horariolunes FROM grupos WHERE clavemaestro = ?", [req.params.id], (error, filas) => {
-		if (error) {
-			throw error;
-		} else {
-			res.send(filas);
+// Mostrar una carga
+app.get("/api/grupod/horarioMaestro/:id", (req, res) => {
+	let clavegrupo = req.params.id; // Utiliza req.params para obtener el parámetro de la URL
+	let clavemateria = req.query.ncontrol; // Utiliza req.query para obtener el parámetro de la URL
+
+	conexion.query(
+		"SELECT horariolunes FROM grupos WHERE clavegrupo = ? and clavemateria = ?",
+		[clavegrupo, clavemateria],
+		(error, fila) => {
+			if (error) {
+				throw error;
+			} else {
+				res.send(fila);
+			}
 		}
-	});
+	);
 });
+
+// //Mostrar los horarios de los grupos que tiene un maestro
+// app.get("/api/grupos/horarioMaestro/:id", (req, res) => {
+// 	conexion.query("SELECT horariolunes FROM grupos WHERE clavemaestro = ?", [req.params.id], (error, filas) => {
+// 		if (error) {
+// 			throw error;
+// 		} else {
+// 			res.send(filas);
+// 		}
+// 	});
+// });
 
 //Mostrar las clavemateria a los que esta registrado un alumno mandandole su numero de control
 app.get("/api/grupos/alumno/:id", (req, res) => {
@@ -547,7 +565,7 @@ app.put("/api/grupos/:id", (req, res) => {
 });
 
 //Actualizar una carga
-app.put("/api/cargas", (req, res) => {
+app.put("/api/cargas/:id", (req, res) => {
 	let clavemateria = req.body.clavemateria;
 	let clavegrupo = req.body.clavegrupo;
 	let ncontrol = req.body.ncontrol;

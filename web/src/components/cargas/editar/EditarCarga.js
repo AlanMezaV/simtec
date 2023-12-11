@@ -1,7 +1,5 @@
-import {URL_DATOS} from "@/utils/constants.js";
-import axios from "axios";
 import TomaCargaLista from "../lista/TomaCargaLista.vue";
-import {obtenerDatos, traeDatos, traeEstatus, traeDatosGrupos} from "@/utils/peticiones";
+import {obtenerDatos, traeEstatus, traeDatosGrupos, actualiza, traeCarga, obtenDatosEditar} from "@/utils/peticiones";
 
 export default {
 	name: "FormEditarCarga",
@@ -48,23 +46,35 @@ export default {
 		"cargas.clavegrupo": ["pedirNuevoGrupo", "actualizarHorarios"],
 	},
 	methods: {
+		escribirHorario: function (lunes, martes, miercoles, jueves, viernes, maestro) {
+			this.cargas.horariolunes = lunes;
+			this.cargas.horariomartes = martes;
+			this.cargas.horariomiercoles = miercoles;
+			this.cargas.horariojueves = jueves;
+			this.cargas.horarioviernes = viernes;
+			this.cargas.nombreMaestro = maestro;
+		},
 		traeHorario() {
 			this.grupoSeleccionado = this.clavegrupos.find((grupo) => grupo.clavegrupo === this.clavegrupo);
-			this.cargas.horariolunes = this.grupoSeleccionado.horariolunes;
-			this.cargas.horariomartes = this.grupoSeleccionado.horariomartes;
-			this.cargas.horariomiercoles = this.grupoSeleccionado.horariomiercoles;
-			this.cargas.horariojueves = this.grupoSeleccionado.horariojueves;
-			this.cargas.horarioviernes = this.grupoSeleccionado.horarioviernes;
-			this.cargas.nombreMaestro = this.grupoSeleccionado.nombremaestro;
+			this.escribirHorario(
+				this.grupoSeleccionado.horariolunes,
+				this.grupoSeleccionado.horariomartes,
+				this.grupoSeleccionado.horariomiercoles,
+				this.grupoSeleccionado.horariojueves,
+				this.grupoSeleccionado.horarioviernes,
+				this.grupoSeleccionado.nombremaestro
+			);
 		},
 		async actualizarHorarios() {
 			this.grupoSeleccionado = this.clavegrupos.find((grupo) => grupo.clavegrupo === this.cargas.clavegrupo);
-			this.cargas.horariolunes = this.grupoSeleccionado.horariolunes;
-			this.cargas.horariomartes = this.grupoSeleccionado.horariomartes;
-			this.cargas.horariomiercoles = this.grupoSeleccionado.horariomiercoles;
-			this.cargas.horariojueves = this.grupoSeleccionado.horariojueves;
-			this.cargas.horarioviernes = this.grupoSeleccionado.horarioviernes;
-			this.cargas.nombreMaestro = this.grupoSeleccionado.nombremaestro;
+			this.escribirHorario(
+				this.grupoSeleccionado.horariolunes,
+				this.grupoSeleccionado.horariomartes,
+				this.grupoSeleccionado.horariomiercoles,
+				this.grupoSeleccionado.horariojueves,
+				this.grupoSeleccionado.horarioviernes,
+				this.grupoSeleccionado.nombremaestro
+			);
 		},
 		async obtenerAlumnos() {
 			this.clavealumnos = await obtenerDatos("alumnos");
@@ -78,13 +88,15 @@ export default {
 		},
 		traeCarga: async function () {
 			try {
-				const response = await axios.get(URL_DATOS + "/cargas/" + this.clavegrupo, {
-					params: {
-						ncontrol: this.ncontrol,
-					},
-				});
+				const response = await traeCarga("cargas", this.clavegrupo, this.ncontrol);
+				console.log("Response", response);
+				// const response = await axios.get(URL_DATOS + "/cargas/" + this.clavegrupo, {
+				// 	params: {
+				// 		ncontrol: this.ncontrol,
+				// 	},
+				// });
 
-				const cargaObjeto = response.data[0]; // Obtener el objeto del índice 0
+				const cargaObjeto = response.data[0];
 				const propiedadesFormateadas = Object.entries(cargaObjeto).reduce((acc, [clave, valor]) => {
 					acc[clave] = valor;
 					return acc;
@@ -97,16 +109,11 @@ export default {
 			}
 		},
 		pedirNuevoGrupo: async function () {
-			this.grupoActualizar = await traeDatos("grupos", this.cargas.clavegrupo);
+			this.grupoActualizar = await obtenDatosEditar("grupos", this.cargas.clavegrupo);
 		},
 		peticionGruposClaveMateria: async function () {
 			this.clavegrupos = await traeDatosGrupos("materia", this.cargas.clavemateria);
-			this.cargas.horariolunes = "";
-			this.cargas.horariomartes = "";
-			this.cargas.horariomiercoles = "";
-			this.cargas.horariojueves = "";
-			this.cargas.horarioviernes = "";
-			this.cargas.nombreMaestro = "";
+			this.escribirHorario("", "", "", "", "", "");
 		},
 		peticionGruposNcontrol: async function () {
 			this.materiasDeAlumno = await traeDatosGrupos("alumno", this.cargas.ncontrol);
@@ -139,12 +146,18 @@ export default {
 				}
 				return true;
 			};
+
 			const validaAlumnoHorario = () => {
 				let band = true;
-				const horario = this.clavegrupos[0].horariolunes;
-				const horaAnterior = traeDatosGrupos("materia", this.clavemateria);
-				this.horarios.forEach((hora) => {
-					if (hora === horario && hora !== horaAnterior) {
+				const horaNueva = this.clavegrupos[0].horariolunes;
+				this.horarios.forEach((horaAnterior) => {
+					console.log("Hora", horaAnterior);
+					console.log("Nueva hora", horaNueva);
+					if (horaAnterior === horaNueva && this.ncontrol === this.cargas.ncontrol) {
+						band = true;
+						return;
+					}
+					if (horaAnterior === horaNueva) {
 						this.mostrarError = true;
 						this.errorMensaje = "El alumno ya tiene una materia en ese horario.";
 						band = false;
@@ -179,9 +192,7 @@ export default {
 
 			const validaInscritos = () => {
 				const inscritos = this.grupoActualizar.inscritos;
-				console.log("Alumnos inscritos" + this.grupoActualizar.inscritos);
 				const cupo = this.grupoActualizar.limitealumnos;
-				console.log("Cupo" + this.grupoActualizar.limitealumnos);
 				if (this.ncontrol !== this.cargas.ncontrol && this.clavegrupo === this.cargas.clavegrupo) {
 					return true;
 				}
@@ -202,20 +213,19 @@ export default {
 					validaAlumnoEstatus()
 				) {
 					if (this.cargas.clavegrupo !== this.clavegrupo) {
-						this.grupoViejo = await traeDatos("grupos", this.clavegrupo);
+						this.grupoViejo = await obtenDatosEditar("grupos", this.clavegrupo);
 						let nuevaCantidad = this.grupoViejo.inscritos - 1;
-						const response = await axios.put(URL_DATOS + "/grupos/inscritos/" + this.clavegrupo, {
+						await actualiza("grupos/inscritos", this.clavegrupo, {
 							clavegrupo: this.clavegrupo,
 							inscritos: nuevaCantidad,
 						});
 						let Cantidad = this.grupoActualizar.inscritos + 1;
-						const response2 = await axios.put(URL_DATOS + "/grupos/inscritos/" + this.cargas.clavegrupo, {
+						await actualiza("grupos/inscritos", this.cargas.clavegrupo, {
 							clavegrupo: this.cargas.clavegrupo,
 							inscritos: Cantidad,
 						});
 					}
-
-					const res = await axios.put(URL_DATOS + "/cargas", {
+					await actualiza("cargas", this.cargas.clavegrupo, {
 						clavemateria: this.cargas.clavemateria,
 						clavegrupo: this.cargas.clavegrupo,
 						ncontrol: this.cargas.ncontrol,

@@ -11,6 +11,16 @@ export async function obtenerDatos(entidad) {
 	}
 }
 
+export async function obtenConClave(entidad, primaryKey) {
+	try {
+		const response = await axios.get(URL_DATOS + `/${entidad}/${primaryKey}`);
+		return response;
+	} catch (error) {
+		console.error(`Error al obtener ${entidad}:`, error);
+		throw error;
+	}
+}
+
 export async function traeDatos(entidad, primaryKey) {
 	try {
 		const response = await axios.get(URL_DATOS + `/${entidad}/${primaryKey}`);
@@ -36,16 +46,6 @@ export async function obtenClave(entidad, primaryKey) {
 	try {
 		const response = await axios.get(URL_DATOS + `/${entidad}/${primaryKey}`);
 		return response.data.ultima_clave;
-	} catch (error) {
-		console.error(`Error al obtener ${entidad}:`, error);
-		throw error;
-	}
-}
-
-export async function obtenConClave(entidad, primaryKey) {
-	try {
-		const response = await axios.get(URL_DATOS + `/${entidad}/${primaryKey}`);
-		return response;
 	} catch (error) {
 		console.error(`Error al obtener ${entidad}:`, error);
 		throw error;
@@ -120,6 +120,27 @@ export async function actualiza(entidad, clave, datos) {
 		return res;
 	} catch (error) {
 		console.error(`Error al actualizar ${entidad}`, error);
+		throw error;
+	}
+}
+
+//Haz que esto se pueda hacer como los anteriores:
+// const response = await axios.get(URL_DATOS + "/cargas/" + this.clavegrupo, {
+// 	params: {
+// 		ncontrol: this.ncontrol,
+// 	},
+// });
+
+export async function traeCarga(entidad, primaryKey, Ncontrol) {
+	try {
+		const response = await axios.get(URL_DATOS + `/${entidad}/${primaryKey}`, {
+			params: {
+				ncontrol: Ncontrol,
+			},
+		});
+		return response;
+	} catch (error) {
+		console.error(`Error al obtener ${entidad}:`, error);
 		throw error;
 	}
 }
