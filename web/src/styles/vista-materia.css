@@ -1,21 +1,21 @@
-.tabla-encabezado-materias{
-    color: var(--black);
-    opacity: 50%;
-    margin: 20px;
-    width: 99%;
-    display: grid;
-    grid-template-columns: 20% 50% 22% 5%;
-    
-    overflow: hidden;
+.tabla-encabezado-materias {
+	color: var(--black);
+	opacity: 50%;
+	margin: 20px;
+	width: 99%;
+	display: grid;
+	grid-template-columns: 20% 48% 20% 7%;
+
+	overflow: hidden;
 }
-.datos-materias{
-    font-size: 12px;
-    display: grid;  
-    gap: 10px;
-    grid-template-columns: 19% 50% 22% 5%;
-    border: 1px solid var(--white-smoke);
-    padding: 10px 0px 10px 25px;
+.datos-materias {
+	font-size: 12px;
+	display: grid;
+	gap: 10px;
+	grid-template-columns: 19% 48% 20% 7%;
+	border: 1px solid var(--white-smoke);
+	padding: 10px 0px 10px 25px;
 }
-.datos-materias span{
-    align-self: center;
+.datos-materias span {
+	align-self: center;
 }

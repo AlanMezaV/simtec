@@ -59,17 +59,14 @@
 								<span>{{ getHorarioAlumno(cargas.clavegrupo, "viernes") }}</span>
 							</span>
 							<span>
-								<button @click="mostrarOpciones(cargas)" class="boton-acciones">···</button>
-								<div v-if="cargas.mostrarOpciones" class="menu-desplegable">
-									<button @click.prevent="editarCarga(cargas)">
-										<img src="../../../../public/images/lapiz.svg" alt="" />
-										Editar
-									</button>
-									<button @click="eliminar(cargas)">
-										<img src="../../../../public/images/basura.svg" alt="" />
-										Eliminar
-									</button>
-								</div>
+								<button @click.prevent="editarCarga(cargas)" class="boton">
+									<img src="../../../../public/images/lapiz.svg" alt="" />
+									Editar
+								</button>
+								<button @click="eliminar(cargas)" class="boton">
+									<img src="../../../../public/images/basura.svg" alt="" />
+									Eliminar
+								</button>
 							</span>
 							<div v-if="mostrarConfirma && cargas.clavegrupo && cargas.ncontrol === cargaSeleccionada">
 								<ConfirmaEliminar

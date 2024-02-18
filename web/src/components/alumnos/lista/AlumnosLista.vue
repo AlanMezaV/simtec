@@ -22,23 +22,18 @@
 							<span>{{ alumnos.ncontrol }}</span>
 							<span>{{ alumnos.nombre }}</span>
 							<span>{{ alumnos.carrera }}</span>
-							<span class="estatus" :class="alumnos.estatus === 'V' ? ' activo' : 'baja'">{{
-								getEstatus(alumnos.estatus)
-							}}</span>
+							<span class="estatus" :class="alumnos.estatus === 'V' ? ' activo' : 'baja'"
+								>{{ getEstatus(alumnos.estatus) }}
+							</span>
 							<span>
-								<button @click="mostrarOpciones(alumnos)" class="boton-acciones">···</button>
-								<div v-if="alumnos.mostrarOpciones" class="menu-desplegable">
-								
-										<button @click.prevent="editarAlumno(alumnos)">
-											<img src="../../../../public/images/lapiz.svg" alt="" />
-											Editar
-										</button>
-										<button @click="eliminar(alumnos)" >
-											<img src="../../../../public/images/basura.svg" alt="" />
-											Eliminar
-										</button>
-									
-								</div>
+								<button @click.prevent="editarAlumno(alumnos)" class="boton">
+									<img src="../../../../public/images/lapiz.svg" alt="" />
+									Editar
+								</button>
+								<button @click="eliminar(alumnos)" class="boton">
+									<img src="../../../../public/images/basura.svg" alt="" />
+									Eliminar
+								</button>
 							</span>
 							<div v-if="mostrarConfirma && alumnos.ncontrol === numeroControlSeleccionado">
 								<ConfirmaEliminar

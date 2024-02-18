@@ -36,17 +36,14 @@
 							<span>{{ grupos.horariojueves }}</span>
 							<span>{{ grupos.horarioviernes }}</span>
 							<span>
-								<button @click="mostrarOpciones(grupos)" class="boton-acciones">···</button>
-								<div v-if="grupos.mostrarOpciones" class="menu-desplegable">
-									<button @click.prevent="editarGrupo(grupos)">
-										<img src="../../../../public/images/lapiz.svg" alt="" />
-										Editar
-									</button>
-									<button @click="eliminar(grupos)">
-										<img src="../../../../public/images/basura.svg" alt="" />
-										Eliminar
-									</button>
-								</div>
+								<button @click.prevent="editarGrupo(grupos)" class="boton">
+									<img src="../../../../public/images/lapiz.svg" alt="" />
+									Editar
+								</button>
+								<button @click="eliminar(grupos)" class="boton">
+									<img src="../../../../public/images/basura.svg" alt="" />
+									Eliminar
+								</button>
 							</span>
 							<div v-if="mostrarConfirma && grupos.clavegrupo === clavegrupoSeleccionada">
 								<ConfirmaEliminar

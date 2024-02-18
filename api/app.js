@@ -195,7 +195,7 @@ app.get("/api/grupos/materia/:id", (req, res) => {
 });
 
 // Mostrar una carga
-app.get("/api/grupod/horarioMaestro/:id", (req, res) => {
+app.get("/api/grupos/horarioMaestro/:id", (req, res) => {
 	let clavegrupo = req.params.id; // Utiliza req.params para obtener el parámetro de la URL
 	let clavemateria = req.query.ncontrol; // Utiliza req.query para obtener el parámetro de la URL
 

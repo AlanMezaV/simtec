@@ -22,17 +22,14 @@
 							<span>{{ materias.nombre }}</span>
 							<span class="centrar">{{ materias.creditos }}</span>
 							<span>
-								<button @click="mostrarOpciones(materias)" class="boton-acciones">···</button>
-								<div v-if="materias.mostrarOpciones" class="menu-desplegable">
-									<button @click.prevent="editarMateria(materias)">
-										<img src="../../../../public/images/lapiz.svg" alt="" />
-										Editar
-									</button>
-									<button @click="eliminar(materias)">
-										<img src="../../../../public/images/basura.svg" alt="" />
-										Eliminar
-									</button>
-								</div>
+								<button @click.prevent="editarMateria(materias)" class="boton">
+									<img src="../../../../public/images/lapiz.svg" alt="" />
+									Editar
+								</button>
+								<button @click="eliminar(materias)" class="boton">
+									<img src="../../../../public/images/basura.svg" alt="" />
+									Eliminar
+								</button>
 							</span>
 							<div v-if="mostrarConfirma && materias.clavemateria === clavemateriaSeleccionada">
 								<ConfirmaEliminar

@@ -1,20 +1,15 @@
 <template>
 	<div class="contenedor-principal">
 		<div class="contenedor-lista">
-			<img src="../../public/images/LOGO-TECNM.png" alt="">
+			<img src="../../public/images/LOGO-TECNM.png" alt="" />
 			<div class="contenedor-info">
 				<h1>Instituto Tecnológico Campus Culiacán</h1>
 				<h2>Simulación de Sistema de Integración escolar</h2>
-				<h3>
-					Angulo Sánchez Monica
-				</h3>
-				<h3>
-					Meza Valenzuela Alan
-				</h3>
+				<h3>Angulo Sánchez Monica</h3>
+				<h3>Meza Valenzuela Alan</h3>
 			</div>
 		</div>
 	</div>
-		
 </template>
 
 <script>

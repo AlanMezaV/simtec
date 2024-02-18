@@ -26,17 +26,14 @@
 								getEstatus(maestros.estatus)
 							}}</span>
 							<span>
-								<button @click="mostrarOpciones(maestros)" class="boton-acciones">···</button>
-								<div v-if="maestros.mostrarOpciones" class="menu-desplegable">
-									<button @click.prevent="editarMaestro(maestros)">
-										<img src="../../../../public/images/lapiz.svg" alt="" />
-										Editar
-									</button>
-									<button @click="eliminar(maestros)">
-										<img src="../../../../public/images/basura.svg" alt="" />
-										Eliminar
-									</button>
-								</div>
+								<button @click.prevent="editarMaestro(maestros)" class="boton">
+									<img src="../../../../public/images/lapiz.svg" alt="" />
+									Editar
+								</button>
+								<button @click="eliminar(maestros)" class="boton">
+									<img src="../../../../public/images/basura.svg" alt="" />
+									Eliminar
+								</button>
 							</span>
 							<div v-if="mostrarConfirma && maestros.clavemaestro === clavemaestroSeleccionado">
 								<ConfirmaEliminar

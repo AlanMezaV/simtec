@@ -1,11 +1,23 @@
-.contenedor-lista{
-    font-size: 30px;
-    color: var(--midnigth-blue-tecnm);
+.contenedor-lista {
+	font-size: 30px;
+	color: var(--midnigth-blue-tecnm);
+	display: flex;
+	align-items: center;
+	gap: 20px;
 }
-.contenedor-info{
-    display: flex;
-    flex-direction: column;
-    gap: 40px;
-    margin-top: 20px;
-    align-items: center;
+.contenedor-lista img {
+	height: 33%;
+	width: 97%;
+}
+
+.contenedor-info {
+	display: flex;
+	flex-direction: column;
+	gap: 40px;
+	margin-top: 20px;
+	align-items: center;
+}
+
+.contenedor-info h1 {
+	font-size: 1.8em;
 }
